@@ -41,3 +41,6 @@ BlockBench/
 
 # Ignore .claude folder
 .claude/
+
+# Generated
+src/main/generated/
