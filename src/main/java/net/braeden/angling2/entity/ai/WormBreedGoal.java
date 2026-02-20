@@ -2,11 +2,17 @@ package net.braeden.angling2.entity.ai;
 
 import net.braeden.angling2.block.AnglingBlocks;
 import net.braeden.angling2.block.RoeBlock;
+import net.braeden.angling2.block.SeaSlugEggsBlock;
 import net.braeden.angling2.block.entity.RoeBlockEntity;
+import net.braeden.angling2.block.entity.SeaSlugEggsBlockEntity;
+import net.braeden.angling2.entity.AnglingEntities;
+import net.braeden.angling2.entity.SeaSlugEntity;
+import net.braeden.angling2.entity.SunfishEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.fish.TropicalFish;
@@ -110,18 +116,34 @@ public class WormBreedGoal extends Goal {
         if (targetRoePos == null) return;
 
         boolean waterlogged = level.getFluidState(targetRoePos).is(Fluids.WATER);
-        BlockState roeState = AnglingBlocks.ROE.defaultBlockState()
-                .setValue(RoeBlock.WATERLOGGED, waterlogged);
-        level.setBlock(targetRoePos, roeState, 3);
 
-        if (level.getBlockEntity(targetRoePos) instanceof RoeBlockEntity roeEntity) {
-            roeEntity.setParentTypeId(BuiltInRegistries.ENTITY_TYPE.getKey(mob.getType()).toString());
-
-            // Store tropical fish colours from both parents for per-fry mixing.
-            if (mob instanceof TropicalFish tf1 && partner instanceof TropicalFish tf2) {
-                int v1 = new TropicalFish.Variant(tf1.getPattern(), tf1.getBaseColor(), tf1.getPatternColor()).getPackedId();
-                int v2 = new TropicalFish.Variant(tf2.getPattern(), tf2.getBaseColor(), tf2.getPatternColor()).getPackedId();
-                roeEntity.setParentVariants(v1, v2);
+        if (mob instanceof SeaSlugEntity slugMob && partner instanceof SeaSlugEntity slugPartner) {
+            // Sea slugs lay their own egg type that carries parent traits.
+            BlockState eggState = AnglingBlocks.SEA_SLUG_EGGS.defaultBlockState()
+                    .setValue(SeaSlugEggsBlock.WATERLOGGED, waterlogged);
+            level.setBlock(targetRoePos, eggState, 3);
+            if (level.getBlockEntity(targetRoePos) instanceof SeaSlugEggsBlockEntity eggsEntity) {
+                eggsEntity.setParents(slugMob.getColor(), slugMob.getPattern(),
+                                      slugPartner.getColor(), slugPartner.getPattern());
+            }
+        } else {
+            // All other fish lay generic roe.
+            BlockState roeState = AnglingBlocks.ROE.defaultBlockState()
+                    .setValue(RoeBlock.WATERLOGGED, waterlogged);
+            level.setBlock(targetRoePos, roeState, 3);
+            if (level.getBlockEntity(targetRoePos) instanceof RoeBlockEntity roeEntity) {
+                roeEntity.setParentTypeId(BuiltInRegistries.ENTITY_TYPE.getKey(mob.getType()).toString());
+                if (mob instanceof TropicalFish tf1 && partner instanceof TropicalFish tf2) {
+                    int v1 = new TropicalFish.Variant(tf1.getPattern(), tf1.getBaseColor(), tf1.getPatternColor()).getPackedId();
+                    int v2 = new TropicalFish.Variant(tf2.getPattern(), tf2.getBaseColor(), tf2.getPatternColor()).getPackedId();
+                    roeEntity.setParentVariants(v1, v2);
+                } else {
+                    int tint = speciesColor(mob.getType());
+                    if (tint != -1) roeEntity.setTintArgb(tint);
+                    if (mob instanceof SunfishEntity sf) {
+                        roeEntity.setParentVariantId(sf.getVariant().getId());
+                    }
+                }
             }
         }
 
@@ -166,5 +188,24 @@ public class WormBreedGoal extends Goal {
         BlockState below = level.getBlockState(pos.below());
         return (state.isAir() || state.getFluidState().is(Fluids.WATER))
                 && below.isFaceSturdy(level, pos.below(), Direction.UP);
+    }
+
+    /**
+     * Returns a hardcoded ARGB body colour for species that lack per-individual colour variants.
+     * -1 means no tint should be applied.
+     */
+    private static int speciesColor(EntityType<?> type) {
+        if (type == AnglingEntities.ANGLERFISH)  return 0xFF3A2515;
+        if (type == AnglingEntities.BUBBLE_EYE)  return 0xFFE67030;
+        if (type == AnglingEntities.CATFISH)      return 0xFF9B855A;
+        if (type == AnglingEntities.ANOMALOCARIS) return 0xFFCC7820;
+        if (type == AnglingEntities.MAHI_MAHI)    return 0xFF2298B0;
+        if (type == AnglingEntities.SEAHORSE)     return 0xFFDAA030;
+        if (type == AnglingEntities.DONGFISH)     return 0xFF997755;
+        if (type == AnglingEntities.SUNFISH)      return 0xFF7EA8B8;
+        if (type == EntityType.PUFFERFISH)        return 0xFFD4C014;
+        if (type == EntityType.COD)               return 0xFFC27C3C;
+        if (type == EntityType.SALMON)            return 0xFFE86E4C;
+        return -1;
     }
 }

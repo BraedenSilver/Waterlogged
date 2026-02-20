@@ -17,6 +17,8 @@ public class AnglingPlacedFeatures {
     public static final ResourceKey<PlacedFeature> STARFISH    = key("starfish");
     public static final ResourceKey<PlacedFeature> ANEMONE     = key("anemone");
     public static final ResourceKey<PlacedFeature> ALGAE       = key("algae");
+    public static final ResourceKey<PlacedFeature> ALGAE_SWAMP = key("algae_swamp");
+    public static final ResourceKey<PlacedFeature> URCHIN      = key("urchin");
     public static final ResourceKey<PlacedFeature> WORMY_DIRT  = key("wormy_dirt");
     public static final ResourceKey<PlacedFeature> WORMY_MUD   = key("wormy_mud");
 

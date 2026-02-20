@@ -1,6 +1,9 @@
 package net.braeden.angling2.entity;
 
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -13,6 +16,7 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.goal.TryFindWaterGoal;
+import net.braeden.angling2.entity.util.SunfishVariant;
 import net.minecraft.world.entity.animal.fish.AbstractFish;
 import net.minecraft.world.entity.animal.fish.TropicalFish;
 import net.minecraft.world.entity.player.Player;
@@ -25,15 +29,40 @@ public class FryEntity extends AbstractFish {
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState flopAnimationState = new AnimationState();
 
+    private static final EntityDataAccessor<Integer> TROPICAL_VARIANT =
+            SynchedEntityData.defineId(FryEntity.class, EntityDataSerializers.INT);
+
+    private static final EntityDataAccessor<Integer> ARGB_COLOR =
+            SynchedEntityData.defineId(FryEntity.class, EntityDataSerializers.INT);
+
     private String parentTypeId = "";
     private int growAge = 0;
     private static final int GROW_TICKS = 6000;
 
     /** Packed TropicalFish variant to apply on grow. -1 = not a tropical fish. */
     private int tropicalFishVariant = -1;
+    /** Generic parent variant ID (e.g. SunfishVariant id). -1 = not set. */
+    private int parentVariantId = -1;
 
     public FryEntity(EntityType<? extends FryEntity> type, Level level) {
         super(type, level);
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(TROPICAL_VARIANT, -1);
+        builder.define(ARGB_COLOR, -1);
+    }
+
+    /** Returns the synced packed TropicalFish variant for client-side tinting. -1 = no tint. */
+    public int getTropicalVariantForRender() {
+        return this.getEntityData().get(TROPICAL_VARIANT);
+    }
+
+    /** Returns a direct ARGB tint colour synced from the server. -1 = no override. */
+    public int getArgbColorForRender() {
+        return this.getEntityData().get(ARGB_COLOR);
     }
 
     public void setParentTypeId(String typeId) {
@@ -46,6 +75,17 @@ public class FryEntity extends AbstractFish {
 
     public void setTropicalFishVariant(int packed) {
         this.tropicalFishVariant = packed;
+        this.getEntityData().set(TROPICAL_VARIANT, packed);
+    }
+
+    /** Set a direct ARGB tint colour (overrides tropical-fish-variant colour derivation). */
+    public void setTintArgb(int argb) {
+        this.getEntityData().set(ARGB_COLOR, argb);
+    }
+
+    /** Set a parent variant ID to inherit on grow (e.g. a SunfishVariant id). */
+    public void setParentVariantId(int id) {
+        this.parentVariantId = id;
     }
 
     @Override
@@ -78,6 +118,9 @@ public class FryEntity extends AbstractFish {
         output.putString("ParentType", parentTypeId);
         output.putInt("GrowAge", growAge);
         output.putInt("TropicalVariant", tropicalFishVariant);
+        int argb = this.getEntityData().get(ARGB_COLOR);
+        if (argb != -1) output.putInt("TintArgb", argb);
+        if (parentVariantId != -1) output.putInt("ParentVariantId", parentVariantId);
     }
 
     @Override
@@ -86,6 +129,10 @@ public class FryEntity extends AbstractFish {
         parentTypeId = input.getStringOr("ParentType", "");
         growAge = input.getIntOr("GrowAge", 0);
         tropicalFishVariant = input.getIntOr("TropicalVariant", -1);
+        this.getEntityData().set(TROPICAL_VARIANT, tropicalFishVariant);
+        int argb = input.getIntOr("TintArgb", -1);
+        this.getEntityData().set(ARGB_COLOR, argb);
+        parentVariantId = input.getIntOr("ParentVariantId", -1);
     }
 
     @Override
@@ -121,6 +168,15 @@ public class FryEntity extends AbstractFish {
             adult.setPos(this.getX(), this.getY(), this.getZ());
             if (adult instanceof TropicalFish tf && tropicalFishVariant >= 0) {
                 tf.setPackedVariant(tropicalFishVariant);
+            }
+            if (adult instanceof SunfishEntity sf) {
+                SunfishVariant[] variants = SunfishVariant.values();
+                SunfishVariant base = (parentVariantId >= 0)
+                        ? SunfishVariant.byId(parentVariantId)
+                        : variants[serverLevel.getRandom().nextInt(variants.length)];
+                sf.setVariant(serverLevel.getRandom().nextFloat() < 0.05f
+                        ? variants[serverLevel.getRandom().nextInt(variants.length)]
+                        : base);
             }
             serverLevel.addFreshEntity(adult);
         }

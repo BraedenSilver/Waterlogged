@@ -1,14 +1,9 @@
 package net.braeden.angling2.entity;
 
-import net.braeden.angling2.block.AnglingBlocks;
-import net.braeden.angling2.block.RoeBlock;
-import net.braeden.angling2.block.entity.RoeBlockEntity;
 import net.braeden.angling2.entity.util.CrabVariant;
 import net.braeden.angling2.item.AnglingItems;
 import net.braeden.angling2.tags.AnglingBiomeTags;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -35,8 +30,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.Nullable;
 import net.minecraft.world.entity.AnimationState;
 
@@ -117,48 +110,27 @@ public class CrabEntity extends Animal {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob partner) {
-        return null;
+        CrabEntity baby = AnglingEntities.CRAB.create(level, EntitySpawnReason.BREEDING);
+        if (baby != null) {
+            CrabVariant v1 = this.getVariant();
+            CrabVariant v2 = (partner instanceof CrabEntity other) ? other.getVariant() : v1;
+            baby.setVariant(inheritVariant(level.getRandom(), v1, v2));
+        }
+        return baby;
+    }
+
+    /** Pick one parent's variant, with a 5% chance of mutating to any variant. */
+    private static CrabVariant inheritVariant(RandomSource rng, CrabVariant v1, CrabVariant v2) {
+        if (rng.nextFloat() < 0.05f) {
+            CrabVariant[] all = CrabVariant.values();
+            return all[rng.nextInt(all.length)];
+        }
+        return rng.nextBoolean() ? v1 : v2;
     }
 
     @Override
     public boolean isFood(ItemStack stack) {
         return stack.getItem() == AnglingItems.WORM;
-    }
-
-    @Override
-    public void spawnChildFromBreeding(ServerLevel level, Animal mate) {
-        // Instead of spawning a child, lay a Roe block
-        BlockPos roePos = findRoePos(level, this.blockPosition());
-        if (roePos != null) {
-            boolean waterlogged = level.getFluidState(roePos).is(Fluids.WATER);
-            BlockState roeState = AnglingBlocks.ROE.defaultBlockState()
-                    .setValue(RoeBlock.WATERLOGGED, waterlogged);
-            level.setBlock(roePos, roeState, 3);
-            if (level.getBlockEntity(roePos) instanceof RoeBlockEntity roeEntity) {
-                String typeId = BuiltInRegistries.ENTITY_TYPE.getKey(this.getType()).toString();
-                roeEntity.setParentTypeId(typeId);
-            }
-        }
-        this.finalizeSpawnChildFromBreeding(level, mate, null);
-    }
-
-    private static BlockPos findRoePos(ServerLevel level, BlockPos center) {
-        for (int dx = -2; dx <= 2; dx++) {
-            for (int dz = -2; dz <= 2; dz++) {
-                for (int dy = 0; dy >= -1; dy--) {
-                    BlockPos pos = center.offset(dx, dy, dz);
-                    if (canPlaceRoe(level, pos)) return pos;
-                }
-            }
-        }
-        return null;
-    }
-
-    private static boolean canPlaceRoe(ServerLevel level, BlockPos pos) {
-        BlockState state = level.getBlockState(pos);
-        BlockState below = level.getBlockState(pos.below());
-        return (state.isAir() || state.getFluidState().is(Fluids.WATER))
-                && below.isFaceSturdy(level, pos.below(), Direction.UP);
     }
 
     @Override
@@ -172,7 +144,7 @@ public class CrabEntity extends Animal {
             } else {
                 this.movingAnimationState.stop();
             }
-            this.rotatedAnimationState.stop();
+            this.rotatedAnimationState.startIfStopped(this.tickCount);
             this.forwardsAnimationState.stop();
         }
     }

@@ -22,6 +22,12 @@ public class AnglingFeatures {
             new PapyrusFeature()
     );
 
+    public static final Feature<NoneFeatureConfiguration> STARFISH = Registry.register(
+            BuiltInRegistries.FEATURE,
+            Identifier.fromNamespaceAndPath(MOD_ID, "starfish"),
+            new StarfishFeature()
+    );
+
     public static void init() {
         // Features registered via static field initializers above
     }

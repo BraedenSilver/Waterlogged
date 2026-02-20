@@ -43,6 +43,8 @@ public class AnglingBiomeTagProvider extends FabricTagProvider<Biome> {
     private static final ResourceKey<Biome> SNOWY_TAIGA = mc("snowy_taiga");
     private static final ResourceKey<Biome> MEADOW = mc("meadow");
     private static final ResourceKey<Biome> DESERT = mc("desert");
+    private static final ResourceKey<Biome> RIVER = mc("river");
+    private static final ResourceKey<Biome> FROZEN_RIVER = mc("frozen_river");
 
     public AnglingBiomeTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, Registries.BIOME, registriesFuture);
@@ -65,10 +67,18 @@ public class AnglingBiomeTagProvider extends FabricTagProvider<Biome> {
         builder(AnglingBiomeTags.SEA_SLUG_SPAWN_IN).add(WARM_OCEAN);
         builder(AnglingBiomeTags.CATFISH_SPAWN_IN).add(SWAMP);
         builder(AnglingBiomeTags.SEAHORSE_SPAWN_IN).add(LUKEWARM_OCEAN).add(DEEP_LUKEWARM_OCEAN);
-        builder(AnglingBiomeTags.BUBBLE_EYE_SPAWN_IN).add(OLD_GROWTH_SPRUCE_TAIGA).add(OLD_GROWTH_PINE_TAIGA);
+        builder(AnglingBiomeTags.BUBBLE_EYE_SPAWN_IN)
+                .add(RIVER).add(FROZEN_RIVER)
+                .add(FOREST).add(BIRCH_FOREST).add(OLD_GROWTH_BIRCH_FOREST).add(DARK_FOREST);
         builder(AnglingBiomeTags.ANOMALOCARIS_SPAWN_IN).add(MUSHROOM_FIELDS);
-        builder(AnglingBiomeTags.ANGLERFISH_SPAWN_IN).add(DEEP_COLD_OCEAN);
-        builder(AnglingBiomeTags.MAHI_MAHI_SPAWN_IN).add(WARM_OCEAN).add(LUKEWARM_OCEAN).add(DEEP_LUKEWARM_OCEAN);
+        builder(AnglingBiomeTags.ANGLERFISH_SPAWN_IN)
+                .add(DEEP_OCEAN).add(DEEP_COLD_OCEAN).add(DEEP_FROZEN_OCEAN).add(DEEP_LUKEWARM_OCEAN);
+        builder(AnglingBiomeTags.MAHI_MAHI_SPAWN_IN)
+                .add(OCEAN).add(DEEP_OCEAN)
+                .add(COLD_OCEAN).add(DEEP_COLD_OCEAN)
+                .add(FROZEN_OCEAN).add(DEEP_FROZEN_OCEAN)
+                .add(LUKEWARM_OCEAN).add(DEEP_LUKEWARM_OCEAN)
+                .add(WARM_OCEAN);
 
         // Feature biomes
         builder(AnglingBiomeTags.OYSTER_REEF_BIOMES)
@@ -88,12 +98,20 @@ public class AnglingBiomeTagProvider extends FabricTagProvider<Biome> {
         builder(AnglingBiomeTags.ANEMONE_BIOMES)
                 .add(WARM_OCEAN).add(LUKEWARM_OCEAN);
 
-        // Algae — most underwater biomes
+        // Urchin — most ocean biomes
+        builder(AnglingBiomeTags.URCHIN_BIOMES)
+                .add(WARM_OCEAN).add(LUKEWARM_OCEAN).add(DEEP_LUKEWARM_OCEAN)
+                .add(OCEAN).add(DEEP_OCEAN)
+                .add(COLD_OCEAN).add(DEEP_COLD_OCEAN);
+
+        // Algae — most underwater biomes (swamps handled separately with higher density)
         builder(AnglingBiomeTags.ALGAE_BIOMES)
                 .add(OCEAN).add(DEEP_OCEAN)
                 .add(COLD_OCEAN).add(DEEP_COLD_OCEAN)
                 .add(LUKEWARM_OCEAN).add(DEEP_LUKEWARM_OCEAN)
-                .add(WARM_OCEAN)
+                .add(WARM_OCEAN);
+
+        builder(AnglingBiomeTags.ALGAE_SWAMP_BIOMES)
                 .add(SWAMP).add(MANGROVE_SWAMP);
 
         // Wormy blocks — surface patches indicating worms underground

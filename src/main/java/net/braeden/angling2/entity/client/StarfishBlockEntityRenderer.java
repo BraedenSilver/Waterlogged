@@ -40,22 +40,32 @@ public class StarfishBlockEntityRenderer implements BlockEntityRenderer<Starfish
         var blockState = entity.getBlockState();
         state.dead = blockState.getBlock() instanceof StarfishBlock sf && sf.isDead();
         state.facing = blockState.getValue(StarfishBlock.FACING);
+        state.rotation = blockState.getValue(StarfishBlock.ROTATION);
         state.color = entity.getColor();
     }
 
     @Override
     public void submit(StarfishRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState cameraState) {
-        float yRot = switch (state.facing) {
-            case SOUTH -> 0.0F;
-            case WEST -> 90.0F;
-            case NORTH -> 180.0F;
-            case EAST -> 270.0F;
-            default -> 0.0F;
-        };
         poseStack.pushPose();
-        poseStack.translate(0.5, 1.5, 0.5);
-        poseStack.mulPose(Axis.YP.rotationDegrees(yRot));
+        poseStack.translate(0.5, 0.5, 0.5);
+
+        // 1) Rotate the model to the correct face
+        switch (state.facing) {
+            case UP -> {}
+            case DOWN -> poseStack.mulPose(Axis.XP.rotationDegrees(180));
+            case SOUTH -> poseStack.mulPose(Axis.XP.rotationDegrees(90));
+            case NORTH -> poseStack.mulPose(Axis.XP.rotationDegrees(-90));
+            case EAST -> poseStack.mulPose(Axis.ZP.rotationDegrees(-90));
+            case WEST -> poseStack.mulPose(Axis.ZP.rotationDegrees(90));
+        }
+
+        // 2) Spin the starfish on the surface for visual variety
+        poseStack.mulPose(Axis.YP.rotationDegrees(state.rotation * 90.0F));
+
+        // 3) Offset in local "up" (away from surface) and apply entity scale+flip
+        poseStack.translate(0, 0.55, 0);
         poseStack.scale(0.7F, -0.7F, 0.7F);
+
         model.setupAnim(state);
         RenderType renderType = RenderTypes.entityCutoutNoCull(state.dead ? DEAD_TEXTURE : TEXTURE);
         int tint = state.dead ? -1 : state.color.getArgb();
@@ -65,7 +75,8 @@ public class StarfishBlockEntityRenderer implements BlockEntityRenderer<Starfish
 
     public static class StarfishRenderState extends BlockEntityRenderState {
         public boolean dead = false;
-        public Direction facing = Direction.NORTH;
+        public Direction facing = Direction.UP;
+        public int rotation = 0;
         public StarfishColor color = StarfishColor.RED;
     }
 }

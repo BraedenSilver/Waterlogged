@@ -68,11 +68,17 @@ public class AnglingMod implements ModInitializer {
 				ctx -> ctx.getBiomeRegistryEntry().is(AnglingBiomeTags.ALGAE_BIOMES),
 				GenerationStep.Decoration.VEGETAL_DECORATION, AnglingPlacedFeatures.ALGAE);
 		BiomeModifications.addFeature(
+				ctx -> ctx.getBiomeRegistryEntry().is(AnglingBiomeTags.ALGAE_SWAMP_BIOMES),
+				GenerationStep.Decoration.VEGETAL_DECORATION, AnglingPlacedFeatures.ALGAE_SWAMP);
+		BiomeModifications.addFeature(
 				ctx -> ctx.getBiomeRegistryEntry().is(AnglingBiomeTags.WORMY_DIRT_BIOMES),
 				GenerationStep.Decoration.UNDERGROUND_ORES, AnglingPlacedFeatures.WORMY_DIRT);
 		BiomeModifications.addFeature(
 				ctx -> ctx.getBiomeRegistryEntry().is(AnglingBiomeTags.WORMY_MUD_BIOMES),
 				GenerationStep.Decoration.UNDERGROUND_ORES, AnglingPlacedFeatures.WORMY_MUD);
+		BiomeModifications.addFeature(
+				ctx -> ctx.getBiomeRegistryEntry().is(AnglingBiomeTags.URCHIN_BIOMES),
+				GenerationStep.Decoration.VEGETAL_DECORATION, AnglingPlacedFeatures.URCHIN);
 
 		PelicanSpawner spawner = new PelicanSpawner();
 		ServerTickEvents.END_WORLD_TICK.register(level -> spawner.spawn(level, true, true));
@@ -80,12 +86,30 @@ public class AnglingMod implements ModInitializer {
 		// Boost vanilla nautilus shell drop rate as compensation for removing our nautilus mob
 		ResourceKey<LootTable> nautilusLoot = ResourceKey.create(Registries.LOOT_TABLE,
 				Identifier.withDefaultNamespace("entities/nautilus"));
+		// Modded fish catchable by fishing rod
+		ResourceKey<LootTable> fishingFishLoot = ResourceKey.create(Registries.LOOT_TABLE,
+				Identifier.withDefaultNamespace("gameplay/fishing/fish"));
 		LootTableEvents.MODIFY.register((key, tableBuilder, source, registries) -> {
 			if (key.equals(nautilusLoot)) {
 				tableBuilder.withPool(
 						LootPool.lootPool()
 								.add(LootItem.lootTableItem(Items.NAUTILUS_SHELL))
 								.when(LootItemRandomChanceCondition.randomChance(0.5f))
+				);
+			}
+			if (key.equals(fishingFishLoot)) {
+				tableBuilder.withPool(
+						LootPool.lootPool()
+								.setRolls(net.minecraft.world.level.storage.loot.providers.number.ConstantValue.exactly(1))
+								.when(LootItemRandomChanceCondition.randomChance(0.25f))
+								.add(LootItem.lootTableItem(AnglingItems.SUNFISH))
+								.add(LootItem.lootTableItem(AnglingItems.RAW_MAHI_MAHI))
+								.add(LootItem.lootTableItem(AnglingItems.RAW_CATFISH))
+								.add(LootItem.lootTableItem(AnglingItems.RAW_DONGFISH))
+								.add(LootItem.lootTableItem(AnglingItems.RAW_SEAHORSE))
+								.add(LootItem.lootTableItem(AnglingItems.RAW_BUBBLE_EYE))
+								.add(LootItem.lootTableItem(AnglingItems.RAW_ANOMALOCARIS))
+								.add(LootItem.lootTableItem(AnglingItems.RAW_ANGLERFISH))
 				);
 			}
 		});

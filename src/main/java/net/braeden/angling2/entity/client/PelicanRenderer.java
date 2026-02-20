@@ -31,6 +31,7 @@ public class PelicanRenderer extends MobRenderer<PelicanEntity, PelicanRenderSta
         state.divingAnimationState.copyFrom(entity.divingAnimationState);
         state.flappingAnimationState.copyFrom(entity.flappingAnimationState);
         state.beakOpenedAnimationState.copyFrom(entity.beakOpenedAnimationState);
+        state.hasHeldEntity = entity.hasHeldEntity();
     }
 
     @Override

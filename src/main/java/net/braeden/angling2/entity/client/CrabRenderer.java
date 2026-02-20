@@ -7,6 +7,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.resources.Identifier;
 
 import java.util.Map;
@@ -36,6 +37,14 @@ public class CrabRenderer extends MobRenderer<CrabEntity, CrabRenderState, CrabM
         state.rotatedAnimationState.copyFrom(entity.rotatedAnimationState);
         state.forwardsAnimationState.copyFrom(entity.forwardsAnimationState);
         state.variant = entity.getVariant();
+        state.isBaby = entity.isBaby();
+    }
+
+    @Override
+    protected void scale(CrabRenderState state, PoseStack poseStack) {
+        if (state.isBaby) {
+            poseStack.scale(0.5f, 0.5f, 0.5f);
+        }
     }
 
     @Override

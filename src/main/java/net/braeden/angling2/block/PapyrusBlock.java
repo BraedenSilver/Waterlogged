@@ -75,7 +75,7 @@ public class PapyrusBlock extends Block implements BonemealableBlock, SimpleWate
         if (level.getRawBrightness(pos, 0) >= 9) {
             int age = state.getValue(AGE);
             if (age < MAX_AGE) {
-                if (random.nextInt(3) == 0) { // Growth chance
+                if (random.nextInt(25) == 0) { // Growth chance (wheat-level speed)
                     level.setBlock(pos, state.setValue(AGE, age + 1), 2);
                 }
             }

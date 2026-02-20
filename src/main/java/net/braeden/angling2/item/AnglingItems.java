@@ -120,6 +120,56 @@ public class AnglingItems {
                     .food(new FoodProperties.Builder().nutrition(6).saturationModifier(0.9f).build())
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
+    public static final Item RAW_DONGFISH = register("raw_dongfish",
+            id -> new Item(new Item.Properties()
+                    .food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.2f).build())
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final Item COOKED_DONGFISH = register("cooked_dongfish",
+            id -> new Item(new Item.Properties()
+                    .food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.8f).build())
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final Item RAW_SEAHORSE = register("raw_seahorse",
+            id -> new Item(new Item.Properties()
+                    .food(new FoodProperties.Builder().nutrition(1).saturationModifier(0.1f).build())
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final Item COOKED_SEAHORSE = register("cooked_seahorse",
+            id -> new Item(new Item.Properties()
+                    .food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.6f).build())
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final Item RAW_BUBBLE_EYE = register("raw_bubble_eye",
+            id -> new Item(new Item.Properties()
+                    .food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.2f).build())
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final Item COOKED_BUBBLE_EYE = register("cooked_bubble_eye",
+            id -> new Item(new Item.Properties()
+                    .food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.8f).build())
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final Item RAW_ANOMALOCARIS = register("raw_anomalocaris",
+            id -> new Item(new Item.Properties()
+                    .food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.3f).build())
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final Item COOKED_ANOMALOCARIS = register("cooked_anomalocaris",
+            id -> new Item(new Item.Properties()
+                    .food(new FoodProperties.Builder().nutrition(8).saturationModifier(1.0f).build())
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final Item RAW_ANGLERFISH = register("raw_anglerfish",
+            id -> new Item(new Item.Properties()
+                    .food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.2f).build())
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final Item COOKED_ANGLERFISH = register("cooked_anglerfish",
+            id -> new Item(new Item.Properties()
+                    .food(new FoodProperties.Builder().nutrition(6).saturationModifier(0.9f).build())
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
     public static final Item SUNFISH = register("sunfish",
             id -> new Item(new Item.Properties()
                     .food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.2f).build())

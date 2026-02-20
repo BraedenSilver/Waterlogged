@@ -1,5 +1,8 @@
 package net.braeden.angling2;
 
+import net.braeden.angling2.block.entity.RoeBlockEntity;
+import net.braeden.angling2.block.entity.SeaSlugEggsBlockEntity;
+import net.braeden.angling2.entity.util.SeaSlugColor;
 import net.braeden.angling2.particle.AlgaeParticle;
 import net.braeden.angling2.particle.WormParticle;
 import net.braeden.angling2.entity.client.*;
@@ -12,6 +15,7 @@ import net.braeden.angling2.particle.AnglingParticles;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
@@ -50,6 +54,7 @@ public class AnglingClient implements ClientModInitializer {
         // Model layer definitions
         EntityModelLayerRegistry.registerModelLayer(AnglingEntityModelLayers.STARFISH,       StarfishModel::getTexturedModelData);
         EntityModelLayerRegistry.registerModelLayer(AnglingEntityModelLayers.ANEMONE,       AnemoneModel::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(AnglingEntityModelLayers.URCHIN,        UrchinModel::getTexturedModelData);
         EntityModelLayerRegistry.registerModelLayer(AnglingEntityModelLayers.FRY,          FryModel::getTexturedModelData);
         EntityModelLayerRegistry.registerModelLayer(AnglingEntityModelLayers.SUNFISH,       SunfishModel::getTexturedModelData);
         EntityModelLayerRegistry.registerModelLayer(AnglingEntityModelLayers.PELICAN,       PelicanModel::getTexturedModelData);
@@ -71,6 +76,29 @@ public class AnglingClient implements ClientModInitializer {
         // Particles
         ParticleFactoryRegistry.getInstance().register(AnglingParticles.ALGAE, AlgaeParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(AnglingParticles.WORM, WormParticle.Factory::new);
+
+        // Block color providers — tint roe and sea-slug-egg block models with parent colours
+        ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> {
+            if (world == null || pos == null) return -1;
+            if (world.getBlockEntity(pos) instanceof RoeBlockEntity roe) {
+                int argb = roe.getTintArgb();
+                if (argb != -1) return argb;
+            }
+            return -1;
+        }, AnglingBlocks.ROE);
+
+        ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> {
+            if (world == null || pos == null) return -1;
+            if (world.getBlockEntity(pos) instanceof SeaSlugEggsBlockEntity eggs) {
+                int c1 = SeaSlugColor.byId(eggs.getParent1Color()).getArgb();
+                int c2 = SeaSlugColor.byId(eggs.getParent2Color()).getArgb();
+                int r = ((c1 >> 16 & 0xFF) + (c2 >> 16 & 0xFF)) / 2;
+                int g = ((c1 >> 8 & 0xFF) + (c2 >> 8 & 0xFF)) / 2;
+                int b = ((c1 & 0xFF) + (c2 & 0xFF)) / 2;
+                return 0xFF000000 | (r << 16) | (g << 8) | b;
+            }
+            return -1;
+        }, AnglingBlocks.SEA_SLUG_EGGS);
 
     }
 }

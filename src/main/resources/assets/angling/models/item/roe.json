@@ -1,7 +1,6 @@
 {
-    "parent": "minecraft:item/generated",
-    "textures": {
-        "layer0": "angling:item/roe",
-        "layer1": "angling:item/roe_overlay"
-    }
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "angling:item/roe"
+  }
 }

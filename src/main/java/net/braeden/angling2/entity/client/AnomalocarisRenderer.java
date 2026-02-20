@@ -25,6 +25,7 @@ public class AnomalocarisRenderer extends MobRenderer<AnomalocarisEntity, Anomal
     public void extractRenderState(AnomalocarisEntity entity, AnomalocarisRenderState state, float tickDelta) {
         super.extractRenderState(entity, state, tickDelta);
         state.idleAnimationState.copyFrom(entity.idleAnimationState);
+        state.flopAnimationState.copyFrom(entity.flopAnimationState);
     }
 
     @Override

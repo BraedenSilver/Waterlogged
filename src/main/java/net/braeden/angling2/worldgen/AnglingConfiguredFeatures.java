@@ -17,6 +17,7 @@ public class AnglingConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> STARFISH    = key("starfish");
     public static final ResourceKey<ConfiguredFeature<?, ?>> ANEMONE     = key("anemone");
     public static final ResourceKey<ConfiguredFeature<?, ?>> ALGAE       = key("algae");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> URCHIN      = key("urchin");
 
     private static ResourceKey<ConfiguredFeature<?, ?>> key(String name) {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE, Identifier.fromNamespaceAndPath(MOD_ID, name));

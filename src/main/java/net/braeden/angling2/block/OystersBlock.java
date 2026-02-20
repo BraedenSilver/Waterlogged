@@ -12,6 +12,8 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
@@ -31,6 +33,9 @@ public class OystersBlock extends Block implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     private static final Direction[] HORIZ = {Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST};
+
+    // Hitbox matching the flat cluster model (full XZ footprint, ~8px tall)
+    private static final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 7.0, 16.0);
 
     public OystersBlock(BlockBehaviour.Properties props) {
         super(props);
@@ -67,6 +72,11 @@ public class OystersBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return SHAPE;
+    }
+
+    @Override
     public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos) {
         return 1.0F;
     }
@@ -98,8 +108,13 @@ public class OystersBlock extends Block implements SimpleWaterloggedBlock {
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         for (Direction dir : Direction.values()) {
             BlockPos algaePos = pos.relative(dir);
-            if (level.getBlockState(algaePos).is(AnglingBlocks.ALGAE)) {
-                level.setBlock(algaePos, Blocks.AIR.defaultBlockState(), 3);
+            BlockState algaeBlockState = level.getBlockState(algaePos);
+            if (algaeBlockState.is(AnglingBlocks.ALGAE)) {
+                // Consume the algae, preserving water if it was waterlogged
+                boolean algaeWasWaterlogged = algaeBlockState.hasProperty(BlockStateProperties.WATERLOGGED)
+                        && algaeBlockState.getValue(BlockStateProperties.WATERLOGGED);
+                level.setBlock(algaePos,
+                        algaeWasWaterlogged ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState(), 3);
                 int start = random.nextInt(4);
                 for (int i = 0; i < 4; i++) {
                     BlockPos spreadPos = pos.relative(HORIZ[(start + i) % 4]);

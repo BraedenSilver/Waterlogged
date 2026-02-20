@@ -29,11 +29,37 @@ public class AnglingEntityLootTableProvider extends FabricEntityLootTableProvide
         // Empty loot tables
         add(AnglingEntities.FRY,         LootTable.lootTable());
         add(AnglingEntities.SEA_SLUG,    LootTable.lootTable());
-        add(AnglingEntities.SEAHORSE,    LootTable.lootTable());
-        add(AnglingEntities.BUBBLE_EYE,  LootTable.lootTable());
+
+        // Dongfish: drops raw dongfish (cooked if on fire)
+        add(AnglingEntities.DONGFISH, LootTable.lootTable()
+                .withPool(new LootPool.Builder()
+                        .setRolls(ConstantValue.exactly(1))
+                        .add(LootItem.lootTableItem(AnglingItems.RAW_DONGFISH)
+                                .apply(SmeltItemFunction.smelted().when(shouldSmeltLoot())))));
+
+        // Seahorse: drops raw seahorse (cooked if on fire)
+        add(AnglingEntities.SEAHORSE, LootTable.lootTable()
+                .withPool(new LootPool.Builder()
+                        .setRolls(ConstantValue.exactly(1))
+                        .add(LootItem.lootTableItem(AnglingItems.RAW_SEAHORSE)
+                                .apply(SmeltItemFunction.smelted().when(shouldSmeltLoot())))));
+
+        // Bubble Eye: drops raw bubble eye (cooked if on fire)
+        add(AnglingEntities.BUBBLE_EYE, LootTable.lootTable()
+                .withPool(new LootPool.Builder()
+                        .setRolls(ConstantValue.exactly(1))
+                        .add(LootItem.lootTableItem(AnglingItems.RAW_BUBBLE_EYE)
+                                .apply(SmeltItemFunction.smelted().when(shouldSmeltLoot())))));
+
+        // Anomalocaris: no drops
         add(AnglingEntities.ANOMALOCARIS, LootTable.lootTable());
-        add(AnglingEntities.ANGLERFISH,  LootTable.lootTable());
-        add(AnglingEntities.DONGFISH,    LootTable.lootTable());
+
+        // Anglerfish: drops raw anglerfish (cooked if on fire)
+        add(AnglingEntities.ANGLERFISH, LootTable.lootTable()
+                .withPool(new LootPool.Builder()
+                        .setRolls(ConstantValue.exactly(1))
+                        .add(LootItem.lootTableItem(AnglingItems.RAW_ANGLERFISH)
+                                .apply(SmeltItemFunction.smelted().when(shouldSmeltLoot())))));
 
         // Crab: drops raw crab legs (cooked if on fire)
         add(AnglingEntities.CRAB, LootTable.lootTable()

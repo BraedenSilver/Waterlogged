@@ -14,4 +14,5 @@ public class PelicanRenderState extends LivingEntityRenderState {
     public final AnimationState divingAnimationState = new AnimationState();
     public final AnimationState flappingAnimationState = new AnimationState();
     public final AnimationState beakOpenedAnimationState = new AnimationState();
+    public boolean hasHeldEntity = false;
 }

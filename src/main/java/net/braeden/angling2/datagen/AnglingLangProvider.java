@@ -132,6 +132,16 @@ public class AnglingLangProvider extends FabricLanguageProvider {
         builder.add("item.angling.cooked_crab_legs", "Cooked Crab Legs");
         builder.add("item.angling.raw_catfish", "Raw Catfish");
         builder.add("item.angling.cooked_catfish", "Cooked Catfish");
+        builder.add("item.angling.raw_dongfish", "Raw Dongfish");
+        builder.add("item.angling.cooked_dongfish", "Cooked Dongfish");
+        builder.add("item.angling.raw_seahorse", "Raw Seahorse");
+        builder.add("item.angling.cooked_seahorse", "Cooked Seahorse");
+        builder.add("item.angling.raw_bubble_eye", "Raw Bubble Eye");
+        builder.add("item.angling.cooked_bubble_eye", "Cooked Bubble Eye");
+        builder.add("item.angling.raw_anomalocaris", "Raw Anomalocaris");
+        builder.add("item.angling.cooked_anomalocaris", "Cooked Anomalocaris");
+        builder.add("item.angling.raw_anglerfish", "Raw Anglerfish");
+        builder.add("item.angling.cooked_anglerfish", "Cooked Anglerfish");
 
         // Sound subtitles
         builder.add("subtitles.item.worm.use", "Worm squirms");

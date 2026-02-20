@@ -8,4 +8,5 @@ import net.minecraft.world.entity.AnimationState;
 @Environment(EnvType.CLIENT)
 public class AnomalocarisRenderState extends LivingEntityRenderState {
     public final AnimationState idleAnimationState = new AnimationState();
+    public final AnimationState flopAnimationState = new AnimationState();
 }

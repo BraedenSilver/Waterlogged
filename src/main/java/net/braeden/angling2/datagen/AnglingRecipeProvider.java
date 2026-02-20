@@ -108,6 +108,91 @@ public class AnglingRecipeProvider extends FabricRecipeProvider {
                 ).unlockedBy(getHasName(AnglingItems.RAW_CATFISH), has(AnglingItems.RAW_CATFISH))
                         .save(output, "angling:cooked_catfish_from_campfire_cooking");
 
+                // Cooked dongfish
+                SimpleCookingRecipeBuilder.smelting(
+                        Ingredient.of(AnglingItems.RAW_DONGFISH),
+                        RecipeCategory.FOOD, AnglingItems.COOKED_DONGFISH, 0.35f, 150
+                ).unlockedBy(getHasName(AnglingItems.RAW_DONGFISH), has(AnglingItems.RAW_DONGFISH))
+                        .save(output);
+                SimpleCookingRecipeBuilder.smoking(
+                        Ingredient.of(AnglingItems.RAW_DONGFISH),
+                        RecipeCategory.FOOD, AnglingItems.COOKED_DONGFISH, 0.35f, 75
+                ).unlockedBy(getHasName(AnglingItems.RAW_DONGFISH), has(AnglingItems.RAW_DONGFISH))
+                        .save(output, "angling:cooked_dongfish_from_smoking");
+                SimpleCookingRecipeBuilder.campfireCooking(
+                        Ingredient.of(AnglingItems.RAW_DONGFISH),
+                        RecipeCategory.FOOD, AnglingItems.COOKED_DONGFISH, 0.35f, 450
+                ).unlockedBy(getHasName(AnglingItems.RAW_DONGFISH), has(AnglingItems.RAW_DONGFISH))
+                        .save(output, "angling:cooked_dongfish_from_campfire_cooking");
+
+                // Cooked seahorse
+                SimpleCookingRecipeBuilder.smelting(
+                        Ingredient.of(AnglingItems.RAW_SEAHORSE),
+                        RecipeCategory.FOOD, AnglingItems.COOKED_SEAHORSE, 0.35f, 150
+                ).unlockedBy(getHasName(AnglingItems.RAW_SEAHORSE), has(AnglingItems.RAW_SEAHORSE))
+                        .save(output);
+                SimpleCookingRecipeBuilder.smoking(
+                        Ingredient.of(AnglingItems.RAW_SEAHORSE),
+                        RecipeCategory.FOOD, AnglingItems.COOKED_SEAHORSE, 0.35f, 75
+                ).unlockedBy(getHasName(AnglingItems.RAW_SEAHORSE), has(AnglingItems.RAW_SEAHORSE))
+                        .save(output, "angling:cooked_seahorse_from_smoking");
+                SimpleCookingRecipeBuilder.campfireCooking(
+                        Ingredient.of(AnglingItems.RAW_SEAHORSE),
+                        RecipeCategory.FOOD, AnglingItems.COOKED_SEAHORSE, 0.35f, 450
+                ).unlockedBy(getHasName(AnglingItems.RAW_SEAHORSE), has(AnglingItems.RAW_SEAHORSE))
+                        .save(output, "angling:cooked_seahorse_from_campfire_cooking");
+
+                // Cooked bubble eye
+                SimpleCookingRecipeBuilder.smelting(
+                        Ingredient.of(AnglingItems.RAW_BUBBLE_EYE),
+                        RecipeCategory.FOOD, AnglingItems.COOKED_BUBBLE_EYE, 0.35f, 150
+                ).unlockedBy(getHasName(AnglingItems.RAW_BUBBLE_EYE), has(AnglingItems.RAW_BUBBLE_EYE))
+                        .save(output);
+                SimpleCookingRecipeBuilder.smoking(
+                        Ingredient.of(AnglingItems.RAW_BUBBLE_EYE),
+                        RecipeCategory.FOOD, AnglingItems.COOKED_BUBBLE_EYE, 0.35f, 75
+                ).unlockedBy(getHasName(AnglingItems.RAW_BUBBLE_EYE), has(AnglingItems.RAW_BUBBLE_EYE))
+                        .save(output, "angling:cooked_bubble_eye_from_smoking");
+                SimpleCookingRecipeBuilder.campfireCooking(
+                        Ingredient.of(AnglingItems.RAW_BUBBLE_EYE),
+                        RecipeCategory.FOOD, AnglingItems.COOKED_BUBBLE_EYE, 0.35f, 450
+                ).unlockedBy(getHasName(AnglingItems.RAW_BUBBLE_EYE), has(AnglingItems.RAW_BUBBLE_EYE))
+                        .save(output, "angling:cooked_bubble_eye_from_campfire_cooking");
+
+                // Cooked anomalocaris
+                SimpleCookingRecipeBuilder.smelting(
+                        Ingredient.of(AnglingItems.RAW_ANOMALOCARIS),
+                        RecipeCategory.FOOD, AnglingItems.COOKED_ANOMALOCARIS, 0.35f, 150
+                ).unlockedBy(getHasName(AnglingItems.RAW_ANOMALOCARIS), has(AnglingItems.RAW_ANOMALOCARIS))
+                        .save(output);
+                SimpleCookingRecipeBuilder.smoking(
+                        Ingredient.of(AnglingItems.RAW_ANOMALOCARIS),
+                        RecipeCategory.FOOD, AnglingItems.COOKED_ANOMALOCARIS, 0.35f, 75
+                ).unlockedBy(getHasName(AnglingItems.RAW_ANOMALOCARIS), has(AnglingItems.RAW_ANOMALOCARIS))
+                        .save(output, "angling:cooked_anomalocaris_from_smoking");
+                SimpleCookingRecipeBuilder.campfireCooking(
+                        Ingredient.of(AnglingItems.RAW_ANOMALOCARIS),
+                        RecipeCategory.FOOD, AnglingItems.COOKED_ANOMALOCARIS, 0.35f, 450
+                ).unlockedBy(getHasName(AnglingItems.RAW_ANOMALOCARIS), has(AnglingItems.RAW_ANOMALOCARIS))
+                        .save(output, "angling:cooked_anomalocaris_from_campfire_cooking");
+
+                // Cooked anglerfish
+                SimpleCookingRecipeBuilder.smelting(
+                        Ingredient.of(AnglingItems.RAW_ANGLERFISH),
+                        RecipeCategory.FOOD, AnglingItems.COOKED_ANGLERFISH, 0.35f, 150
+                ).unlockedBy(getHasName(AnglingItems.RAW_ANGLERFISH), has(AnglingItems.RAW_ANGLERFISH))
+                        .save(output);
+                SimpleCookingRecipeBuilder.smoking(
+                        Ingredient.of(AnglingItems.RAW_ANGLERFISH),
+                        RecipeCategory.FOOD, AnglingItems.COOKED_ANGLERFISH, 0.35f, 75
+                ).unlockedBy(getHasName(AnglingItems.RAW_ANGLERFISH), has(AnglingItems.RAW_ANGLERFISH))
+                        .save(output, "angling:cooked_anglerfish_from_smoking");
+                SimpleCookingRecipeBuilder.campfireCooking(
+                        Ingredient.of(AnglingItems.RAW_ANGLERFISH),
+                        RecipeCategory.FOOD, AnglingItems.COOKED_ANGLERFISH, 0.35f, 450
+                ).unlockedBy(getHasName(AnglingItems.RAW_ANGLERFISH), has(AnglingItems.RAW_ANGLERFISH))
+                        .save(output, "angling:cooked_anglerfish_from_campfire_cooking");
+
                 // Paper from papyrus (shaped: 3 papyrus → 1 paper)
                 shaped(RecipeCategory.MISC, Items.PAPER)
                         .pattern("###")

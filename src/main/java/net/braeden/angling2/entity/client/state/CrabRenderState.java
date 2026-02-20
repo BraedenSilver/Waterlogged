@@ -12,4 +12,5 @@ public class CrabRenderState extends LivingEntityRenderState {
     public final AnimationState rotatedAnimationState = new AnimationState();
     public final AnimationState forwardsAnimationState = new AnimationState();
     public CrabVariant variant = CrabVariant.DUNGENESS;
+    public boolean isBaby = false;
 }

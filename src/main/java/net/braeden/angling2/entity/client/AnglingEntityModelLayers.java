@@ -7,6 +7,7 @@ public final class AnglingEntityModelLayers {
 
     public static final ModelLayerLocation STARFISH = layer("starfish");
     public static final ModelLayerLocation ANEMONE = layer("anemone");
+    public static final ModelLayerLocation URCHIN = layer("urchin");
     public static final ModelLayerLocation FRY = layer("fry");
     public static final ModelLayerLocation SUNFISH = layer("sunfish");
     public static final ModelLayerLocation PELICAN = layer("pelican");

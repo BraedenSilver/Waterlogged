@@ -13,6 +13,8 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
@@ -35,6 +37,10 @@ public class ClamBlock extends Block implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     private static final Direction[] HORIZ = {Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST};
+
+    // Hitboxes matching the flat shell model (~8px wide, ~6px deep, ~3px tall)
+    private static final VoxelShape SHAPE_NS = Block.box(4.0, 0.0, 5.0, 12.0, 3.0, 11.0);
+    private static final VoxelShape SHAPE_EW = Block.box(5.0, 0.0, 4.0, 11.0, 3.0, 12.0);
 
     public ClamBlock(BlockBehaviour.Properties props) {
         super(props);
@@ -64,6 +70,12 @@ public class ClamBlock extends Block implements SimpleWaterloggedBlock {
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         return canSupportCenter(level, pos.below(), Direction.UP);
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        Direction facing = state.getValue(FACING);
+        return (facing == Direction.EAST || facing == Direction.WEST) ? SHAPE_EW : SHAPE_NS;
     }
 
     @Override
@@ -119,9 +131,13 @@ public class ClamBlock extends Block implements SimpleWaterloggedBlock {
         // Scan adjacent blocks for algae to eat and spread from
         for (Direction dir : Direction.values()) {
             BlockPos algaePos = pos.relative(dir);
-            if (level.getBlockState(algaePos).is(AnglingBlocks.ALGAE)) {
-                // Consume the algae
-                level.setBlock(algaePos, Blocks.AIR.defaultBlockState(), 3);
+            BlockState algaeBlockState = level.getBlockState(algaePos);
+            if (algaeBlockState.is(AnglingBlocks.ALGAE)) {
+                // Consume the algae, preserving water if it was waterlogged
+                boolean algaeWasWaterlogged = algaeBlockState.hasProperty(BlockStateProperties.WATERLOGGED)
+                        && algaeBlockState.getValue(BlockStateProperties.WATERLOGGED);
+                level.setBlock(algaePos,
+                        algaeWasWaterlogged ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState(), 3);
                 // Try to spread to a random adjacent horizontal position
                 int start = random.nextInt(4);
                 for (int i = 0; i < 4; i++) {

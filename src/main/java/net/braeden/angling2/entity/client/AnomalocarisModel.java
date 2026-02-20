@@ -13,10 +13,12 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 @Environment(EnvType.CLIENT)
 public class AnomalocarisModel extends EntityModel<AnomalocarisRenderState> {
     private final KeyframeAnimation idleAnimation;
+    private final KeyframeAnimation flopAnimation;
 
     public AnomalocarisModel(ModelPart root) {
         super(root);
         this.idleAnimation = AnomalocarisAnimations.IDLE.bake(root);
+        this.flopAnimation = AnomalocarisAnimations.FLOP.bake(root);
     }
 
     public static LayerDefinition getTexturedModelData() {
@@ -27,5 +29,6 @@ public class AnomalocarisModel extends EntityModel<AnomalocarisRenderState> {
     public void setupAnim(AnomalocarisRenderState state) {
         super.setupAnim(state);
         this.idleAnimation.apply(state.idleAnimationState, state.ageInTicks);
+        this.flopAnimation.apply(state.flopAnimationState, state.ageInTicks);
     }
 }

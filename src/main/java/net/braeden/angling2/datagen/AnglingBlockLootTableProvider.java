@@ -51,7 +51,7 @@ public class AnglingBlockLootTableProvider extends FabricBlockLootTableProvider 
         // Algae: shears only
         add(AnglingBlocks.ALGAE, createShearsOnlyDrop(AnglingBlocks.ALGAE.asItem()));
 
-        // No drop
+        // Urchin: no drop
         add(AnglingBlocks.URCHIN, noDrop());
 
         // Silk-touch-only drops

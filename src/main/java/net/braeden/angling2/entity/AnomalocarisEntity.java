@@ -20,10 +20,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.AnimationState;
 
 public class AnomalocarisEntity extends WaterAnimal implements WormBreeder {
     public final AnimationState idleAnimationState = new AnimationState();
+    public final AnimationState flopAnimationState = new AnimationState();
 
     private int wormBredTimer = 0;
 
@@ -63,10 +65,28 @@ public class AnomalocarisEntity extends WaterAnimal implements WormBreeder {
         if (stack.getItem() == AnglingItems.WORM && !this.level().isClientSide() && wormBredTimer <= 0) {
             if (!player.getAbilities().instabuild) stack.shrink(1);
             wormBredTimer = 6000;
-            this.level().broadcastEntityEvent(this, (byte) 18);
+            this.level().broadcastEntityEvent(this, (byte) 7);
             return InteractionResult.SUCCESS;
         }
         return super.mobInteract(player, hand);
+    }
+
+    @Override
+    public void handleEntityEvent(byte id) {
+        if (id == 7) {
+            for (int i = 0; i < 7; i++) {
+                double ox = this.random.nextGaussian() * 0.02;
+                double oy = this.random.nextGaussian() * 0.02;
+                double oz = this.random.nextGaussian() * 0.02;
+                this.level().addParticle(ParticleTypes.HEART,
+                        this.getX() + this.random.nextFloat() * this.getBbWidth() * 2.0 - this.getBbWidth(),
+                        this.getY() + 0.5 + this.random.nextFloat() * this.getBbHeight(),
+                        this.getZ() + this.random.nextFloat() * this.getBbWidth() * 2.0 - this.getBbWidth(),
+                        ox, oy, oz);
+            }
+        } else {
+            super.handleEntityEvent(id);
+        }
     }
 
     @Override
@@ -78,7 +98,13 @@ public class AnomalocarisEntity extends WaterAnimal implements WormBreeder {
         }
 
         if (this.level().isClientSide()) {
-            this.idleAnimationState.startIfStopped(this.tickCount);
+            if (this.isInWater()) {
+                this.idleAnimationState.startIfStopped(this.tickCount);
+                this.flopAnimationState.stop();
+            } else {
+                this.flopAnimationState.startIfStopped(this.tickCount);
+                this.idleAnimationState.stop();
+            }
         }
     }
 }

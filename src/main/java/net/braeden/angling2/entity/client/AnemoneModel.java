@@ -15,10 +15,12 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 public class AnemoneModel extends Model<AnemoneBlockEntityRenderState> {
 
     private final KeyframeAnimation vibingAnimation;
+    private final ModelPart body;
 
     public AnemoneModel(ModelPart root) {
         super(root, RenderTypes::entityCutoutNoCull);
         this.vibingAnimation = AnemoneAnimations.VIBING.bake(root);
+        this.body = root.getChild("body");
     }
 
     public static LayerDefinition getTexturedModelData() {
@@ -29,5 +31,6 @@ public class AnemoneModel extends Model<AnemoneBlockEntityRenderState> {
     public void setupAnim(AnemoneBlockEntityRenderState state) {
         this.resetPose();
         this.vibingAnimation.apply(state.vibingAnimationState, state.ageInTicks);
+        body.zRot += (float) Math.sin(state.ageInTicks * 0.035) * 0.10f;
     }
 }

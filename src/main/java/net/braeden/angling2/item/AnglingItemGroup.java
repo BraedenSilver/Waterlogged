@@ -48,6 +48,16 @@ public class AnglingItemGroup {
                 output.accept(AnglingItems.COOKED_CRAB_LEGS);
                 output.accept(AnglingItems.RAW_CATFISH);
                 output.accept(AnglingItems.COOKED_CATFISH);
+                output.accept(AnglingItems.RAW_DONGFISH);
+                output.accept(AnglingItems.COOKED_DONGFISH);
+                output.accept(AnglingItems.RAW_SEAHORSE);
+                output.accept(AnglingItems.COOKED_SEAHORSE);
+                output.accept(AnglingItems.RAW_BUBBLE_EYE);
+                output.accept(AnglingItems.COOKED_BUBBLE_EYE);
+                output.accept(AnglingItems.RAW_ANOMALOCARIS);
+                output.accept(AnglingItems.COOKED_ANOMALOCARIS);
+                output.accept(AnglingItems.RAW_ANGLERFISH);
+                output.accept(AnglingItems.COOKED_ANGLERFISH);
 
                 // Misc items
                 output.accept(AnglingItems.PEARL);

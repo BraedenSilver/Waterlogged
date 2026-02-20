@@ -9,7 +9,6 @@ import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
-import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
@@ -71,6 +70,7 @@ public class AnglingModelProvider extends FabricModelProvider {
         simpleBlockState(gen, AnglingBlocks.DUCKWEED, "block/duckweed");
         simpleBlockState(gen, AnglingBlocks.OYSTERS, "block/oysters");
         simpleBlockState(gen, AnglingBlocks.ROE, "block/roe");
+        gen.registerSimpleItemModel(AnglingBlocks.ROE.asItem(), Identifier.fromNamespaceAndPath("angling", "item/roe"));
         simpleBlockState(gen, AnglingBlocks.SARGASSUM, "block/sargassum");
         simpleBlockState(gen, AnglingBlocks.URCHIN, "block/urchin");
 
@@ -170,6 +170,16 @@ public class AnglingModelProvider extends FabricModelProvider {
         itemModels.generateFlatItem(AnglingItems.COOKED_CRAB_LEGS, ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(AnglingItems.RAW_CATFISH, ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(AnglingItems.COOKED_CATFISH, ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(AnglingItems.RAW_DONGFISH, ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(AnglingItems.COOKED_DONGFISH, ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(AnglingItems.RAW_SEAHORSE, ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(AnglingItems.COOKED_SEAHORSE, ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(AnglingItems.RAW_BUBBLE_EYE, ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(AnglingItems.COOKED_BUBBLE_EYE, ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(AnglingItems.RAW_ANOMALOCARIS, ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(AnglingItems.COOKED_ANOMALOCARIS, ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(AnglingItems.RAW_ANGLERFISH, ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(AnglingItems.COOKED_ANGLERFISH, ModelTemplates.FLAT_ITEM);
 
         // Buckets (standard flat items, item/ textures)
         itemModels.generateFlatItem(AnglingItems.SUNFISH_BUCKET, ModelTemplates.FLAT_ITEM);
@@ -187,11 +197,12 @@ public class AnglingModelProvider extends FabricModelProvider {
         itemModels.generateFlatItem(AnglingBlocks.ANEMONE.asItem(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(AnglingBlocks.CLAM.asItem(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(AnglingBlocks.DEAD_STARFISH.asItem(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(AnglingBlocks.DUCKWEED.asItem(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(AnglingBlocks.PAPYRUS.asItem(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(AnglingBlocks.STARFISH.asItem(), ModelTemplates.FLAT_ITEM);
 
-        // Items that reference block textures need custom handling:
-        // algae, duckweed, sargassum use block/ textures not item/ textures.
+        // Items that reference block textures or need custom handling:
+        // algae, sargassum use block/ textures not item/ textures.
         // roe has two texture layers, sea_slug_bucket has three, oysters has display transforms,
         // dongfish_bucket has overrides. These are kept as hand-written models/item/ JSONs.
     }

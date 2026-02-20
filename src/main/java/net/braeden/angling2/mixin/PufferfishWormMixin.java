@@ -3,6 +3,7 @@ package net.braeden.angling2.mixin;
 import net.braeden.angling2.entity.ai.WormBreeder;
 import net.braeden.angling2.entity.ai.WormBreedGoal;
 import net.braeden.angling2.item.AnglingItems;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
@@ -51,10 +52,28 @@ public abstract class PufferfishWormMixin extends PathfinderMob implements WormB
         if (stack.getItem() == AnglingItems.WORM && !this.level().isClientSide() && angling_wormBredTimer <= 0) {
             if (!player.getAbilities().instabuild) stack.shrink(1);
             angling_wormBredTimer = 6000;
-            this.level().broadcastEntityEvent(this, (byte) 18);
+            this.level().broadcastEntityEvent(this, (byte) 7);
             return InteractionResult.SUCCESS;
         }
         return super.mobInteract(player, hand);
+    }
+
+    @Override
+    public void handleEntityEvent(byte id) {
+        if (id == 7) {
+            for (int i = 0; i < 7; i++) {
+                double ox = this.random.nextGaussian() * 0.02;
+                double oy = this.random.nextGaussian() * 0.02;
+                double oz = this.random.nextGaussian() * 0.02;
+                this.level().addParticle(ParticleTypes.HEART,
+                        this.getX() + this.random.nextFloat() * this.getBbWidth() * 2.0 - this.getBbWidth(),
+                        this.getY() + 0.5 + this.random.nextFloat() * this.getBbHeight(),
+                        this.getZ() + this.random.nextFloat() * this.getBbWidth() * 2.0 - this.getBbWidth(),
+                        ox, oy, oz);
+            }
+        } else {
+            super.handleEntityEvent(id);
+        }
     }
 
     @Inject(method = "tick", at = @At("TAIL"))
