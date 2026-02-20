@@ -22,8 +22,6 @@ public class AnglingBiomeTagProvider extends FabricTagProvider<Biome> {
     private static final ResourceKey<Biome> MANGROVE_SWAMP = mc("mangrove_swamp");
     private static final ResourceKey<Biome> BEACH = mc("beach");
     private static final ResourceKey<Biome> STONY_SHORE = mc("stony_shore");
-    private static final ResourceKey<Biome> OLD_GROWTH_SPRUCE_TAIGA = mc("old_growth_spruce_taiga");
-    private static final ResourceKey<Biome> OLD_GROWTH_PINE_TAIGA = mc("old_growth_pine_taiga");
     private static final ResourceKey<Biome> OCEAN = mc("ocean");
     private static final ResourceKey<Biome> DEEP_OCEAN = mc("deep_ocean");
     private static final ResourceKey<Biome> COLD_OCEAN = mc("cold_ocean");

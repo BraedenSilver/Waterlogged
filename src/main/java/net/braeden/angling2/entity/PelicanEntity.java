@@ -154,7 +154,7 @@ public class PelicanEntity extends Animal implements FlyingAnimal {
                 : AnglingEntityTypeTags.UNCOMMON_ENTITIES_IN_PELICAN_BEAK;
 
         List<EntityType<?>> candidates = BuiltInRegistries.ENTITY_TYPE.stream()
-                .filter(entityType -> entityType.builtInRegistryHolder().is(tag))
+                .filter(entityType -> entityType.is(tag))
                 .collect(Collectors.toList());
 
         if (!candidates.isEmpty()) {

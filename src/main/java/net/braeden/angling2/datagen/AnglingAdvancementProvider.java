@@ -30,9 +30,8 @@ public class AnglingAdvancementProvider extends FabricAdvancementProvider {
         var blocks = registries.lookupOrThrow(Registries.BLOCK);
         var items = registries.lookupOrThrow(Registries.ITEM);
 
-        // Root advancement: put worm in block (parent: vanilla husbandry/root)
+        // Root advancement: put worm in block
         AdvancementHolder putWormInBlock = Advancement.Builder.advancement()
-                .parent(Identifier.withDefaultNamespace("husbandry/root"))
                 .display(
                         AnglingItems.WORM,
                         Component.translatable("advancements.husbandry.put_worm_in_block.title"),
