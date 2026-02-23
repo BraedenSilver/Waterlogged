@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
@@ -20,7 +21,9 @@ import net.minecraft.world.level.storage.loot.entries.AlternativesEntry;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.ApplyExplosionDecay;
+import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceWithEnchantedBonusCondition;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
@@ -36,9 +39,9 @@ public class AnglingBlockLootTableProvider extends FabricBlockLootTableProvider 
 
     @Override
     public void generate() {
-        // Simple drop-self tables
-        dropSelf(AnglingBlocks.DEAD_STARFISH);
-        dropSelf(AnglingBlocks.STARFISH);
+        // Starfish/Dead starfish: drop self, copying CUSTOM_DATA (color) from block entity to item
+        add(AnglingBlocks.STARFISH, createDropWithCustomData(AnglingBlocks.STARFISH));
+        add(AnglingBlocks.DEAD_STARFISH, createDropWithCustomData(AnglingBlocks.DEAD_STARFISH));
         dropWhenSilkTouch(AnglingBlocks.AQUARIUM_GLASS);
 
         // Anemone: shears only
@@ -54,17 +57,9 @@ public class AnglingBlockLootTableProvider extends FabricBlockLootTableProvider 
         // Urchin: no drop
         add(AnglingBlocks.URCHIN, noDrop());
 
-        // Silk-touch-only drops
-        add(AnglingBlocks.ROE, LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .setRolls(ConstantValue.exactly(1))
-                        .when(hasSilkTouch())
-                        .add(LootItem.lootTableItem(AnglingItems.ROE))));
-        add(AnglingBlocks.SEA_SLUG_EGGS, LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .setRolls(ConstantValue.exactly(1))
-                        .when(hasSilkTouch())
-                        .add(LootItem.lootTableItem(AnglingItems.SEA_SLUG_EGGS))));
+        // Silk-touch-only drops, copying CUSTOM_DATA (color/parent data) from block entity to item
+        add(AnglingBlocks.ROE, createSilkTouchDropWithCustomData(AnglingBlocks.ROE));
+        add(AnglingBlocks.SEA_SLUG_EGGS, createSilkTouchDropWithCustomData(AnglingBlocks.SEA_SLUG_EGGS));
 
         // Wormy dirt: silk touch → self, otherwise → dirt
         add(AnglingBlocks.WORMY_DIRT, createSilkTouchDispatchTable(
@@ -86,6 +81,31 @@ public class AnglingBlockLootTableProvider extends FabricBlockLootTableProvider 
 
         // Papyrus: age-based drops, fortune bonus with hoe, basic drops without hoe
         add(AnglingBlocks.PAPYRUS, papyrusLoot());
+    }
+
+    /** Drops the block always, copying color components from the block entity to the item. */
+    private LootTable.Builder createDropWithCustomData(Block block) {
+        return LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .setRolls(ConstantValue.exactly(1))
+                        .add(LootItem.lootTableItem(block)
+                                .apply(CopyComponentsFunction
+                                        .copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
+                                        .include(DataComponents.CUSTOM_DATA)
+                                        .include(DataComponents.CUSTOM_MODEL_DATA))));
+    }
+
+    /** Drops the block only with silk touch, copying color components from the block entity to the item. */
+    private LootTable.Builder createSilkTouchDropWithCustomData(Block block) {
+        return LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .setRolls(ConstantValue.exactly(1))
+                        .add(LootItem.lootTableItem(block)
+                                .when(hasSilkTouch())
+                                .apply(CopyComponentsFunction
+                                        .copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
+                                        .include(DataComponents.CUSTOM_DATA)
+                                        .include(DataComponents.CUSTOM_MODEL_DATA))));
     }
 
     private LootTable.Builder pearlDropLoot(Block block, net.minecraft.world.level.ItemLike selfItem) {

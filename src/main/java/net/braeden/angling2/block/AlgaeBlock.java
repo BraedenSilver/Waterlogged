@@ -25,6 +25,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import java.util.Iterator;
+
 public class AlgaeBlock extends Block implements SimpleWaterloggedBlock, BonemealableBlock {
 
     // Thin 1px shapes per face (like vines/glow lichen)
@@ -70,6 +72,46 @@ public class AlgaeBlock extends Block implements SimpleWaterloggedBlock, Bonemea
 
     private static boolean hasFace(BlockState state, Direction dir) {
         return state.getValue(propertyForFace(dir));
+    }
+
+    private static final int SPREAD_DENSITY_MAX = 4;
+    private static final int SPREAD_DENSITY_RADIUS = 4;
+
+    @Override
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (countNearbyAlgae(level, pos) >= SPREAD_DENSITY_MAX) return;
+
+        Direction dir = Direction.getRandom(random);
+        BlockPos target = pos.relative(dir);
+        FluidState fluid = level.getFluidState(target);
+        if (fluid.getType() != Fluids.WATER || !fluid.isSource()) return;
+        if (level.getBlockState(target).is(this)) return;
+
+        BlockState newState = defaultBlockState().setValue(WATERLOGGED, true);
+        boolean valid = false;
+        for (Direction face : Direction.values()) {
+            if (canAttachTo(level, target, face)) {
+                newState = newState.setValue(propertyForFace(face), true);
+                valid = true;
+            }
+        }
+        if (valid) {
+            level.setBlock(target, newState, 3);
+        }
+    }
+
+    private int countNearbyAlgae(ServerLevel level, BlockPos pos) {
+        int count = 0;
+        Iterator<BlockPos> iter = BlockPos.betweenClosed(
+                pos.offset(-SPREAD_DENSITY_RADIUS, -SPREAD_DENSITY_RADIUS, -SPREAD_DENSITY_RADIUS),
+                pos.offset(SPREAD_DENSITY_RADIUS, SPREAD_DENSITY_RADIUS, SPREAD_DENSITY_RADIUS)
+        ).iterator();
+        while (iter.hasNext()) {
+            if (level.getBlockState(iter.next()).is(this)) {
+                if (++count >= SPREAD_DENSITY_MAX) return count;
+            }
+        }
+        return count;
     }
 
     @Override

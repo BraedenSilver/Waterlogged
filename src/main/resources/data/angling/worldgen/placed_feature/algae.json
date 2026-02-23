@@ -1,6 +1,7 @@
 {
   "feature": "angling:algae",
   "placement": [
+    { "type": "minecraft:rarity_filter", "chance": 3 },
     { "type": "minecraft:count", "count": 1 },
     { "type": "minecraft:in_square" },
     { "type": "minecraft:heightmap", "heightmap": "OCEAN_FLOOR" },

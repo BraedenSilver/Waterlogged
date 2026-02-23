@@ -3,7 +3,9 @@ package net.braeden.angling2.entity;
 import net.braeden.angling2.entity.ai.WormBreeder;
 import net.braeden.angling2.entity.ai.WormBreedGoal;
 import net.braeden.angling2.item.AnglingItems;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.world.item.component.CustomModelData;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
@@ -125,7 +127,11 @@ public class DongfishEntity extends AbstractFish implements WormBreeder {
 
     @Override
     public net.minecraft.world.item.ItemStack getBucketItemStack() {
-        return new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.WATER_BUCKET);
+        net.minecraft.world.item.ItemStack stack = new net.minecraft.world.item.ItemStack(AnglingItems.DONGFISH_BUCKET);
+        // flags[0] = true → has horngus (not sheared), false → no horngus (sheared)
+        stack.set(DataComponents.CUSTOM_MODEL_DATA,
+                new CustomModelData(java.util.List.of(), java.util.List.of(!this.isSheared()), java.util.List.of(), java.util.List.of()));
+        return stack;
     }
 
     @Override

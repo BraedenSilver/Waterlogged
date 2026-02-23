@@ -32,15 +32,16 @@ public class SeaSlugEggsBlock extends Block implements SimpleWaterloggedBlock, E
 
     private static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 2, 14);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+    public static final BooleanProperty GLOWING = BooleanProperty.create("glowing");
 
     public SeaSlugEggsBlock(BlockBehaviour.Properties props) {
         super(props);
-        registerDefaultState(stateDefinition.any().setValue(WATERLOGGED, false));
+        registerDefaultState(stateDefinition.any().setValue(WATERLOGGED, false).setValue(GLOWING, false));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(WATERLOGGED);
+        builder.add(WATERLOGGED, GLOWING);
     }
 
     @Override

@@ -15,6 +15,7 @@ public class SeaSlugRenderer extends MobRenderer<SeaSlugEntity, SeaSlugRenderSta
     public SeaSlugRenderer(EntityRendererProvider.Context context) {
         super(context, new SeaSlugModel(context.bakeLayer(AnglingEntityModelLayers.SEA_SLUG)), 0.3F);
         this.addLayer(new SeaSlugPatternLayer(this));
+        this.addLayer(new SeaSlugBiolumLayer(this));
     }
 
     @Override
@@ -29,6 +30,7 @@ public class SeaSlugRenderer extends MobRenderer<SeaSlugEntity, SeaSlugRenderSta
         state.movingAnimationState.copyFrom(entity.movingAnimationState);
         state.argbColor = entity.getColor().getArgb();
         state.pattern = entity.getPattern();
+        state.bioluminescence = entity.getBioluminescence();
     }
 
     @Override

@@ -4,9 +4,15 @@ import net.braeden.angling2.entity.ai.WormBreeder;
 import net.braeden.angling2.entity.ai.WormBreedGoal;
 import net.braeden.angling2.item.AnglingItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.PathfinderMob;
@@ -18,16 +24,20 @@ import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.animal.fish.WaterAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.AnimationState;
 
-public class AnomalocarisEntity extends WaterAnimal implements WormBreeder {
+public class AnomalocarisEntity extends WaterAnimal implements WormBreeder, Bucketable {
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState flopAnimationState = new AnimationState();
 
     private int wormBredTimer = 0;
+    private boolean fromBucket = false;
 
     public AnomalocarisEntity(EntityType<? extends AnomalocarisEntity> type, Level level) {
         super(type, level);
@@ -60,8 +70,55 @@ public class AnomalocarisEntity extends WaterAnimal implements WormBreeder {
     }
 
     @Override
+    public boolean fromBucket() { return this.fromBucket; }
+
+    @Override
+    public void setFromBucket(boolean b) { this.fromBucket = b; }
+
+    @Override
+    public SoundEvent getPickupSound() { return SoundEvents.BUCKET_FILL_FISH; }
+
+    @Override
+    public ItemStack getBucketItemStack() {
+        return new ItemStack(AnglingItems.ANOMALOCARIS_BUCKET);
+    }
+
+    @Override
+    public void saveToBucketTag(ItemStack stack) {
+        CustomData.update(DataComponents.BUCKET_ENTITY_DATA, stack, tag ->
+                tag.putFloat("Health", this.getHealth()));
+    }
+
+    @Override
+    public void loadFromBucketTag(CompoundTag tag) {
+        this.setHealth(tag.getFloatOr("Health", this.getMaxHealth()));
+    }
+
+    @Override
+    public void checkDespawn() {
+        if (!this.fromBucket() && !this.hasCustomName()) {
+            super.checkDespawn();
+        }
+    }
+
+    @Override
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putBoolean("FromBucket", this.fromBucket);
+    }
+
+    @Override
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        this.fromBucket = input.getBooleanOr("FromBucket", false);
+    }
+
+    @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
+        if (stack.is(Items.WATER_BUCKET)) {
+            return Bucketable.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
+        }
         if (stack.getItem() == AnglingItems.WORM && !this.level().isClientSide() && wormBredTimer <= 0) {
             if (!player.getAbilities().instabuild) stack.shrink(1);
             wormBredTimer = 6000;

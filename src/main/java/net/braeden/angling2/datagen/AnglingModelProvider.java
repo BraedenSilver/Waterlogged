@@ -7,21 +7,27 @@ import net.braeden.angling2.block.PapyrusBlock;
 import net.braeden.angling2.item.AnglingItems;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.minecraft.client.color.item.Constant;
+import net.minecraft.client.color.item.CustomModelDataSource;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
+import net.minecraft.client.data.models.model.ItemModelUtils;
+import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.data.models.model.ModelInstance;
 import net.minecraft.client.renderer.block.model.Variant;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 
 import java.util.Optional;
+import java.util.function.BiConsumer;
 
 public class AnglingModelProvider extends FabricModelProvider {
 
@@ -29,12 +35,16 @@ public class AnglingModelProvider extends FabricModelProvider {
             Optional.of(Identifier.withDefaultNamespace("item/template_spawn_egg")),
             Optional.empty());
 
+    /** Saved from generateBlockStateModels so generateItemModels can write model geometry files. */
+    private BiConsumer<Identifier, ModelInstance> modelOutput;
+
     public AnglingModelProvider(FabricDataOutput output) {
         super(output);
     }
 
     @Override
     public void generateBlockStateModels(BlockModelGenerators gen) {
+        this.modelOutput = gen.modelOutput;
         // Aquarium glass: cube_all with vanilla glass texture
         Identifier aquariumModel = ModelTemplates.CUBE_ALL.create(
                 AnglingBlocks.AQUARIUM_GLASS,
@@ -70,7 +80,7 @@ public class AnglingModelProvider extends FabricModelProvider {
         simpleBlockState(gen, AnglingBlocks.DUCKWEED, "block/duckweed");
         simpleBlockState(gen, AnglingBlocks.OYSTERS, "block/oysters");
         simpleBlockState(gen, AnglingBlocks.ROE, "block/roe");
-        gen.registerSimpleItemModel(AnglingBlocks.ROE.asItem(), Identifier.fromNamespaceAndPath("angling", "item/roe"));
+        // items/roe.json registered with tints in generateItemModels()
         simpleBlockState(gen, AnglingBlocks.SARGASSUM, "block/sargassum");
         simpleBlockState(gen, AnglingBlocks.URCHIN, "block/urchin");
 
@@ -80,7 +90,7 @@ public class AnglingModelProvider extends FabricModelProvider {
         gen.blockStateOutput.accept(
                 BlockModelGenerators.createSimpleBlock(AnglingBlocks.SEA_SLUG_EGGS,
                         BlockModelGenerators.createRotatedVariants(base)));
-        gen.registerSimpleItemModel(AnglingBlocks.SEA_SLUG_EGGS.asItem(), seaSlugEggsModel);
+        // items/sea_slug_eggs.json registered with tints in generateItemModels()
 
         // Clam: facing variants
         Identifier clamModel = blockModel("clam");
@@ -159,6 +169,7 @@ public class AnglingModelProvider extends FabricModelProvider {
         itemModels.generateFlatItem(AnglingItems.ANGLERFISH_SPAWN_EGG, SPAWN_EGG);
         itemModels.generateFlatItem(AnglingItems.MAHI_MAHI_SPAWN_EGG, SPAWN_EGG);
         itemModels.generateFlatItem(AnglingItems.ORCA_SPAWN_EGG, SPAWN_EGG);
+        itemModels.generateFlatItem(AnglingItems.RIGHT_WHALE_SPAWN_EGG, SPAWN_EGG);
 
         // Standard flat items (item/ textures)
         itemModels.generateFlatItem(AnglingItems.WORM, ModelTemplates.FLAT_ITEM);
@@ -184,7 +195,17 @@ public class AnglingModelProvider extends FabricModelProvider {
 
         // Buckets (standard flat items, item/ textures)
         itemModels.generateFlatItem(AnglingItems.SUNFISH_BUCKET, ModelTemplates.FLAT_ITEM);
-        itemModels.generateFlatItem(AnglingItems.FRY_BUCKET, ModelTemplates.FLAT_ITEM);
+        // Fry bucket: two-layer (base + color overlay tinted by CustomModelData.colors[0])
+        Identifier fryBucketModelId = ModelTemplates.TWO_LAYERED_ITEM.create(
+                ModelLocationUtils.getModelLocation(AnglingItems.FRY_BUCKET),
+                TextureMapping.layered(
+                        TextureMapping.getItemTexture(AnglingItems.FRY_BUCKET),
+                        TextureMapping.getItemTexture(AnglingItems.FRY_BUCKET, "_overlay")),
+                this.modelOutput);
+        itemModels.itemModelOutput.accept(AnglingItems.FRY_BUCKET,
+                ItemModelUtils.tintedModel(fryBucketModelId,
+                        new Constant(-1),
+                        new CustomModelDataSource(0, 0xFFFFFF)));
         itemModels.generateFlatItem(AnglingItems.CRAB_BUCKET, ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(AnglingItems.CATFISH_BUCKET, ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(AnglingItems.SEAHORSE_BUCKET, ModelTemplates.FLAT_ITEM);
@@ -200,7 +221,24 @@ public class AnglingModelProvider extends FabricModelProvider {
         itemModels.generateFlatItem(AnglingBlocks.DEAD_STARFISH.asItem(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(AnglingBlocks.DUCKWEED.asItem(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(AnglingBlocks.PAPYRUS.asItem(), ModelTemplates.FLAT_ITEM);
-        itemModels.generateFlatItem(AnglingBlocks.STARFISH.asItem(), ModelTemplates.FLAT_ITEM);
+        // Starfish: flat item tinted by CustomModelData.colors[0]
+        Identifier starfishModelId = itemModels.createFlatItemModel(AnglingBlocks.STARFISH.asItem(), ModelTemplates.FLAT_ITEM);
+        itemModels.itemModelOutput.accept(AnglingBlocks.STARFISH.asItem(),
+                ItemModelUtils.tintedModel(starfishModelId, new CustomModelDataSource(0, 0xFFFFFF)));
+        // Roe: two-layer geometry (roe.png tinted by colors[0], roe_overlay.png tinted by colors[1])
+        Identifier roeModelId = ModelTemplates.TWO_LAYERED_ITEM.create(
+                ModelLocationUtils.getModelLocation(AnglingBlocks.ROE.asItem()),
+                TextureMapping.layered(
+                        TextureMapping.getItemTexture(AnglingBlocks.ROE.asItem()),
+                        TextureMapping.getItemTexture(AnglingBlocks.ROE.asItem(), "_overlay")),
+                this.modelOutput);
+        itemModels.itemModelOutput.accept(AnglingBlocks.ROE.asItem(),
+                ItemModelUtils.tintedModel(roeModelId,
+                        new CustomModelDataSource(0, 0xFFFFFF),
+                        new CustomModelDataSource(1, 0xFFFFFF)));
+        // Sea slug eggs: block model tinted by CustomModelData.colors[0]
+        itemModels.itemModelOutput.accept(AnglingBlocks.SEA_SLUG_EGGS.asItem(),
+                ItemModelUtils.tintedModel(blockModel("sea_slug_eggs"), new CustomModelDataSource(0, 0xFFFFFF)));
 
         // Items that reference block textures or need custom handling:
         // algae, sargassum use block/ textures not item/ textures.

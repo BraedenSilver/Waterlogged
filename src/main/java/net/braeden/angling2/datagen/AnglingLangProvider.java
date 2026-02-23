@@ -31,6 +31,7 @@ public class AnglingLangProvider extends FabricLanguageProvider {
         builder.add("entity.angling.anglerfish", "Anglerfish");
         builder.add("entity.angling.mahi_mahi", "Mahi Mahi");
         builder.add("entity.angling.orca", "Orca");
+        builder.add("entity.angling.right_whale", "Right Whale");
 
         // Sunfish variants
         builder.add("sunfish_variant.angling.pumpkinseed", "Pumpkinseed");
@@ -108,6 +109,7 @@ public class AnglingLangProvider extends FabricLanguageProvider {
         builder.add("item.angling.anglerfish_spawn_egg", "Anglerfish Spawn Egg");
         builder.add("item.angling.mahi_mahi_spawn_egg", "Mahi Mahi Spawn Egg");
         builder.add("item.angling.orca_spawn_egg", "Orca Spawn Egg");
+        builder.add("item.angling.right_whale_spawn_egg", "Right Whale Spawn Egg");
 
         // Bucket items
         builder.add("item.angling.sunfish_bucket", "Bucket of Sunfish");

@@ -1,5 +1,6 @@
 package net.braeden.angling2.entity;
 
+import net.braeden.angling2.entity.ai.EatAlgaeGoal;
 import net.braeden.angling2.entity.ai.WormBreeder;
 import net.braeden.angling2.entity.ai.WormBreedGoal;
 import net.braeden.angling2.item.AnglingItems;
@@ -40,7 +41,8 @@ public class CatfishEntity extends AbstractFish implements WormBreeder {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new TryFindWaterGoal(this));
         this.goalSelector.addGoal(1, new WormBreedGoal(this));
-        this.goalSelector.addGoal(2, new RandomSwimmingGoal(this, 1.0, 40));
+        this.goalSelector.addGoal(2, new EatAlgaeGoal(this));
+        this.goalSelector.addGoal(3, new RandomSwimmingGoal(this, 1.0, 40));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0f));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
     }
@@ -88,7 +90,7 @@ public class CatfishEntity extends AbstractFish implements WormBreeder {
 
     @Override
     public net.minecraft.world.item.ItemStack getBucketItemStack() {
-        return new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.WATER_BUCKET);
+        return new net.minecraft.world.item.ItemStack(AnglingItems.CATFISH_BUCKET);
     }
 
     @Override

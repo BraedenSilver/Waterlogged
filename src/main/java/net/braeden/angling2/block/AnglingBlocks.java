@@ -35,7 +35,8 @@ public class AnglingBlocks {
             props -> new SeaSlugEggsBlock(props),
             BlockBehaviour.Properties.ofFullCopy(ROE)
                     .offsetType(BlockBehaviour.OffsetType.XZ)
-                    .dynamicShape(),
+                    .dynamicShape()
+                    .lightLevel(state -> state.getValue(SeaSlugEggsBlock.GLOWING) ? 3 : 0),
             false);
 
     public static final Block DUCKWEED = register("duckweed",
@@ -88,12 +89,12 @@ public class AnglingBlocks {
                     .noCollision()
                     .sound(AnglingSounds.SHELL_SOUND_GROUP)
                     .randomTicks(),
-            true);
+            false);
 
     public static final Block DEAD_STARFISH = register("dead_starfish",
             props -> new StarfishBlock(props, true),
             BlockBehaviour.Properties.ofFullCopy(STARFISH),
-            true);
+            false);
 
     public static final Block CLAM = register("clam",
             props -> new ClamBlock(props),

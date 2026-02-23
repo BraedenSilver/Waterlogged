@@ -654,6 +654,41 @@
     ],
     "subtitle": "subtitles.entity.mahi_mahi.flop"
   },
+  "entity.right_whale.ambient": {
+    "sounds": [
+      {
+        "name": "angling:entity/right_whale/whale_call",
+        "pitch": 0.7,
+        "volume": 1.2
+      },
+      {
+        "name": "angling:entity/right_whale/whale_groan",
+        "pitch": 0.7,
+        "volume": 1.0
+      }
+    ],
+    "subtitle": "subtitles.entity.right_whale.ambient"
+  },
+  "entity.right_whale.hurt": {
+    "sounds": [
+      {
+        "name": "angling:entity/right_whale/whale_hurt",
+        "pitch": 0.7,
+        "volume": 4.0
+      }
+    ],
+    "subtitle": "subtitles.entity.right_whale.hurt"
+  },
+  "entity.right_whale.death": {
+    "sounds": [
+      {
+        "name": "angling:entity/right_whale/whale_groan",
+        "pitch": 0.6,
+        "volume": 4.0
+      }
+    ],
+    "subtitle": "subtitles.entity.right_whale.death"
+  },
   "entity.mahi_mahi.hurt": {
     "sounds": [
       {

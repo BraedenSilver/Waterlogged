@@ -7,9 +7,13 @@ public enum StarfishColor implements StringRepresentable {
     BLUE(1,   "blue",   0xFF4070D0),
     ORANGE(2, "orange", 0xFFE88030),
     YELLOW(3, "yellow", 0xFFE8D840),
-    PINK(4,   "pink",   0xFFE87098);
+    PINK(4,   "pink",   0xFFE87098),
+    RAINBOW(5, "rainbow", 0xFFFFFFFF); // Special cycling variant (like jeb_ sheep)
 
     private static final StarfishColor[] VALUES = values();
+    // Non-rainbow colors used for rainbow cycling
+    private static final StarfishColor[] RAINBOW_COLORS = {RED, BLUE, ORANGE, YELLOW, PINK};
+    private static final int CYCLE_TICKS = 40; // Ticks per color in rainbow cycle
 
     private final int id;
     private final String name;
@@ -32,7 +36,24 @@ public enum StarfishColor implements StringRepresentable {
     }
 
     public static StarfishColor random(net.minecraft.util.RandomSource random) {
-        return VALUES[random.nextInt(VALUES.length)];
+        // 1/100 chance for rainbow, otherwise normal colors
+        if (random.nextInt(100) == 0) {
+            return RAINBOW;
+        }
+        // Pick from non-rainbow colors
+        return RAINBOW_COLORS[random.nextInt(RAINBOW_COLORS.length)];
+    }
+
+    /**
+     * For RAINBOW starfish, get the current color based on game ticks.
+     * For other colors, just return the static color.
+     */
+    public int getArgbForTicks(long gameTicks) {
+        if (this == RAINBOW) {
+            int colorIndex = (int) ((gameTicks / CYCLE_TICKS) % RAINBOW_COLORS.length);
+            return RAINBOW_COLORS[colorIndex].argb;
+        }
+        return this.argb;
     }
 
     @Override

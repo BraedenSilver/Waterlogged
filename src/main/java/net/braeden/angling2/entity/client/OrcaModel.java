@@ -17,13 +17,18 @@ public class OrcaModel extends EntityModel<OrcaRenderState> {
     private final KeyframeAnimation swimAnimation;
     private final KeyframeAnimation flopAnimation;
     private final KeyframeAnimation attackAnimation;
+    private final KeyframeAnimation mouthAnimation;
+
+    // Smoothed pitch — lerped each frame to prevent abrupt transitions
+    private float smoothPitch = 0.0F;
 
     public OrcaModel(ModelPart root) {
         super(root);
         this.modelRoot = root;
-        this.swimAnimation = OrcaAnimations.SWIM.bake(root);
-        this.flopAnimation = OrcaAnimations.FLOP.bake(root);
+        this.swimAnimation   = OrcaAnimations.SWIM.bake(root);
+        this.flopAnimation   = OrcaAnimations.FLOP.bake(root);
         this.attackAnimation = OrcaAnimations.ATTACK.bake(root);
+        this.mouthAnimation  = OrcaAnimations.MOUTH.bake(root);
     }
 
     public static LayerDefinition getTexturedModelData() {
@@ -36,19 +41,19 @@ public class OrcaModel extends EntityModel<OrcaRenderState> {
         this.swimAnimation.apply(state.swimAnimationState, state.ageInTicks);
         this.flopAnimation.apply(state.flopAnimationState, state.ageInTicks);
         this.attackAnimation.apply(state.attackAnimationState, state.ageInTicks);
-        // Pitch up/down only when actively climbing or diving in water — disabled when beached
+        this.mouthAnimation.apply(state.mouthAnimationState, state.ageInTicks);
+
+        // Smoothly lerp pitch when actively climbing or diving
+        float targetPitch = 0.0F;
         if (state.isInWater) {
             float vy = state.verticalSpeed;
             float deadZone = 0.025F;
             if (Math.abs(vy) > deadZone) {
-                float pitch = (Math.abs(vy) - deadZone) * 200.0F; // scale to degrees
-                pitch = Math.min(pitch, 45.0F);
-                this.modelRoot.xRot = -Math.signum(vy) * pitch * ((float) Math.PI / 180.0F);
-            } else {
-                this.modelRoot.xRot = 0.0F;
+                float deg = Math.min((Math.abs(vy) - deadZone) * 200.0F, 45.0F);
+                targetPitch = -Math.signum(vy) * deg;
             }
-        } else {
-            this.modelRoot.xRot = 0.0F;
         }
+        this.smoothPitch += (targetPitch - this.smoothPitch) * 0.15F;
+        this.modelRoot.xRot = this.smoothPitch * ((float) Math.PI / 180.0F);
     }
 }

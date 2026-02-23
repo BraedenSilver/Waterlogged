@@ -42,6 +42,7 @@ public class StarfishBlockEntityRenderer implements BlockEntityRenderer<Starfish
         state.facing = blockState.getValue(StarfishBlock.FACING);
         state.rotation = blockState.getValue(StarfishBlock.ROTATION);
         state.color = entity.getColor();
+        state.gameTicks = entity.getLevel() != null ? entity.getLevel().getGameTime() : 0;
     }
 
     @Override
@@ -68,7 +69,7 @@ public class StarfishBlockEntityRenderer implements BlockEntityRenderer<Starfish
 
         model.setupAnim(state);
         RenderType renderType = RenderTypes.entityCutoutNoCull(state.dead ? DEAD_TEXTURE : TEXTURE);
-        int tint = state.dead ? -1 : state.color.getArgb();
+        int tint = state.dead ? -1 : state.color.getArgbForTicks(state.gameTicks);
         collector.submitModel(model, state, poseStack, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, tint, null, 0, state.breakProgress);
         poseStack.popPose();
     }
@@ -78,5 +79,6 @@ public class StarfishBlockEntityRenderer implements BlockEntityRenderer<Starfish
         public Direction facing = Direction.UP;
         public int rotation = 0;
         public StarfishColor color = StarfishColor.RED;
+        public long gameTicks = 0;
     }
 }

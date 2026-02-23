@@ -35,10 +35,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,6 +61,8 @@ public class PelicanEntity extends Animal implements FlyingAnimal {
 
     private int despawnDelay = 0;
     private int flyAwayTimer = -1;
+    private int eatingTimer = 0; // client-side countdown, set via entity event
+    boolean diving = false;       // server-side: disables buoyancy while SeekAndCatchFishGoal dives
 
     public PelicanEntity(EntityType<? extends PelicanEntity> type, Level level) {
         super(type, level);
@@ -84,9 +88,11 @@ public class PelicanEntity extends Animal implements FlyingAnimal {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new PanicGoal(this, 1.5));
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomFlyingGoal(this, 1.0));
-        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0f));
-        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(2, new FollowNearestPlayerGoal(this));
+        this.goalSelector.addGoal(3, new SeekAndCatchFishGoal(this));
+        this.goalSelector.addGoal(4, new WaterAvoidingRandomFlyingGoal(this, 1.0));
+        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0f));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -187,6 +193,28 @@ public class PelicanEntity extends Animal implements FlyingAnimal {
         }
     }
 
+    /** Catch an existing world entity (from fish-seeking goal) and mount it in the beak. */
+    public void catchExistingFish(Mob entity) {
+        if (!(this.level() instanceof ServerLevel)) return;
+        if (!getPassengers().isEmpty()) return;
+        if (entity instanceof Mob mob) {
+            mob.setNoAi(true);
+        }
+        if (entity instanceof LivingEntity living) {
+            var scaleAttr = living.getAttribute(Attributes.SCALE);
+            if (scaleAttr != null) {
+                scaleAttr.setBaseValue(0.5);
+            }
+        }
+        entity.setInvulnerable(true);
+        entity.setSilent(true);
+        entity.startRiding(this, true, true);
+        Identifier entityId = BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType());
+        if (entityId != null) {
+            setHeldEntityId(entityId.toString());
+        }
+    }
+
     // --- Release the held entity ---
 
     private void releaseHeldEntity(ServerLevel level) {
@@ -235,6 +263,7 @@ public class PelicanEntity extends Animal implements FlyingAnimal {
         ItemStack stack = player.getItemInHand(hand);
         if (!this.level().isClientSide() && hasHeldEntity() && !hasTraded() && isFishItem(stack)) {
             ServerLevel serverLevel = (ServerLevel) this.level();
+            ItemStack feedCopy = stack.copy(); // save before shrink for particles
 
             // Release the held entity
             releaseHeldEntity(serverLevel);
@@ -250,6 +279,12 @@ public class PelicanEntity extends Animal implements FlyingAnimal {
             // Play sound
             this.playSound(SoundEvents.ITEM_PICKUP, 1.0f, 1.0f);
 
+            // Show item particles at beak level to visualize eating
+            serverLevel.sendParticles(
+                new ItemParticleOption(ParticleTypes.ITEM, feedCopy),
+                this.getX(), this.getY() + 1.2, this.getZ(),
+                10, 0.2, 0.1, 0.2, 0.05);
+
             // Trigger advancement
             if (player instanceof ServerPlayer sp) {
                 AnglingCriteria.TRADED_WITH_PELICAN.trigger(sp);
@@ -257,6 +292,9 @@ public class PelicanEntity extends Animal implements FlyingAnimal {
 
             // Start fly-away timer
             flyAwayTimer = 60; // 3 seconds before flying off
+
+            // Eating animation (beak stays open briefly)
+            this.level().broadcastEntityEvent(this, (byte) 64);
 
             // Heart particles
             this.level().broadcastEntityEvent(this, (byte) 7);
@@ -310,7 +348,10 @@ public class PelicanEntity extends Animal implements FlyingAnimal {
                                                    EntitySpawnReason spawnReason, @Nullable SpawnGroupData entityData) {
         SpawnGroupData data = super.finalizeSpawn(world, difficulty, spawnReason, entityData);
         if (world instanceof ServerLevel serverLevel) {
-            chooseRandomHeldEntity(serverLevel);
+            // 80% chance to spawn with a passenger; 20% spawns empty and will seek a fish
+            if (this.random.nextFloat() >= 0.2f) {
+                chooseRandomHeldEntity(serverLevel);
+            }
         }
         return data;
     }
@@ -397,8 +438,8 @@ public class PelicanEntity extends Animal implements FlyingAnimal {
                 this.setDeltaMovement(motion.x * 0.9, 0.15, motion.z * 0.9);
             }
 
-            // Keep pelican afloat when in water (buoyancy)
-            if (this.isInWater()) {
+            // Keep pelican afloat when in water (buoyancy), but not while actively diving
+            if (this.isInWater() && !diving) {
                 Vec3 motion = this.getDeltaMovement();
                 if (motion.y < 0) {
                     this.setDeltaMovement(motion.x, Math.max(motion.y, -0.02), motion.z);
@@ -415,14 +456,23 @@ public class PelicanEntity extends Animal implements FlyingAnimal {
             boolean onGround = this.onGround();
             boolean moving = this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-4D;
             boolean flying = !onGround && !inWater;
+            boolean divingDown = flying && this.getDeltaMovement().y < -0.2;
 
             if (inWater) {
                 this.swimmingAnimationState.startIfStopped(this.tickCount);
                 this.idleAnimationState.stop();
                 this.walkingAnimationState.stop();
                 this.flyingAnimationState.stop();
+                this.divingAnimationState.stop();
+            } else if (divingDown) {
+                this.divingAnimationState.startIfStopped(this.tickCount);
+                this.flyingAnimationState.stop();
+                this.idleAnimationState.stop();
+                this.walkingAnimationState.stop();
+                this.swimmingAnimationState.stop();
             } else if (flying) {
                 this.flyingAnimationState.startIfStopped(this.tickCount);
+                this.divingAnimationState.stop();
                 this.idleAnimationState.stop();
                 this.walkingAnimationState.stop();
                 this.swimmingAnimationState.stop();
@@ -430,22 +480,25 @@ public class PelicanEntity extends Animal implements FlyingAnimal {
                 this.walkingAnimationState.startIfStopped(this.tickCount);
                 this.idleAnimationState.stop();
                 this.flyingAnimationState.stop();
+                this.divingAnimationState.stop();
                 this.swimmingAnimationState.stop();
             } else {
                 this.idleAnimationState.startIfStopped(this.tickCount);
                 this.walkingAnimationState.stop();
                 this.flyingAnimationState.stop();
+                this.divingAnimationState.stop();
                 this.swimmingAnimationState.stop();
             }
 
-            // Beak open when holding a passenger and not traded yet
-            if (!getPassengers().isEmpty() && !hasTraded()) {
+            // Beak open when holding a passenger (not yet traded) or briefly after eating
+            boolean showBeak = (!getPassengers().isEmpty() && !hasTraded()) || eatingTimer > 0;
+            if (showBeak) {
                 this.beakOpenedAnimationState.startIfStopped(this.tickCount);
+                if (eatingTimer > 0) eatingTimer--;
             } else {
                 this.beakOpenedAnimationState.stop();
             }
 
-            this.divingAnimationState.stop();
             this.flappingAnimationState.stop();
         }
     }
@@ -463,6 +516,9 @@ public class PelicanEntity extends Animal implements FlyingAnimal {
                         this.getZ() + this.random.nextFloat() * this.getBbWidth() * 2.0 - this.getBbWidth(),
                         ox, oy, oz);
             }
+        } else if (id == 64) {
+            // Eating animation: keep beak open for 2 seconds
+            this.eatingTimer = 40;
         } else {
             super.handleEntityEvent(id);
         }
@@ -477,5 +533,134 @@ public class PelicanEntity extends Animal implements FlyingAnimal {
     @Override
     public boolean requiresCustomPersistence() {
         return despawnDelay > 0 || super.requiresCustomPersistence();
+    }
+
+    // --- AI Goals ---
+
+    /** Makes the pelican persistently follow the nearest player until it has traded. */
+    private static class FollowNearestPlayerGoal extends Goal {
+        private final PelicanEntity pelican;
+        private Player targetPlayer;
+        private static final double FOLLOW_RANGE = 32.0;
+        private static final double STOP_DISTANCE = 4.0;
+
+        FollowNearestPlayerGoal(PelicanEntity pelican) {
+            this.pelican = pelican;
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        }
+
+        @Override
+        public boolean canUse() {
+            if (pelican.hasTraded()) return false;
+            if (!pelican.hasHeldEntity()) return false; // only follow when carrying a fish
+            Player player = pelican.level().getNearestPlayer(pelican, FOLLOW_RANGE);
+            if (player == null) return false;
+            targetPlayer = player;
+            return true;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            if (pelican.hasTraded()) return false;
+            if (!pelican.hasHeldEntity()) return false;
+            if (targetPlayer == null || !targetPlayer.isAlive()) return false;
+            return pelican.distanceTo(targetPlayer) < FOLLOW_RANGE * 1.5;
+        }
+
+        @Override
+        public void tick() {
+            if (targetPlayer == null) return;
+            pelican.getLookControl().setLookAt(targetPlayer, 10.0f, pelican.getMaxHeadXRot());
+            double dist = pelican.distanceTo(targetPlayer);
+            if (dist > STOP_DISTANCE) {
+                pelican.getMoveControl().setWantedPosition(
+                    targetPlayer.getX(), targetPlayer.getY() + 1.5, targetPlayer.getZ(), 1.2);
+            }
+        }
+
+        @Override
+        public void stop() {
+            targetPlayer = null;
+        }
+    }
+
+    /** When the pelican has no passenger, seeks out a nearby huntable fish and catches it. */
+    private static class SeekAndCatchFishGoal extends Goal {
+        private final PelicanEntity pelican;
+        private Mob targetFish;
+        private static final double SEARCH_RANGE = 20.0;
+        private static final double CATCH_RANGE = 1.5;
+
+        SeekAndCatchFishGoal(PelicanEntity pelican) {
+            this.pelican = pelican;
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+        }
+
+        @Override
+        public boolean canUse() {
+            if (pelican.hasHeldEntity() || pelican.hasTraded()) return false;
+            targetFish = findNearestHuntTarget();
+            return targetFish != null;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            if (pelican.hasHeldEntity() || pelican.hasTraded()) return false;
+            if (targetFish == null || targetFish.isRemoved() || targetFish.isPassenger()) return false;
+            return pelican.distanceTo(targetFish) < SEARCH_RANGE * 1.5;
+        }
+
+        @Override
+        public void tick() {
+            if (targetFish == null) return;
+            pelican.getLookControl().setLookAt(targetFish, 30.0f, 30.0f);
+
+            double horizDist = Math.sqrt(
+                Math.pow(targetFish.getX() - pelican.getX(), 2) +
+                Math.pow(targetFish.getZ() - pelican.getZ(), 2));
+
+            if (horizDist > 4.0 || pelican.getY() <= targetFish.getY() + 1.0) {
+                // Approach phase: fly toward a point above the fish
+                pelican.diving = false;
+                pelican.getMoveControl().setWantedPosition(
+                    targetFish.getX(), targetFish.getY() + 5, targetFish.getZ(), 1.5);
+            } else {
+                // Dive phase: bypass all navigation and plunge directly at the fish
+                pelican.diving = true;
+                Vec3 toFish = targetFish.position().subtract(pelican.position()).normalize().scale(0.5);
+                pelican.setDeltaMovement(toFish);
+            }
+
+            if (pelican.distanceTo(targetFish) < CATCH_RANGE) {
+                pelican.catchExistingFish(targetFish);
+                stop();
+            }
+        }
+
+        @Override
+        public void stop() {
+            targetFish = null;
+            pelican.diving = false;
+        }
+
+        private Mob findNearestHuntTarget() {
+            List<Mob> candidates = pelican.level().getEntitiesOfClass(
+                Mob.class,
+                pelican.getBoundingBox().inflate(SEARCH_RANGE),
+                e -> e.getType().is(AnglingEntityTypeTags.HUNTED_BY_PELICAN)
+                     && !e.isPassenger() && !e.isRemoved()
+            );
+            if (candidates.isEmpty()) return null;
+            Mob closest = null;
+            double closestDistSq = Double.MAX_VALUE;
+            for (Mob mob : candidates) {
+                double distSq = mob.distanceToSqr(pelican);
+                if (distSq < closestDistSq) {
+                    closestDistSq = distSq;
+                    closest = mob;
+                }
+            }
+            return closest;
+        }
     }
 }

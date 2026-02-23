@@ -43,14 +43,23 @@ public class AnglingItems {
     public static final Item ANGLERFISH_SPAWN_EGG = registerSpawnEgg("anglerfish", AnglingEntities.ANGLERFISH);
     public static final Item MAHI_MAHI_SPAWN_EGG = registerSpawnEgg("mahi_mahi", AnglingEntities.MAHI_MAHI);
     public static final Item ORCA_SPAWN_EGG = registerSpawnEgg("orca", AnglingEntities.ORCA);
+    public static final Item RIGHT_WHALE_SPAWN_EGG = registerSpawnEgg("right_whale", AnglingEntities.RIGHT_WHALE);
 
     public static final Item ROE = register("roe",
             id -> new RoeBlockItem(AnglingBlocks.ROE,
                     new Item.Properties().stacksTo(1).setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final Item SEA_SLUG_EGGS = register("sea_slug_eggs",
-            id -> new BlockItem(AnglingBlocks.SEA_SLUG_EGGS,
+            id -> new SeaSlugEggsBlockItem(AnglingBlocks.SEA_SLUG_EGGS,
                     new Item.Properties().stacksTo(1).setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final Item STARFISH = register("starfish",
+            id -> new StarfishBlockItem(AnglingBlocks.STARFISH,
+                    new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final Item DEAD_STARFISH = register("dead_starfish",
+            id -> new StarfishBlockItem(AnglingBlocks.DEAD_STARFISH,
+                    new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final Item DUCKWEED = register("duckweed",
             id -> new PlaceOnWaterBlockItem(AnglingBlocks.DUCKWEED,

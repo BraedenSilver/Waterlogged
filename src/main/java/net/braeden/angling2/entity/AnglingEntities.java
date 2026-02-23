@@ -159,6 +159,14 @@ public class AnglingEntities {
                     .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "orca")))
     );
 
+    public static final EntityType<RightWhaleEntity> RIGHT_WHALE = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "right_whale")),
+            EntityType.Builder.<RightWhaleEntity>of(RightWhaleEntity::new, MobCategory.WATER_CREATURE)
+                    .sized(4.2f, 3.0f)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "right_whale")))
+    );
+
     public static void init() {
         // Register attributes
         FabricDefaultAttributeRegistry.register(FRY, FryEntity.createAttributes());
@@ -174,6 +182,7 @@ public class AnglingEntities {
         FabricDefaultAttributeRegistry.register(ANGLERFISH, AnglerfishEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(MAHI_MAHI, MahiMahiEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(ORCA, OrcaEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(RIGHT_WHALE, RightWhaleEntity.createAttributes());
 
         // Register spawn placements
         SpawnPlacements.register(FRY, SpawnPlacementTypes.IN_WATER,
@@ -199,6 +208,8 @@ public class AnglingEntities {
         SpawnPlacements.register(MAHI_MAHI, SpawnPlacementTypes.IN_WATER,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WaterAnimal::checkSurfaceWaterAnimalSpawnRules);
         SpawnPlacements.register(ORCA, SpawnPlacementTypes.IN_WATER,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WaterAnimal::checkSurfaceWaterAnimalSpawnRules);
+        SpawnPlacements.register(RIGHT_WHALE, SpawnPlacementTypes.IN_WATER,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WaterAnimal::checkSurfaceWaterAnimalSpawnRules);
 
         // Register biome spawns
@@ -241,6 +252,10 @@ public class AnglingEntities {
         BiomeModifications.addSpawn(
                 biome -> biome.getBiomeRegistryEntry().is(AnglingBiomeTags.ORCA_SPAWN_IN),
                 MobCategory.WATER_CREATURE, ORCA, 1, 1, 2
+        );
+        BiomeModifications.addSpawn(
+                biome -> biome.getBiomeRegistryEntry().is(AnglingBiomeTags.RIGHT_WHALE_SPAWN_IN),
+                MobCategory.WATER_CREATURE, RIGHT_WHALE, 2, 1, 3
         );
     }
 }

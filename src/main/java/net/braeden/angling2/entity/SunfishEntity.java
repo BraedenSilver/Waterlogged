@@ -138,7 +138,7 @@ public class SunfishEntity extends AbstractFish implements WormBreeder {
 
     @Override
     public net.minecraft.world.item.ItemStack getBucketItemStack() {
-        return new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.WATER_BUCKET);
+        return new net.minecraft.world.item.ItemStack(AnglingItems.SUNFISH_BUCKET);
     }
 
     @Override

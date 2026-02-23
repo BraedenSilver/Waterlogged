@@ -51,6 +51,7 @@ public class AnglingClient implements ClientModInitializer {
         EntityRenderers.register(AnglingEntities.ANGLERFISH,    AnglerfishRenderer::new);
         EntityRenderers.register(AnglingEntities.MAHI_MAHI,     MahiMahiRenderer::new);
         EntityRenderers.register(AnglingEntities.ORCA,           OrcaRenderer::new);
+        EntityRenderers.register(AnglingEntities.RIGHT_WHALE,    RightWhaleRenderer::new);
 
         // Model layer definitions
         EntityModelLayerRegistry.registerModelLayer(AnglingEntityModelLayers.STARFISH,       StarfishModel::getTexturedModelData);
@@ -69,6 +70,7 @@ public class AnglingClient implements ClientModInitializer {
         EntityModelLayerRegistry.registerModelLayer(AnglingEntityModelLayers.ANGLERFISH,    AnglerfishModel::getTexturedModelData);
         EntityModelLayerRegistry.registerModelLayer(AnglingEntityModelLayers.MAHI_MAHI,     MahiMahiModel::getTexturedModelData);
         EntityModelLayerRegistry.registerModelLayer(AnglingEntityModelLayers.ORCA,           OrcaModel::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(AnglingEntityModelLayers.RIGHT_WHALE,    RightWhaleModel::getTexturedModelData);
 
         // Block entity renderers
         BlockEntityRenderers.register(AnglingEntities.STARFISH, StarfishBlockEntityRenderer::new);
@@ -89,15 +91,11 @@ public class AnglingClient implements ClientModInitializer {
             return -1;
         }, AnglingBlocks.ROE);
 
+        // Tint each egg cluster with the color of the parent that laid it.
         ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> {
             if (world == null || pos == null) return -1;
             if (world.getBlockEntity(pos) instanceof SeaSlugEggsBlockEntity eggs) {
-                int c1 = SeaSlugColor.byId(eggs.getParent1Color()).getArgb();
-                int c2 = SeaSlugColor.byId(eggs.getParent2Color()).getArgb();
-                int r = ((c1 >> 16 & 0xFF) + (c2 >> 16 & 0xFF)) / 2;
-                int g = ((c1 >> 8 & 0xFF) + (c2 >> 8 & 0xFF)) / 2;
-                int b = ((c1 & 0xFF) + (c2 & 0xFF)) / 2;
-                return 0xFF000000 | (r << 16) | (g << 8) | b;
+                return SeaSlugColor.byId(eggs.getLayingParentColorId()).getArgb();
             }
             return -1;
         }, AnglingBlocks.SEA_SLUG_EGGS);

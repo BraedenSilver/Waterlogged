@@ -1,5 +1,6 @@
 package net.braeden.angling2.entity.client.state;
 
+import net.braeden.angling2.entity.util.SeaSlugBioluminescence;
 import net.braeden.angling2.entity.util.SeaSlugPattern;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -13,4 +14,5 @@ public class SeaSlugRenderState extends LivingEntityRenderState {
     /** Packed ARGB body tint color. */
     public int argbColor = 0xFFFFFFFF;
     public SeaSlugPattern pattern = SeaSlugPattern.PLAIN;
+    public SeaSlugBioluminescence bioluminescence = SeaSlugBioluminescence.NONE;
 }

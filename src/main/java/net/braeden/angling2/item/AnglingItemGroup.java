@@ -91,6 +91,7 @@ public class AnglingItemGroup {
                 output.accept(AnglingItems.ANGLERFISH_SPAWN_EGG);
                 output.accept(AnglingItems.MAHI_MAHI_SPAWN_EGG);
                 output.accept(AnglingItems.ORCA_SPAWN_EGG);
+                output.accept(AnglingItems.RIGHT_WHALE_SPAWN_EGG);
             })
             .build();
 

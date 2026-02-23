@@ -53,6 +53,9 @@ public class AnglingSounds {
     public static final SoundEvent ENTITY_MAHI_MAHI_HURT = create("entity.mahi_mahi.hurt");
     public static final SoundEvent ENTITY_MAHI_MAHI_DEATH = create("entity.mahi_mahi.death");
     public static final SoundEvent ENTITY_MAHI_MAHI_FLOP = create("entity.mahi_mahi.flop");
+    public static final SoundEvent ENTITY_RIGHT_WHALE_AMBIENT = create("entity.right_whale.ambient");
+    public static final SoundEvent ENTITY_RIGHT_WHALE_HURT = create("entity.right_whale.hurt");
+    public static final SoundEvent ENTITY_RIGHT_WHALE_DEATH = create("entity.right_whale.death");
 
     public static final SoundType SHELL_SOUND_GROUP = new SoundType(1, 1.25f, BLOCK_SHELL_BREAK, BLOCK_SHELL_STEP, BLOCK_SHELL_PLACE, BLOCK_SHELL_HIT, BLOCK_SHELL_FALL);
 

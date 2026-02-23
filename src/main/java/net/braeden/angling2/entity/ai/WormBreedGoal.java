@@ -7,6 +7,7 @@ import net.braeden.angling2.block.entity.RoeBlockEntity;
 import net.braeden.angling2.block.entity.SeaSlugEggsBlockEntity;
 import net.braeden.angling2.entity.AnglingEntities;
 import net.braeden.angling2.entity.SeaSlugEntity;
+import net.braeden.angling2.entity.util.SeaSlugBioluminescence;
 import net.braeden.angling2.entity.SunfishEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -118,13 +119,29 @@ public class WormBreedGoal extends Goal {
         boolean waterlogged = level.getFluidState(targetRoePos).is(Fluids.WATER);
 
         if (mob instanceof SeaSlugEntity slugMob && partner instanceof SeaSlugEntity slugPartner) {
-            // Sea slugs lay their own egg type that carries parent traits.
-            BlockState eggState = AnglingBlocks.SEA_SLUG_EGGS.defaultBlockState()
-                    .setValue(SeaSlugEggsBlock.WATERLOGGED, waterlogged);
-            level.setBlock(targetRoePos, eggState, 3);
-            if (level.getBlockEntity(targetRoePos) instanceof SeaSlugEggsBlockEntity eggsEntity) {
-                eggsEntity.setParents(slugMob.getColor(), slugMob.getPattern(),
-                                      slugPartner.getColor(), slugPartner.getPattern());
+            // Sea slugs are hermaphrodites — both parents lay an egg cluster.
+            boolean mobGlowing     = slugMob.getBioluminescence() != SeaSlugBioluminescence.NONE;
+            boolean partnerGlowing = slugPartner.getBioluminescence() != SeaSlugBioluminescence.NONE;
+
+            // Egg 1 laid by the mob (near its current position).
+            BlockState eggState1 = AnglingBlocks.SEA_SLUG_EGGS.defaultBlockState()
+                    .setValue(SeaSlugEggsBlock.WATERLOGGED, waterlogged)
+                    .setValue(SeaSlugEggsBlock.GLOWING, mobGlowing);
+            level.setBlock(targetRoePos, eggState1, 3);
+            if (level.getBlockEntity(targetRoePos) instanceof SeaSlugEggsBlockEntity eg1) {
+                eg1.setParents(slugMob, slugPartner, slugMob.getColor().getId());
+            }
+            // Egg 2 laid by the partner (near its current position).
+            BlockPos partnerRoePos = findRoePos(level, slugPartner.blockPosition());
+            if (partnerRoePos != null && !partnerRoePos.equals(targetRoePos)) {
+                boolean partnerWaterlogged = level.getFluidState(partnerRoePos).is(Fluids.WATER);
+                BlockState eggState2 = AnglingBlocks.SEA_SLUG_EGGS.defaultBlockState()
+                        .setValue(SeaSlugEggsBlock.WATERLOGGED, partnerWaterlogged)
+                        .setValue(SeaSlugEggsBlock.GLOWING, partnerGlowing);
+                level.setBlock(partnerRoePos, eggState2, 3);
+                if (level.getBlockEntity(partnerRoePos) instanceof SeaSlugEggsBlockEntity eg2) {
+                    eg2.setParents(slugMob, slugPartner, slugPartner.getColor().getId());
+                }
             }
         } else {
             // All other fish lay generic roe.

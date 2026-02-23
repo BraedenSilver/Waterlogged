@@ -1,11 +1,14 @@
 package net.braeden.angling2.entity;
 
+import net.braeden.angling2.item.AnglingItems;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.component.CustomModelData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
@@ -109,7 +112,13 @@ public class FryEntity extends AbstractFish {
 
     @Override
     public net.minecraft.world.item.ItemStack getBucketItemStack() {
-        return new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.WATER_BUCKET);
+        net.minecraft.world.item.ItemStack stack = new net.minecraft.world.item.ItemStack(AnglingItems.FRY_BUCKET);
+        int argb = this.getEntityData().get(ARGB_COLOR);
+        if (argb != -1) {
+            stack.set(DataComponents.CUSTOM_MODEL_DATA,
+                    new CustomModelData(java.util.List.of(), java.util.List.of(), java.util.List.of(), java.util.List.of(argb)));
+        }
+        return stack;
     }
 
     @Override
