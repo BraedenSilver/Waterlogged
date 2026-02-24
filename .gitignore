@@ -47,5 +47,4 @@ PLANNED_FEATURES.md
 
 # Generated BlockBench files (regenerate with: bash scripts/make_bbmodels.sh)
 /BlockBench/
-scripts/java2bbmodel.py
-scripts/make_bbmodels.sh
+/Scripts/
