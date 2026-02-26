@@ -17,7 +17,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class AnemoneBlockEntityRenderer implements BlockEntityRenderer<AnemoneBlockEntity, AnemoneBlockEntityRenderState> {
 
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("angling", "textures/entity/anemone/anemone.png");
+    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/anemone/anemone.png");
 
     private final AnemoneModel model;
 

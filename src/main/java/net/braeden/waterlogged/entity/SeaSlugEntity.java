@@ -30,6 +30,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
+import net.braeden.waterlogged.entity.ai.WormTemptGoal;
 import net.minecraft.world.entity.animal.fish.WaterAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -74,10 +75,11 @@ public class SeaSlugEntity extends WaterAnimal implements WormBreeder, Bucketabl
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new RandomSwimmingGoal(this, 0.6, 40));
         this.goalSelector.addGoal(1, new WormBreedGoal(this));
-        this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 6.0f));
-        this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(2, new WormTemptGoal(this, 1.0));
+        this.goalSelector.addGoal(3, new RandomSwimmingGoal(this, 0.6, 40));
+        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0f));
+        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
     }
 
     public static AttributeSupplier.Builder createAttributes() {

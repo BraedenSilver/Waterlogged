@@ -13,7 +13,7 @@ import net.minecraft.resources.Identifier;
 public class RightWhaleRenderer extends MobRenderer<RightWhaleEntity, RightWhaleRenderState, RightWhaleModel> {
 
     private static final Identifier TEXTURE =
-            Identifier.fromNamespaceAndPath("angling", "textures/entity/right_whale/right_whale.png");
+            Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/right_whale/right_whale.png");
 
     public RightWhaleRenderer(EntityRendererProvider.Context context) {
         super(context, new RightWhaleModel(context.bakeLayer(WaterloggedEntityModelLayers.RIGHT_WHALE)), 1.8F);

@@ -23,7 +23,7 @@ import java.util.Map;
 public class SeaSlugBiolumLayer extends RenderLayer<SeaSlugRenderState, SeaSlugModel> {
 
     private static final Identifier BODY_TEXTURE =
-            Identifier.fromNamespaceAndPath("angling", "textures/entity/sea_slug/sea_slug.png");
+            Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/sea_slug/sea_slug.png");
 
     private static final Map<SeaSlugPattern, Identifier> PATTERN_TEXTURES =
             new EnumMap<>(SeaSlugPattern.class);
@@ -34,7 +34,7 @@ public class SeaSlugBiolumLayer extends RenderLayer<SeaSlugRenderState, SeaSlugM
     static {
         for (SeaSlugPattern p : SeaSlugPattern.values()) {
             if (p.getTextureName() != null) {
-                PATTERN_TEXTURES.put(p, Identifier.fromNamespaceAndPath("angling",
+                PATTERN_TEXTURES.put(p, Identifier.fromNamespaceAndPath("waterlogged",
                         "textures/entity/sea_slug/" + p.getTextureName() + ".png"));
             }
         }

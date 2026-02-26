@@ -71,6 +71,15 @@ public class WaterloggedBiomeTagProvider extends FabricTagProvider<Biome> {
                 .add(RIVER).add(FROZEN_RIVER)
                 .add(FOREST).add(BIRCH_FOREST).add(OLD_GROWTH_BIRCH_FOREST).add(DARK_FOREST);
         builder(WaterloggedBiomeTags.ANOMALOCARIS_SPAWN_IN).add(MUSHROOM_FIELDS);
+        builder(WaterloggedBiomeTags.DONGFISH_SPAWN_IN)
+                .add(PLAINS).add(SUNFLOWER_PLAINS)
+                .add(FOREST).add(BIRCH_FOREST).add(OLD_GROWTH_BIRCH_FOREST).add(DARK_FOREST)
+                .add(TAIGA).add(SNOWY_TAIGA)
+                .add(MEADOW)
+                .add(SWAMP).add(MANGROVE_SWAMP)
+                .add(SAVANNA).add(SAVANNA_PLATEAU).add(WINDSWEPT_SAVANNA)
+                .add(DESERT)
+                .add(RIVER).add(FROZEN_RIVER);
         builder(WaterloggedBiomeTags.ANGLERFISH_SPAWN_IN)
                 .add(DEEP_OCEAN).add(DEEP_COLD_OCEAN).add(DEEP_FROZEN_OCEAN).add(DEEP_LUKEWARM_OCEAN);
         builder(WaterloggedBiomeTags.MAHI_MAHI_SPAWN_IN)

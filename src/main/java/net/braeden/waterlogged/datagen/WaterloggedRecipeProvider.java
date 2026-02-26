@@ -46,7 +46,7 @@ public class WaterloggedRecipeProvider extends FabricRecipeProvider {
                         WaterloggedItems.FRIED_SUNFISH,
                         0.35f, 75
                 ).unlockedBy(getHasName(WaterloggedItems.SUNFISH), has(WaterloggedItems.SUNFISH))
-                        .save(output, "angling:fried_sunfish_from_smoking");
+                        .save(output, "waterlogged:fried_sunfish_from_smoking");
 
                 // Fried sunfish (campfire cooking)
                 SimpleCookingRecipeBuilder.campfireCooking(
@@ -55,7 +55,7 @@ public class WaterloggedRecipeProvider extends FabricRecipeProvider {
                         WaterloggedItems.FRIED_SUNFISH,
                         0.35f, 450
                 ).unlockedBy(getHasName(WaterloggedItems.SUNFISH), has(WaterloggedItems.SUNFISH))
-                        .save(output, "angling:fried_sunfish_from_campfire_cooking");
+                        .save(output, "waterlogged:fried_sunfish_from_campfire_cooking");
 
                 // Cooked mahi mahi
                 SimpleCookingRecipeBuilder.smelting(
@@ -67,12 +67,12 @@ public class WaterloggedRecipeProvider extends FabricRecipeProvider {
                         Ingredient.of(WaterloggedItems.RAW_MAHI_MAHI),
                         RecipeCategory.FOOD, WaterloggedItems.COOKED_MAHI_MAHI, 0.35f, 75
                 ).unlockedBy(getHasName(WaterloggedItems.RAW_MAHI_MAHI), has(WaterloggedItems.RAW_MAHI_MAHI))
-                        .save(output, "angling:cooked_mahi_mahi_from_smoking");
+                        .save(output, "waterlogged:cooked_mahi_mahi_from_smoking");
                 SimpleCookingRecipeBuilder.campfireCooking(
                         Ingredient.of(WaterloggedItems.RAW_MAHI_MAHI),
                         RecipeCategory.FOOD, WaterloggedItems.COOKED_MAHI_MAHI, 0.35f, 450
                 ).unlockedBy(getHasName(WaterloggedItems.RAW_MAHI_MAHI), has(WaterloggedItems.RAW_MAHI_MAHI))
-                        .save(output, "angling:cooked_mahi_mahi_from_campfire_cooking");
+                        .save(output, "waterlogged:cooked_mahi_mahi_from_campfire_cooking");
 
                 // Cooked crab legs
                 SimpleCookingRecipeBuilder.smelting(
@@ -84,12 +84,12 @@ public class WaterloggedRecipeProvider extends FabricRecipeProvider {
                         Ingredient.of(WaterloggedItems.RAW_CRAB_LEGS),
                         RecipeCategory.FOOD, WaterloggedItems.COOKED_CRAB_LEGS, 0.35f, 75
                 ).unlockedBy(getHasName(WaterloggedItems.RAW_CRAB_LEGS), has(WaterloggedItems.RAW_CRAB_LEGS))
-                        .save(output, "angling:cooked_crab_legs_from_smoking");
+                        .save(output, "waterlogged:cooked_crab_legs_from_smoking");
                 SimpleCookingRecipeBuilder.campfireCooking(
                         Ingredient.of(WaterloggedItems.RAW_CRAB_LEGS),
                         RecipeCategory.FOOD, WaterloggedItems.COOKED_CRAB_LEGS, 0.35f, 450
                 ).unlockedBy(getHasName(WaterloggedItems.RAW_CRAB_LEGS), has(WaterloggedItems.RAW_CRAB_LEGS))
-                        .save(output, "angling:cooked_crab_legs_from_campfire_cooking");
+                        .save(output, "waterlogged:cooked_crab_legs_from_campfire_cooking");
 
                 // Cooked catfish
                 SimpleCookingRecipeBuilder.smelting(
@@ -101,12 +101,12 @@ public class WaterloggedRecipeProvider extends FabricRecipeProvider {
                         Ingredient.of(WaterloggedItems.RAW_CATFISH),
                         RecipeCategory.FOOD, WaterloggedItems.COOKED_CATFISH, 0.35f, 75
                 ).unlockedBy(getHasName(WaterloggedItems.RAW_CATFISH), has(WaterloggedItems.RAW_CATFISH))
-                        .save(output, "angling:cooked_catfish_from_smoking");
+                        .save(output, "waterlogged:cooked_catfish_from_smoking");
                 SimpleCookingRecipeBuilder.campfireCooking(
                         Ingredient.of(WaterloggedItems.RAW_CATFISH),
                         RecipeCategory.FOOD, WaterloggedItems.COOKED_CATFISH, 0.35f, 450
                 ).unlockedBy(getHasName(WaterloggedItems.RAW_CATFISH), has(WaterloggedItems.RAW_CATFISH))
-                        .save(output, "angling:cooked_catfish_from_campfire_cooking");
+                        .save(output, "waterlogged:cooked_catfish_from_campfire_cooking");
 
                 // Cooked dongfish
                 SimpleCookingRecipeBuilder.smelting(
@@ -118,12 +118,12 @@ public class WaterloggedRecipeProvider extends FabricRecipeProvider {
                         Ingredient.of(WaterloggedItems.RAW_DONGFISH),
                         RecipeCategory.FOOD, WaterloggedItems.COOKED_DONGFISH, 0.35f, 75
                 ).unlockedBy(getHasName(WaterloggedItems.RAW_DONGFISH), has(WaterloggedItems.RAW_DONGFISH))
-                        .save(output, "angling:cooked_dongfish_from_smoking");
+                        .save(output, "waterlogged:cooked_dongfish_from_smoking");
                 SimpleCookingRecipeBuilder.campfireCooking(
                         Ingredient.of(WaterloggedItems.RAW_DONGFISH),
                         RecipeCategory.FOOD, WaterloggedItems.COOKED_DONGFISH, 0.35f, 450
                 ).unlockedBy(getHasName(WaterloggedItems.RAW_DONGFISH), has(WaterloggedItems.RAW_DONGFISH))
-                        .save(output, "angling:cooked_dongfish_from_campfire_cooking");
+                        .save(output, "waterlogged:cooked_dongfish_from_campfire_cooking");
 
                 // Cooked seahorse
                 SimpleCookingRecipeBuilder.smelting(
@@ -135,12 +135,12 @@ public class WaterloggedRecipeProvider extends FabricRecipeProvider {
                         Ingredient.of(WaterloggedItems.RAW_SEAHORSE),
                         RecipeCategory.FOOD, WaterloggedItems.COOKED_SEAHORSE, 0.35f, 75
                 ).unlockedBy(getHasName(WaterloggedItems.RAW_SEAHORSE), has(WaterloggedItems.RAW_SEAHORSE))
-                        .save(output, "angling:cooked_seahorse_from_smoking");
+                        .save(output, "waterlogged:cooked_seahorse_from_smoking");
                 SimpleCookingRecipeBuilder.campfireCooking(
                         Ingredient.of(WaterloggedItems.RAW_SEAHORSE),
                         RecipeCategory.FOOD, WaterloggedItems.COOKED_SEAHORSE, 0.35f, 450
                 ).unlockedBy(getHasName(WaterloggedItems.RAW_SEAHORSE), has(WaterloggedItems.RAW_SEAHORSE))
-                        .save(output, "angling:cooked_seahorse_from_campfire_cooking");
+                        .save(output, "waterlogged:cooked_seahorse_from_campfire_cooking");
 
                 // Cooked bubble eye
                 SimpleCookingRecipeBuilder.smelting(
@@ -152,12 +152,12 @@ public class WaterloggedRecipeProvider extends FabricRecipeProvider {
                         Ingredient.of(WaterloggedItems.RAW_BUBBLE_EYE),
                         RecipeCategory.FOOD, WaterloggedItems.COOKED_BUBBLE_EYE, 0.35f, 75
                 ).unlockedBy(getHasName(WaterloggedItems.RAW_BUBBLE_EYE), has(WaterloggedItems.RAW_BUBBLE_EYE))
-                        .save(output, "angling:cooked_bubble_eye_from_smoking");
+                        .save(output, "waterlogged:cooked_bubble_eye_from_smoking");
                 SimpleCookingRecipeBuilder.campfireCooking(
                         Ingredient.of(WaterloggedItems.RAW_BUBBLE_EYE),
                         RecipeCategory.FOOD, WaterloggedItems.COOKED_BUBBLE_EYE, 0.35f, 450
                 ).unlockedBy(getHasName(WaterloggedItems.RAW_BUBBLE_EYE), has(WaterloggedItems.RAW_BUBBLE_EYE))
-                        .save(output, "angling:cooked_bubble_eye_from_campfire_cooking");
+                        .save(output, "waterlogged:cooked_bubble_eye_from_campfire_cooking");
 
                 // Cooked anomalocaris
                 SimpleCookingRecipeBuilder.smelting(
@@ -169,12 +169,12 @@ public class WaterloggedRecipeProvider extends FabricRecipeProvider {
                         Ingredient.of(WaterloggedItems.RAW_ANOMALOCARIS),
                         RecipeCategory.FOOD, WaterloggedItems.COOKED_ANOMALOCARIS, 0.35f, 75
                 ).unlockedBy(getHasName(WaterloggedItems.RAW_ANOMALOCARIS), has(WaterloggedItems.RAW_ANOMALOCARIS))
-                        .save(output, "angling:cooked_anomalocaris_from_smoking");
+                        .save(output, "waterlogged:cooked_anomalocaris_from_smoking");
                 SimpleCookingRecipeBuilder.campfireCooking(
                         Ingredient.of(WaterloggedItems.RAW_ANOMALOCARIS),
                         RecipeCategory.FOOD, WaterloggedItems.COOKED_ANOMALOCARIS, 0.35f, 450
                 ).unlockedBy(getHasName(WaterloggedItems.RAW_ANOMALOCARIS), has(WaterloggedItems.RAW_ANOMALOCARIS))
-                        .save(output, "angling:cooked_anomalocaris_from_campfire_cooking");
+                        .save(output, "waterlogged:cooked_anomalocaris_from_campfire_cooking");
 
                 // Cooked anglerfish
                 SimpleCookingRecipeBuilder.smelting(
@@ -186,20 +186,30 @@ public class WaterloggedRecipeProvider extends FabricRecipeProvider {
                         Ingredient.of(WaterloggedItems.RAW_ANGLERFISH),
                         RecipeCategory.FOOD, WaterloggedItems.COOKED_ANGLERFISH, 0.35f, 75
                 ).unlockedBy(getHasName(WaterloggedItems.RAW_ANGLERFISH), has(WaterloggedItems.RAW_ANGLERFISH))
-                        .save(output, "angling:cooked_anglerfish_from_smoking");
+                        .save(output, "waterlogged:cooked_anglerfish_from_smoking");
                 SimpleCookingRecipeBuilder.campfireCooking(
                         Ingredient.of(WaterloggedItems.RAW_ANGLERFISH),
                         RecipeCategory.FOOD, WaterloggedItems.COOKED_ANGLERFISH, 0.35f, 450
                 ).unlockedBy(getHasName(WaterloggedItems.RAW_ANGLERFISH), has(WaterloggedItems.RAW_ANGLERFISH))
-                        .save(output, "angling:cooked_anglerfish_from_campfire_cooking");
+                        .save(output, "waterlogged:cooked_anglerfish_from_campfire_cooking");
 
                 // Paper from papyrus (shaped: 3 papyrus → 1 paper)
                 shaped(RecipeCategory.MISC, Items.PAPER)
                         .pattern("###")
                         .define('#', WaterloggedBlocks.PAPYRUS)
                         .unlockedBy(getHasName(WaterloggedBlocks.PAPYRUS.asItem()), has(WaterloggedBlocks.PAPYRUS.asItem()))
-                        .save(output, "angling:paper_from_papyrus");
+                        .save(output, "waterlogged:paper_from_papyrus");
                 
+                // Fishing Net (sticks + string)
+                shaped(RecipeCategory.TOOLS, WaterloggedItems.FISHING_NET)
+                        .pattern("  S")
+                        .pattern(" ST")
+                        .pattern("STT")
+                        .define('S', Items.STICK)
+                        .define('T', Items.STRING)
+                        .unlockedBy(getHasName(Items.STRING), has(Items.STRING))
+                        .save(output);
+
                 // Aquarium Glass (Pearls + Glass)
                 // Assuming shapeless 8 glass + 1 pearl ? Or 4 glass + 1 pearl? Or 1 glass + 1 pearl?
                 // User said "you get aquarium glass with pearls and glass. only works with glass blocks."

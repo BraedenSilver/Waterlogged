@@ -26,6 +26,6 @@ public final class WaterloggedEntityModelLayers {
     private WaterloggedEntityModelLayers() {}
 
     private static ModelLayerLocation layer(String name) {
-        return new ModelLayerLocation(Identifier.fromNamespaceAndPath("angling", name), "main");
+        return new ModelLayerLocation(Identifier.fromNamespaceAndPath("waterlogged", name), "main");
     }
 }

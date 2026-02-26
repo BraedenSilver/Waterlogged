@@ -10,7 +10,10 @@
     "ComposterBlockMixin",
     "TropicalFishBucketMixin"
   ],
-  "client": [],
+  "client": [
+    "RainbowStarfishItemColorMixin",
+    "LiquidBlockRendererMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

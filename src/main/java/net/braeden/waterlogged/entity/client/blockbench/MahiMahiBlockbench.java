@@ -28,11 +28,11 @@ public final class MahiMahiBlockbench {
         front.addOrReplaceChild("right_fin",
                 CubeListBuilder.create()
                 .texOffs(0, 13).addBox(0.0F, -3.0F, 0.0F, 0.0F, 4.0F, 7.0F, CubeDeformation.NONE),
-                PartPose.offsetAndRotation(-2.0F, 3.0F, -5.0F, 0.0F, 0.5236F, 0.0F));
+                PartPose.offsetAndRotation(2.0F, 3.0F, -5.0F, 0.0F, -0.5236F, 0.0F));
         front.addOrReplaceChild("left_fin",
                 CubeListBuilder.create()
                 .texOffs(0, 17).addBox(0.0F, -3.0F, 0.0F, 0.0F, 4.0F, 7.0F, CubeDeformation.NONE),
-                PartPose.offsetAndRotation(2.0F, 3.0F, -5.0F, 0.0F, -0.5236F, 0.0F));
+                PartPose.offsetAndRotation(-2.0F, 3.0F, -5.0F, 0.0F, 0.5236F, 0.0F));
         PartDefinition back = root.addOrReplaceChild("back",
                 CubeListBuilder.create()
                 .texOffs(19, 9).addBox(-2.0F, -4.0F, 0.0F, 4.0F, 8.0F, 11.0F, CubeDeformation.NONE)

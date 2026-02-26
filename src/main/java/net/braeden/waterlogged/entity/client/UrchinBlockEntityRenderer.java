@@ -17,7 +17,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class UrchinBlockEntityRenderer implements BlockEntityRenderer<UrchinBlockEntity, UrchinBlockEntityRenderState> {
 
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("angling", "textures/entity/urchin/urchin.png");
+    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/urchin/urchin.png");
 
     private final UrchinModel model;
 

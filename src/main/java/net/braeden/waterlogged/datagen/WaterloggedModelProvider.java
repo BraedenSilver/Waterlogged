@@ -57,8 +57,8 @@ public class WaterloggedModelProvider extends FabricModelProvider {
 
         // Wormy dirt: cube_all
         Identifier wormyDirt1 = ModelTemplates.CUBE_ALL.create(
-                Identifier.fromNamespaceAndPath("angling", "block/wormy_dirt_1"),
-                new TextureMapping().put(TextureSlot.ALL, Identifier.fromNamespaceAndPath("angling", "block/wormy_dirt_1")),
+                Identifier.fromNamespaceAndPath("waterlogged", "block/wormy_dirt_1"),
+                new TextureMapping().put(TextureSlot.ALL, Identifier.fromNamespaceAndPath("waterlogged", "block/wormy_dirt_1")),
                 gen.modelOutput);
         gen.blockStateOutput.accept(
                 BlockModelGenerators.createSimpleBlock(WaterloggedBlocks.WORMY_DIRT,
@@ -67,8 +67,8 @@ public class WaterloggedModelProvider extends FabricModelProvider {
 
         // Wormy mud: cube_all
         Identifier wormyMud1 = ModelTemplates.CUBE_ALL.create(
-                Identifier.fromNamespaceAndPath("angling", "block/wormy_mud_1"),
-                new TextureMapping().put(TextureSlot.ALL, Identifier.fromNamespaceAndPath("angling", "block/wormy_mud_1")),
+                Identifier.fromNamespaceAndPath("waterlogged", "block/wormy_mud_1"),
+                new TextureMapping().put(TextureSlot.ALL, Identifier.fromNamespaceAndPath("waterlogged", "block/wormy_mud_1")),
                 gen.modelOutput);
         gen.blockStateOutput.accept(
                 BlockModelGenerators.createSimpleBlock(WaterloggedBlocks.WORMY_MUD,
@@ -172,6 +172,7 @@ public class WaterloggedModelProvider extends FabricModelProvider {
         itemModels.generateFlatItem(WaterloggedItems.RIGHT_WHALE_SPAWN_EGG, SPAWN_EGG);
 
         // Standard flat items (item/ textures)
+        itemModels.generateFlatItem(WaterloggedItems.FISHING_NET, ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(WaterloggedItems.WORM, ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(WaterloggedItems.PEARL, ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(WaterloggedItems.SUNFISH, ModelTemplates.FLAT_ITEM);
@@ -247,12 +248,12 @@ public class WaterloggedModelProvider extends FabricModelProvider {
     }
 
     private static void simpleBlockState(BlockModelGenerators gen, Block block, String modelPath) {
-        Identifier modelId = Identifier.fromNamespaceAndPath("angling", modelPath);
+        Identifier modelId = Identifier.fromNamespaceAndPath("waterlogged", modelPath);
         gen.blockStateOutput.accept(
                 BlockModelGenerators.createSimpleBlock(block, BlockModelGenerators.plainVariant(modelId)));
     }
 
     private static Identifier blockModel(String name) {
-        return Identifier.fromNamespaceAndPath("angling", "block/" + name);
+        return Identifier.fromNamespaceAndPath("waterlogged", "block/" + name);
     }
 }

@@ -20,8 +20,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class StarfishBlockEntityRenderer implements BlockEntityRenderer<StarfishBlockEntity, StarfishBlockEntityRenderer.StarfishRenderState> {
 
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("angling", "textures/entity/starfish/starfish.png");
-    private static final Identifier DEAD_TEXTURE = Identifier.fromNamespaceAndPath("angling", "textures/entity/starfish/dead_starfish.png");
+    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/starfish/starfish.png");
+    private static final Identifier DEAD_TEXTURE = Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/starfish/dead_starfish.png");
 
     private final StarfishModel model;
 
@@ -43,6 +43,7 @@ public class StarfishBlockEntityRenderer implements BlockEntityRenderer<Starfish
         state.rotation = blockState.getValue(StarfishBlock.ROTATION);
         state.color = entity.getColor();
         state.gameTicks = entity.getLevel() != null ? entity.getLevel().getGameTime() : 0;
+        state.partialTick = partialTick;
     }
 
     @Override
@@ -69,7 +70,7 @@ public class StarfishBlockEntityRenderer implements BlockEntityRenderer<Starfish
 
         model.setupAnim(state);
         RenderType renderType = RenderTypes.entityCutoutNoCull(state.dead ? DEAD_TEXTURE : TEXTURE);
-        int tint = state.dead ? -1 : state.color.getArgbForTicks(state.gameTicks);
+        int tint = state.dead ? -1 : state.color.getArgbForTicks(state.gameTicks, state.partialTick);
         collector.submitModel(model, state, poseStack, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, tint, null, 0, state.breakProgress);
         poseStack.popPose();
     }
@@ -80,5 +81,6 @@ public class StarfishBlockEntityRenderer implements BlockEntityRenderer<Starfish
         public int rotation = 0;
         public StarfishColor color = StarfishColor.RED;
         public long gameTicks = 0;
+        public float partialTick = 0F;
     }
 }

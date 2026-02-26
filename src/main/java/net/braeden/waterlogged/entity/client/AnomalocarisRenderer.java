@@ -10,7 +10,7 @@ import net.minecraft.resources.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class AnomalocarisRenderer extends MobRenderer<AnomalocarisEntity, AnomalocarisRenderState, AnomalocarisModel> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("angling", "textures/entity/anomalocaris/anomalocaris.png");
+    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/anomalocaris/anomalocaris.png");
 
     public AnomalocarisRenderer(EntityRendererProvider.Context context) {
         super(context, new AnomalocarisModel(context.bakeLayer(WaterloggedEntityModelLayers.ANOMALOCARIS)), 0.5F);

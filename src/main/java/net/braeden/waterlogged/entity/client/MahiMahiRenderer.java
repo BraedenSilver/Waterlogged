@@ -10,7 +10,7 @@ import net.minecraft.resources.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class MahiMahiRenderer extends MobRenderer<MahiMahiEntity, MahiMahiRenderState, MahiMahiModel> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("angling", "textures/entity/mahi_mahi/mahi_mahi.png");
+    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/mahi_mahi/mahi_mahi.png");
 
     public MahiMahiRenderer(EntityRendererProvider.Context context) {
         super(context, new MahiMahiModel(context.bakeLayer(WaterloggedEntityModelLayers.MAHI_MAHI)), 0.4F);

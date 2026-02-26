@@ -82,6 +82,6 @@ public class WaterloggedEntityTypeTagProvider extends FabricTagProvider.EntityTy
     }
 
     private static ResourceKey<EntityType<?>> angling(String id) {
-        return ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath("angling", id));
+        return ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath("waterlogged", id));
     }
 }

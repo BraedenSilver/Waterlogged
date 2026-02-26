@@ -16,10 +16,10 @@ import java.util.Map;
 public class CrabRenderer extends MobRenderer<CrabEntity, CrabRenderState, CrabModel> {
 
     private static final Map<CrabVariant, Identifier> TEXTURES = Map.of(
-            CrabVariant.DUNGENESS, Identifier.fromNamespaceAndPath("angling", "textures/entity/crab/dungeness.png"),
-            CrabVariant.GHOST,     Identifier.fromNamespaceAndPath("angling", "textures/entity/crab/ghost.png"),
-            CrabVariant.BLUE_CLAW, Identifier.fromNamespaceAndPath("angling", "textures/entity/crab/blue_claw.png"),
-            CrabVariant.MOJANG,    Identifier.fromNamespaceAndPath("angling", "textures/entity/crab/mojang.png")
+            CrabVariant.DUNGENESS, Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/crab/dungeness.png"),
+            CrabVariant.GHOST,     Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/crab/ghost.png"),
+            CrabVariant.BLUE_CLAW, Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/crab/blue_claw.png"),
+            CrabVariant.MOJANG,    Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/crab/mojang.png")
     );
 
     public CrabRenderer(EntityRendererProvider.Context context) {

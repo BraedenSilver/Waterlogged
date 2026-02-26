@@ -10,7 +10,7 @@ import net.minecraft.resources.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class BubbleEyeRenderer extends MobRenderer<BubbleEyeEntity, BubbleEyeRenderState, BubbleEyeModel> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("angling", "textures/entity/bubble_eye/bubble_eye.png");
+    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/bubble_eye/bubble_eye.png");
 
     public BubbleEyeRenderer(EntityRendererProvider.Context context) {
         super(context, new BubbleEyeModel(context.bakeLayer(WaterloggedEntityModelLayers.BUBBLE_EYE)), 0.2F);

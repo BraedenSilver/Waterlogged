@@ -20,14 +20,20 @@ public final class AnomalocarisBlockbench {
                 CubeListBuilder.create()
                 .texOffs(0, 0).addBox(-2.5F, -1.0F, -6.0F, 5.0F, 3.0F, 12.0F, CubeDeformation.NONE),
                 PartPose.offset(0.0F, 22.0F, 0.0F));
-        root.addOrReplaceChild("head",
+        PartDefinition head = root.addOrReplaceChild("head",
                 CubeListBuilder.create()
-                .texOffs(20, 21).addBox(-2.5F, -1.0F, -4.0F, 5.0F, 3.0F, 4.0F, CubeDeformation.NONE)
-                .texOffs(6, 0).addBox(-3.0F, -3.0F, -4.0F, 1.0F, 2.0F, 2.0F, CubeDeformation.NONE)
-                .texOffs(0, 0).addBox(2.0F, -3.0F, -4.0F, 1.0F, 2.0F, 2.0F, CubeDeformation.NONE)
-                .texOffs(0, 0).addBox(-1.5F, 0.0F, -9.0F, 0.0F, 5.0F, 5.0F, CubeDeformation.NONE)
-                .texOffs(0, 10).addBox(1.5F, 0.0F, -9.0F, 0.0F, 5.0F, 5.0F, CubeDeformation.NONE),
+                .texOffs(20, 21).addBox(-2.5F, -1.0F, -4.0F, 5.0F, 3.0F, 4.0F, CubeDeformation.NONE),
                 PartPose.offset(0.0F, 0.0F, -6.0F));
+        head.addOrReplaceChild("head_r1",
+                CubeListBuilder.create()
+                .texOffs(0, 10).addBox(-1.5F, -1.0F, -5.0F, 0.0F, 5.0F, 5.0F, CubeDeformation.NONE)
+                .texOffs(0, 0).addBox(1.5F, -1.0F, -5.0F, 0.0F, 5.0F, 5.0F, CubeDeformation.NONE),
+                PartPose.offsetAndRotation(0.0F, 1.0F, -3.0F, 0.6545F, 0.0F, 0.0F));
+        head.addOrReplaceChild("head_r2",
+                CubeListBuilder.create()
+                .texOffs(0, 0).addBox(-3.0F, -2.0F, -2.0F, 1.0F, 2.0F, 2.0F, CubeDeformation.NONE)
+                .texOffs(6, 0).addBox(2.0F, -2.0F, -2.0F, 1.0F, 2.0F, 2.0F, CubeDeformation.NONE),
+                PartPose.offsetAndRotation(0.0F, -1.0F, -2.0F, 0.5672F, 0.0F, 0.0F));
         root.addOrReplaceChild("left_lobes",
                 CubeListBuilder.create()
                 .texOffs(10, 0).addBox(0.0F, 0.0F, -6.0F, 4.0F, 0.0F, 12.0F, CubeDeformation.NONE),

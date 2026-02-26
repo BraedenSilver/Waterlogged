@@ -27,11 +27,11 @@ public final class SunfishBlockbench {
         root.addOrReplaceChild("right_fin",
                 CubeListBuilder.create()
                 .texOffs(6, 11).addBox(0.0F, -1.0F, 0.0F, 0.0F, 2.0F, 3.0F, CubeDeformation.NONE),
-                PartPose.offsetAndRotation(-1.0F, 1.0F, -1.0F, 0.0F, 0.5672F, 0.0F));
+                PartPose.offsetAndRotation(1.0F, 1.0F, -1.0F, 0.0F, -0.5672F, 0.0F));
         root.addOrReplaceChild("left_fin",
                 CubeListBuilder.create()
                 .texOffs(0, 0).addBox(0.0F, -1.0F, 0.0F, 0.0F, 2.0F, 3.0F, CubeDeformation.NONE),
-                PartPose.offsetAndRotation(1.0F, 1.0F, -1.0F, 0.0F, -0.5672F, 0.0F));
+                PartPose.offsetAndRotation(-1.0F, 1.0F, -1.0F, 0.0F, 0.5672F, 0.0F));
         root.addOrReplaceChild("tail",
                 CubeListBuilder.create()
                 .texOffs(0, 9).addBox(0.0F, -2.0F, 0.0F, 0.0F, 4.0F, 3.0F, CubeDeformation.NONE),

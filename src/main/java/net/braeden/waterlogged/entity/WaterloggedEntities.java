@@ -242,6 +242,10 @@ public class WaterloggedEntities {
                 MobCategory.UNDERGROUND_WATER_CREATURE, ANOMALOCARIS, 20, 1, 2
         );
         BiomeModifications.addSpawn(
+                biome -> biome.getBiomeRegistryEntry().is(WaterloggedBiomeTags.DONGFISH_SPAWN_IN),
+                MobCategory.UNDERGROUND_WATER_CREATURE, DONGFISH, 8, 1, 3
+        );
+        BiomeModifications.addSpawn(
                 biome -> biome.getBiomeRegistryEntry().is(WaterloggedBiomeTags.ANGLERFISH_SPAWN_IN),
                 MobCategory.WATER_AMBIENT, ANGLERFISH, 6, 1, 2
         );

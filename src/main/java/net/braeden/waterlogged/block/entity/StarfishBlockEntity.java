@@ -47,9 +47,13 @@ public class StarfishBlockEntity extends BlockEntity {
         CompoundTag tag = new CompoundTag();
         tag.putInt("Color", color.getId());
         components.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
-        // CUSTOM_MODEL_DATA: stores ARGB color for the item model tint source
+        // CUSTOM_MODEL_DATA: stores ARGB color for the item model tint source.
+        // For RAINBOW, snapshot the current hue so the item shows a real color instead of white.
+        int itemArgb = (color == StarfishColor.RAINBOW)
+                ? color.getArgbForTicks(level != null ? level.getGameTime() : 0, 0F)
+                : color.getArgb();
         components.set(DataComponents.CUSTOM_MODEL_DATA,
-                new CustomModelData(List.of(), List.of(), List.of(), List.of(color.getArgb())));
+                new CustomModelData(List.of(), List.of(), List.of(), List.of(itemArgb)));
     }
 
     @Override

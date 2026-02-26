@@ -187,6 +187,7 @@ public class FryEntity extends AbstractFish {
                         ? variants[serverLevel.getRandom().nextInt(variants.length)]
                         : base);
             }
+            if (adult instanceof net.minecraft.world.entity.Mob mob) mob.setPersistenceRequired();
             serverLevel.addFreshEntity(adult);
         }
         this.discard();

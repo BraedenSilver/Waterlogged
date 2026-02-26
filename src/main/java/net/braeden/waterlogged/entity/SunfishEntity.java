@@ -21,6 +21,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
+import net.braeden.waterlogged.entity.ai.WormTemptGoal;
 import net.minecraft.world.entity.ai.goal.TryFindWaterGoal;
 import net.minecraft.world.entity.animal.fish.AbstractFish;
 import net.minecraft.world.entity.player.Player;
@@ -61,7 +62,8 @@ public class SunfishEntity extends AbstractFish implements WormBreeder {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new TryFindWaterGoal(this));
         this.goalSelector.addGoal(1, new WormBreedGoal(this));
-        this.goalSelector.addGoal(2, new RandomSwimmingGoal(this, 1.0, 40));
+        this.goalSelector.addGoal(2, new WormTemptGoal(this, 1.0));
+        this.goalSelector.addGoal(3, new RandomSwimmingGoal(this, 1.0, 40));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0f));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
     }

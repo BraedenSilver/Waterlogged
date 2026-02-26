@@ -8,6 +8,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
+import net.braeden.waterlogged.entity.ai.WormTemptGoal;
 import net.minecraft.world.entity.animal.fish.Pufferfish;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -44,6 +45,7 @@ public abstract class PufferfishWormMixin extends PathfinderMob implements WormB
     @Inject(method = "registerGoals", at = @At("TAIL"))
     private void angling_addWormBreedGoal(CallbackInfo ci) {
         this.goalSelector.addGoal(1, new WormBreedGoal(this));
+        this.goalSelector.addGoal(2, new WormTemptGoal(this, 1.0));
     }
 
     @Override

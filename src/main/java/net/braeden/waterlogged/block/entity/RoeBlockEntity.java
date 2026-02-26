@@ -129,6 +129,7 @@ public class RoeBlockEntity extends BlockEntity {
                 fry.setParentVariantId(be.parentVariantId);
             }
             fry.setPos(pos.getX() + 0.5, pos.getY() + 0.1, pos.getZ() + 0.5);
+            fry.setPersistenceRequired();
             level.addFreshEntity(fry);
         }
     }

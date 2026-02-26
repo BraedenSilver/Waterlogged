@@ -2,6 +2,7 @@ package net.braeden.waterlogged;
 
 import net.braeden.waterlogged.entity.util.*;
 import net.braeden.waterlogged.entity.PelicanSpawner;
+import net.braeden.waterlogged.item.FishingNetItem;
 import net.braeden.waterlogged.tags.WaterloggedBiomeTags;
 import net.braeden.waterlogged.worldgen.WaterloggedFeatures;
 import net.braeden.waterlogged.worldgen.WaterloggedPlacedFeatures;
@@ -15,7 +16,10 @@ import net.braeden.waterlogged.particle.WaterloggedParticles;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.minecraft.tags.BiomeTags;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
@@ -28,7 +32,7 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 
 public class WaterloggedMod implements ModInitializer {
-	public static final String MOD_ID = "angling";
+	public static final String MOD_ID = "waterlogged";
 
 	@Override
 	public void onInitialize() {
@@ -86,6 +90,16 @@ public class WaterloggedMod implements ModInitializer {
 
 		PelicanSpawner spawner = new PelicanSpawner();
 		ServerTickEvents.END_WORLD_TICK.register(level -> spawner.spawn(level, true, true));
+
+		// Fishing net: left-click catchable fish to collect raw item
+		AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+			if (!(player.getItemInHand(hand).getItem() instanceof FishingNetItem)) return InteractionResult.PASS;
+			if (!(entity instanceof LivingEntity living) || FishingNetItem.getRawFish(living) == null) return InteractionResult.PASS;
+			if (!world.isClientSide()) {
+				FishingNetItem.doCapture(player, hand, living);
+			}
+			return InteractionResult.SUCCESS;
+		});
 
 		// Boost vanilla nautilus shell drop rate as compensation for removing our nautilus mob
 		ResourceKey<LootTable> nautilusLoot = ResourceKey.create(Registries.LOOT_TABLE,

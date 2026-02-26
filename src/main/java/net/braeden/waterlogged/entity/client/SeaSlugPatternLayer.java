@@ -22,7 +22,7 @@ public class SeaSlugPatternLayer extends RenderLayer<SeaSlugRenderState, SeaSlug
         TEXTURES = new EnumMap<>(SeaSlugPattern.class);
         for (SeaSlugPattern p : SeaSlugPattern.values()) {
             if (p.getTextureName() != null) {
-                TEXTURES.put(p, Identifier.fromNamespaceAndPath("angling",
+                TEXTURES.put(p, Identifier.fromNamespaceAndPath("waterlogged",
                         "textures/entity/sea_slug/" + p.getTextureName() + ".png"));
             }
         }

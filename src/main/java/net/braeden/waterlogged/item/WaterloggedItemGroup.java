@@ -16,13 +16,14 @@ public class WaterloggedItemGroup {
 
     public static final ResourceKey<CreativeModeTab> ANGLING_TAB_KEY =
             ResourceKey.create(BuiltInRegistries.CREATIVE_MODE_TAB.key(),
-                    Identifier.fromNamespaceAndPath(MOD_ID, "angling"));
+                    Identifier.fromNamespaceAndPath(MOD_ID, "waterlogged"));
 
     public static final CreativeModeTab ANGLING_TAB = FabricItemGroup.builder()
-            .title(Component.translatable("itemGroup.angling"))
+            .title(Component.translatable("itemGroup.waterlogged"))
             .icon(() -> new ItemStack(WaterloggedItems.SUNFISH_BUCKET))
             .displayItems((params, output) -> {
                 // Blocks
+                output.accept(WaterloggedBlocks.AQUARIUM_GLASS);
                 output.accept(WaterloggedItems.DUCKWEED);
                 output.accept(WaterloggedBlocks.ALGAE);
                 output.accept(WaterloggedBlocks.WORMY_DIRT);
@@ -60,6 +61,7 @@ public class WaterloggedItemGroup {
                 output.accept(WaterloggedItems.COOKED_ANGLERFISH);
 
                 // Misc items
+                output.accept(WaterloggedItems.FISHING_NET);
                 output.accept(WaterloggedItems.PEARL);
                 output.accept(WaterloggedItems.WORM);
 

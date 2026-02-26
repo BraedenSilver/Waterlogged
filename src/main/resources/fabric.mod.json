@@ -30,9 +30,9 @@
     ]
   },
   "mixins": [
-    "angling.mixins.json"
+    "waterlogged.mixins.json"
   ],
-  "accessWidener": "angling.accesswidener",
+  "accessWidener": "waterlogged.accesswidener",
 
   "depends": {
     "fabricloader": ">=0.18.0",

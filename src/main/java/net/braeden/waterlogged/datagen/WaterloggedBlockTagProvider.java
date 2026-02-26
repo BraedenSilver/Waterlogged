@@ -86,7 +86,7 @@ public class WaterloggedBlockTagProvider extends FabricTagProvider.BlockTagProvi
     }
 
     private static ResourceKey<Block> block(String id) {
-        return ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("angling", id));
+        return ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("waterlogged", id));
     }
 
     private static ResourceKey<Block> mcBlock(String id) {

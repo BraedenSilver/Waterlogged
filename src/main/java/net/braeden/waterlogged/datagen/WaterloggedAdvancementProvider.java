@@ -48,7 +48,7 @@ public class WaterloggedAdvancementProvider extends FabricAdvancementProvider {
                                                 .of(blocks, Blocks.DIRT, Blocks.MUD, WaterloggedBlocks.WORMY_DIRT, WaterloggedBlocks.WORMY_MUD)),
                                 net.minecraft.advancements.criterion.ItemPredicate.Builder.item()
                                         .of(items, WaterloggedItems.WORM)))
-                .build(Identifier.fromNamespaceAndPath("angling", "husbandry/put_worm_in_block"));
+                .build(Identifier.fromNamespaceAndPath("waterlogged", "husbandry/put_worm_in_block"));
         exporter.accept(putWormInBlock);
 
         // Obtain roe (parent: put worm in block)
@@ -64,7 +64,7 @@ public class WaterloggedAdvancementProvider extends FabricAdvancementProvider {
                         true,
                         false)
                 .addCriterion("roe", InventoryChangeTrigger.TriggerInstance.hasItems(WaterloggedItems.ROE))
-                .build(Identifier.fromNamespaceAndPath("angling", "husbandry/obtain_roe"));
+                .build(Identifier.fromNamespaceAndPath("waterlogged", "husbandry/obtain_roe"));
         exporter.accept(obtainRoe);
 
         // Obtain sea slug eggs (parent: obtain roe)
@@ -80,7 +80,7 @@ public class WaterloggedAdvancementProvider extends FabricAdvancementProvider {
                         true,
                         false)
                 .addCriterion("sea_slug_eggs", InventoryChangeTrigger.TriggerInstance.hasItems(WaterloggedItems.SEA_SLUG_EGGS))
-                .build(Identifier.fromNamespaceAndPath("angling", "husbandry/obtain_sea_slug_eggs"));
+                .build(Identifier.fromNamespaceAndPath("waterlogged", "husbandry/obtain_sea_slug_eggs"));
         exporter.accept(obtainSeaSlugEggs);
 
         // traded_with_pelican is kept as hand-written JSON because it uses

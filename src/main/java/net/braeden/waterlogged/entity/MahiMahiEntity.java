@@ -9,6 +9,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
@@ -40,7 +41,8 @@ public class MahiMahiEntity extends AbstractFish implements WormBreeder {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new TryFindWaterGoal(this));
         this.goalSelector.addGoal(1, new WormBreedGoal(this));
-        this.goalSelector.addGoal(2, new RandomSwimmingGoal(this, 1.0, 20));
+        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Player.class, 10.0f, 1.2, 1.8));
+        this.goalSelector.addGoal(3, new RandomSwimmingGoal(this, 1.0, 20));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0f));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
     }
@@ -48,7 +50,7 @@ public class MahiMahiEntity extends AbstractFish implements WormBreeder {
     public static AttributeSupplier.Builder createAttributes() {
         return PathfinderMob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 16.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.7)
+                .add(Attributes.MOVEMENT_SPEED, 2.0)
                 .add(Attributes.FOLLOW_RANGE, 16.0);
     }
 

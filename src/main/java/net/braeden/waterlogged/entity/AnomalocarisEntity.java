@@ -19,8 +19,12 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
+import net.braeden.waterlogged.entity.ai.WormTemptGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.fish.AbstractSchoolingFish;
 import net.minecraft.world.entity.animal.fish.WaterAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -51,16 +55,20 @@ public class AnomalocarisEntity extends WaterAnimal implements WormBreeder, Buck
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new RandomSwimmingGoal(this, 1.0, 40));
         this.goalSelector.addGoal(1, new WormBreedGoal(this));
-        this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 8.0f));
-        this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(2, new WormTemptGoal(this, 1.2));
+        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.4, false));
+        this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, 1.0, 40));
+        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0f));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, AbstractSchoolingFish.class, true));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return PathfinderMob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 20.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.5)
+                .add(Attributes.ATTACK_DAMAGE, 3.0)
                 .add(Attributes.FOLLOW_RANGE, 16.0);
     }
 

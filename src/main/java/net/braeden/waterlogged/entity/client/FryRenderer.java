@@ -11,8 +11,8 @@ import net.minecraft.world.entity.animal.fish.TropicalFish;
 
 @Environment(EnvType.CLIENT)
 public class FryRenderer extends MobRenderer<FryEntity, FryRenderState, FryModel> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("angling", "textures/entity/fry/fry.png");
-    private static final Identifier INNARDS_TEXTURE = Identifier.fromNamespaceAndPath("angling", "textures/entity/fry/fry_innards.png");
+    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/fry/fry.png");
+    private static final Identifier INNARDS_TEXTURE = Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/fry/fry_innards.png");
 
     public FryRenderer(EntityRendererProvider.Context context) {
         super(context, new FryModel(context.bakeLayer(WaterloggedEntityModelLayers.FRY)), 0.2F);

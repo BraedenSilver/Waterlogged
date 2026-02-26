@@ -10,7 +10,7 @@ import net.minecraft.resources.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class PelicanRenderer extends MobRenderer<PelicanEntity, PelicanRenderState, PelicanModel> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("angling", "textures/entity/pelican/pelican.png");
+    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/pelican/pelican.png");
 
     public PelicanRenderer(EntityRendererProvider.Context context) {
         super(context, new PelicanModel(context.bakeLayer(WaterloggedEntityModelLayers.PELICAN)), 0.5F);

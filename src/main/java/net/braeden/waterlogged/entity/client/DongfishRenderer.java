@@ -10,7 +10,7 @@ import net.minecraft.resources.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class DongfishRenderer extends MobRenderer<DongfishEntity, DongfishRenderState, DongfishModel> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("angling", "textures/entity/dongfish/dongfish.png");
+    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/dongfish/dongfish.png");
 
     public DongfishRenderer(EntityRendererProvider.Context context) {
         super(context, new DongfishModel(context.bakeLayer(WaterloggedEntityModelLayers.DONGFISH)), 0.3F);

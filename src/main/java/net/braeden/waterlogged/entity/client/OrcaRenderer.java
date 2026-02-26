@@ -13,7 +13,7 @@ import net.minecraft.resources.Identifier;
 public class OrcaRenderer extends MobRenderer<OrcaEntity, OrcaRenderState, OrcaModel> {
 
     private static final Identifier TEXTURE =
-            Identifier.fromNamespaceAndPath("angling", "textures/entity/orca/orca.png");
+            Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/orca/orca.png");
 
     public OrcaRenderer(EntityRendererProvider.Context context) {
         super(context, new OrcaModel(context.bakeLayer(WaterloggedEntityModelLayers.ORCA)), 1.2F);

@@ -15,6 +15,7 @@ public class WaterloggedBiomeTags {
     public static final TagKey<Biome> SEAHORSE_SPAWN_IN = create("seahorse_spawn_in");
     public static final TagKey<Biome> BUBBLE_EYE_SPAWN_IN = create("bubble_eye_spawn_in");
     public static final TagKey<Biome> ANOMALOCARIS_SPAWN_IN = create("anomalocaris_spawn_in");
+    public static final TagKey<Biome> DONGFISH_SPAWN_IN = create("dongfish_spawn_in");
     public static final TagKey<Biome> ANGLERFISH_SPAWN_IN = create("anglerfish_spawn_in");
     public static final TagKey<Biome> MAHI_MAHI_SPAWN_IN = create("mahi_mahi_spawn_in");
     public static final TagKey<Biome> ORCA_SPAWN_IN = create("orca_spawn_in");

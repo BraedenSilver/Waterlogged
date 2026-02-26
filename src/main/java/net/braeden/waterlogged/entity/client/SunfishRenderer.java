@@ -20,7 +20,7 @@ public class SunfishRenderer extends MobRenderer<SunfishEntity, SunfishRenderSta
     static {
         TEXTURES = new EnumMap<>(SunfishVariant.class);
         for (SunfishVariant v : SunfishVariant.values()) {
-            TEXTURES.put(v, Identifier.fromNamespaceAndPath("angling",
+            TEXTURES.put(v, Identifier.fromNamespaceAndPath("waterlogged",
                     "textures/entity/sunfish/" + v.getTextureName() + ".png"));
         }
     }

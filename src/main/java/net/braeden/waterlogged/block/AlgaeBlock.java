@@ -43,7 +43,8 @@ public class AlgaeBlock extends Block implements SimpleWaterloggedBlock, Bonemea
     public static final BooleanProperty WEST      = BlockStateProperties.WEST;
     public static final BooleanProperty UP        = BlockStateProperties.UP;
     public static final BooleanProperty DOWN      = BlockStateProperties.DOWN;
-    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+    public static final BooleanProperty WATERLOGGED  = BlockStateProperties.WATERLOGGED;
+    public static final BooleanProperty PERSISTENT   = BooleanProperty.create("persistent");
 
     public AlgaeBlock(BlockBehaviour.Properties props) {
         super(props);
@@ -51,12 +52,13 @@ public class AlgaeBlock extends Block implements SimpleWaterloggedBlock, Bonemea
                 .setValue(NORTH, false).setValue(SOUTH, false)
                 .setValue(EAST, false).setValue(WEST, false)
                 .setValue(UP, false).setValue(DOWN, false)
-                .setValue(WATERLOGGED, false));
+                .setValue(WATERLOGGED, false)
+                .setValue(PERSISTENT, false));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(NORTH, SOUTH, EAST, WEST, UP, DOWN, WATERLOGGED);
+        builder.add(NORTH, SOUTH, EAST, WEST, UP, DOWN, WATERLOGGED, PERSISTENT);
     }
 
     public static BooleanProperty propertyForFace(Direction dir) {
@@ -181,7 +183,8 @@ public class AlgaeBlock extends Block implements SimpleWaterloggedBlock, Bonemea
 
         return base
                 .setValue(propertyForFace(face.getOpposite()), true)
-                .setValue(WATERLOGGED, waterlogged);
+                .setValue(WATERLOGGED, waterlogged)
+                .setValue(PERSISTENT, isAlgae ? base.getValue(PERSISTENT) : true);
     }
 
     @Override
@@ -197,6 +200,11 @@ public class AlgaeBlock extends Block implements SimpleWaterloggedBlock, Bonemea
                                      BlockState neighborState, RandomSource random) {
         if (state.getValue(WATERLOGGED)) {
             tickAccess.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+        }
+
+        // Player-placed algae is persistent — never decays when support is lost
+        if (state.getValue(PERSISTENT)) {
+            return super.updateShape(state, level, tickAccess, pos, direction, neighborPos, neighborState, random);
         }
 
         // Remove the face touching the changed neighbor if it can no longer attach

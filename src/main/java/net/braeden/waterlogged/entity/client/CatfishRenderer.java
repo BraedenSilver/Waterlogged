@@ -10,7 +10,7 @@ import net.minecraft.resources.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class CatfishRenderer extends MobRenderer<CatfishEntity, CatfishRenderState, CatfishModel> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("angling", "textures/entity/catfish/catfish.png");
+    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/catfish/catfish.png");
 
     public CatfishRenderer(EntityRendererProvider.Context context) {
         super(context, new CatfishModel(context.bakeLayer(WaterloggedEntityModelLayers.CATFISH)), 0.4F);

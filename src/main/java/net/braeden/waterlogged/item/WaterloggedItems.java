@@ -190,6 +190,12 @@ public class WaterloggedItems {
                     .food(new FoodProperties.Builder().nutrition(6).saturationModifier(0.9f).build())
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
+    public static final Item FISHING_NET = register("fishing_net",
+            id -> new FishingNetItem(new Item.Properties()
+                    .durability(131)
+                    .enchantable(10)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
     public static void init() {
         // Items are registered via static field initializers above
         CompostingChanceRegistry.INSTANCE.add(DUCKWEED, 0.3f);

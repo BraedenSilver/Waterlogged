@@ -109,7 +109,8 @@ public class WaterloggedBlockLootTableProvider extends FabricBlockLootTableProvi
     }
 
     private LootTable.Builder pearlDropLoot(Block block, net.minecraft.world.level.ItemLike selfItem) {
-        // Silk touch → drop self, otherwise → random chance for pearl (boosted by looting)
+        // Silk touch → drop self, otherwise → random chance for pearl (boosted by fortune)
+        HolderLookup.RegistryLookup<Enchantment> enchantments = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(1))
@@ -119,8 +120,10 @@ public class WaterloggedBlockLootTableProvider extends FabricBlockLootTableProvi
                                         .when(hasSilkTouch()),
                                 // Otherwise → fortune-boosted pearl chance
                                 LootItem.lootTableItem(WaterloggedItems.PEARL)
-                                        .when(LootItemRandomChanceWithEnchantedBonusCondition.randomChanceAndLootingBoost(
-                                                this.registries, 0.1f, 0.2f)))));
+                                        .when(() -> new LootItemRandomChanceWithEnchantedBonusCondition(
+                                                0.1f,
+                                                new net.minecraft.world.item.enchantment.LevelBasedValue.Linear(0.3f, 0.2f),
+                                                enchantments.getOrThrow(Enchantments.FORTUNE))))));
     }
 
     private LootTable.Builder papyrusLoot() {

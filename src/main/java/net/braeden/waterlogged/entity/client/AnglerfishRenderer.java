@@ -10,8 +10,8 @@ import net.minecraft.resources.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class AnglerfishRenderer extends MobRenderer<AnglerfishEntity, AnglerfishRenderState, AnglerfishModel> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("angling", "textures/entity/anglerfish/anglerfish.png");
-    private static final Identifier OVERLAY_TEXTURE = Identifier.fromNamespaceAndPath("angling", "textures/entity/anglerfish/anglerfish_overlay.png");
+    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/anglerfish/anglerfish.png");
+    private static final Identifier OVERLAY_TEXTURE = Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/anglerfish/anglerfish_overlay.png");
 
     public AnglerfishRenderer(EntityRendererProvider.Context context) {
         super(context, new AnglerfishModel(context.bakeLayer(WaterloggedEntityModelLayers.ANGLERFISH)), 0.4F);

@@ -158,8 +158,8 @@ public class OrcaEntity extends AbstractFish {
 
     public static AttributeSupplier.Builder createAttributes() {
         return PathfinderMob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 30.0)
-                .add(Attributes.MOVEMENT_SPEED, 1.2)
+                .add(Attributes.MAX_HEALTH, 40.0)
+                .add(Attributes.MOVEMENT_SPEED, 1.5)
                 .add(Attributes.ATTACK_DAMAGE, 6.0)
                 .add(Attributes.FOLLOW_RANGE, 24.0);
     }

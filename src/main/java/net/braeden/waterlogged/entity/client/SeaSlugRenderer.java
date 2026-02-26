@@ -10,7 +10,7 @@ import net.minecraft.resources.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class SeaSlugRenderer extends MobRenderer<SeaSlugEntity, SeaSlugRenderState, SeaSlugModel> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("angling", "textures/entity/sea_slug/sea_slug.png");
+    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/sea_slug/sea_slug.png");
 
     public SeaSlugRenderer(EntityRendererProvider.Context context) {
         super(context, new SeaSlugModel(context.bakeLayer(WaterloggedEntityModelLayers.SEA_SLUG)), 0.3F);

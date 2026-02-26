@@ -1,5 +1,6 @@
 package net.braeden.waterlogged.entity.util;
 
+import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
 
 public enum StarfishColor implements StringRepresentable {
@@ -11,9 +12,9 @@ public enum StarfishColor implements StringRepresentable {
     RAINBOW(5, "rainbow", 0xFFFFFFFF); // Special cycling variant (like jeb_ sheep)
 
     private static final StarfishColor[] VALUES = values();
-    // Non-rainbow colors used for rainbow cycling
-    private static final StarfishColor[] RAINBOW_COLORS = {RED, BLUE, ORANGE, YELLOW, PINK};
-    private static final int CYCLE_TICKS = 40; // Ticks per color in rainbow cycle
+    private static final StarfishColor[] NON_RAINBOW = {RED, BLUE, ORANGE, YELLOW, PINK};
+    /** Ticks for a full hue revolution (600 ticks = 30 seconds at 20 tps). */
+    private static final float RAINBOW_CYCLE_TICKS = 600.0F;
 
     private final int id;
     private final String name;
@@ -40,18 +41,18 @@ public enum StarfishColor implements StringRepresentable {
         if (random.nextInt(100) == 0) {
             return RAINBOW;
         }
-        // Pick from non-rainbow colors
-        return RAINBOW_COLORS[random.nextInt(RAINBOW_COLORS.length)];
+        return NON_RAINBOW[random.nextInt(NON_RAINBOW.length)];
     }
 
     /**
-     * For RAINBOW starfish, get the current color based on game ticks.
-     * For other colors, just return the static color.
+     * For RAINBOW, smoothly cycles through the full hue wheel (like jeb_ sheep).
+     * partialTick interpolates between game ticks for frame-smooth animation.
+     * For other colors, returns the static ARGB value.
      */
-    public int getArgbForTicks(long gameTicks) {
+    public int getArgbForTicks(long gameTicks, float partialTick) {
         if (this == RAINBOW) {
-            int colorIndex = (int) ((gameTicks / CYCLE_TICKS) % RAINBOW_COLORS.length);
-            return RAINBOW_COLORS[colorIndex].argb;
+            float hue = ((gameTicks + partialTick) % RAINBOW_CYCLE_TICKS) / RAINBOW_CYCLE_TICKS;
+            return 0xFF000000 | Mth.hsvToRgb(hue, 1.0F, 1.0F);
         }
         return this.argb;
     }
