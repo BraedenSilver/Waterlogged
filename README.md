@@ -8,7 +8,7 @@
 ![Java](https://img.shields.io/badge/Java-21+-f6a623?style=flat&logo=openjdk&logoColor=white)
 ![License](https://img.shields.io/badge/License-CC0--1.0-lightgrey?style=flat)
 
-A Fabric mod for Minecraft 1.21.11 that expands and deepens the aquatic experience. Vanilla's oceans, rivers, and wetlands are a great foundation — but they're sparse. Waterlogged fills them with new life: creatures that behave differently, plants that grow naturally, food worth catching, and structures worth exploring.
+A WIP Fabric mod for Minecraft 1.21.11 that expands and deepens the aquatic experience. Vanilla's oceans, rivers, and wetlands are a great foundation — but they're sparse. Waterlogged fills them with new life: creatures that behave differently, plants that grow naturally, food worth catching, and structures worth exploring.
 
 ---
 
