@@ -77,9 +77,9 @@ public class StarfishBlock extends Block implements SimpleWaterloggedBlock, Enti
 
     public static int horizontalToRotation(Direction dir) {
         return switch (dir) {
-            case NORTH -> 0;
+            case NORTH -> 2;
             case EAST -> 1;
-            case SOUTH -> 2;
+            case SOUTH -> 0;
             case WEST -> 3;
             default -> 0;
         };

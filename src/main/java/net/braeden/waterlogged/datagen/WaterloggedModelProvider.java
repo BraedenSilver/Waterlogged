@@ -35,6 +35,15 @@ public class WaterloggedModelProvider extends FabricModelProvider {
             Optional.of(Identifier.withDefaultNamespace("item/template_spawn_egg")),
             Optional.empty());
 
+    private static final ModelTemplate PARTICLE_ONLY_BLOCK = new ModelTemplate(
+            Optional.of(Identifier.withDefaultNamespace("block/block")),
+            Optional.empty(), TextureSlot.PARTICLE);
+
+    private static final ModelTemplate THREE_LAYERED_ITEM = new ModelTemplate(
+            Optional.of(Identifier.withDefaultNamespace("item/generated")),
+            Optional.empty(),
+            TextureSlot.LAYER0, TextureSlot.LAYER1, TextureSlot.LAYER2);
+
     /** Saved from generateBlockStateModels so generateItemModels can write model geometry files. */
     private BiConsumer<Identifier, ModelInstance> modelOutput;
 
@@ -75,14 +84,35 @@ public class WaterloggedModelProvider extends FabricModelProvider {
                         BlockModelGenerators.plainVariant(wormyMud1)));
         gen.registerSimpleItemModel(WaterloggedBlocks.WORMY_MUD, wormyMud1);
 
-        // Simple single-variant blocks (hand-written block models, datagen blockstates)
-        simpleBlockState(gen, WaterloggedBlocks.ANEMONE, "block/anemone");
+        // Extra cube_all variants for wormy_dirt and wormy_mud (random visual variety)
+        for (String name : new String[]{"wormy_dirt_2", "wormy_dirt_3", "wormy_mud_2", "wormy_mud_3"}) {
+            ModelTemplates.CUBE_ALL.create(
+                    Identifier.fromNamespaceAndPath("waterlogged", "block/" + name),
+                    new TextureMapping().put(TextureSlot.ALL, Identifier.fromNamespaceAndPath("waterlogged", "block/" + name)),
+                    gen.modelOutput);
+        }
+
+        // Particle-only block models (rendered by BlockEntityRenderer; model only defines particle texture)
+        Identifier anemoneModel = PARTICLE_ONLY_BLOCK.create(
+                WaterloggedBlocks.ANEMONE,
+                new TextureMapping().put(TextureSlot.PARTICLE, Identifier.fromNamespaceAndPath("waterlogged", "block/anemone")),
+                gen.modelOutput);
+        gen.blockStateOutput.accept(
+                BlockModelGenerators.createSimpleBlock(WaterloggedBlocks.ANEMONE, BlockModelGenerators.plainVariant(anemoneModel)));
+
+        Identifier urchinModel = PARTICLE_ONLY_BLOCK.create(
+                WaterloggedBlocks.URCHIN,
+                new TextureMapping().put(TextureSlot.PARTICLE, Identifier.fromNamespaceAndPath("waterlogged", "block/urchin")),
+                gen.modelOutput);
+        gen.blockStateOutput.accept(
+                BlockModelGenerators.createSimpleBlock(WaterloggedBlocks.URCHIN, BlockModelGenerators.plainVariant(urchinModel)));
+
+        // Simple single-variant blocks (geometry written by WaterloggedRawProvider)
         simpleBlockState(gen, WaterloggedBlocks.DUCKWEED, "block/duckweed");
         simpleBlockState(gen, WaterloggedBlocks.OYSTERS, "block/oysters");
         simpleBlockState(gen, WaterloggedBlocks.ROE, "block/roe");
         // items/roe.json registered with tints in generateItemModels()
         simpleBlockState(gen, WaterloggedBlocks.SARGASSUM, "block/sargassum");
-        simpleBlockState(gen, WaterloggedBlocks.URCHIN, "block/urchin");
 
         // Sea slug eggs: random y-rotation selection
         Identifier seaSlugEggsModel = blockModel("sea_slug_eggs");
@@ -140,14 +170,20 @@ public class WaterloggedModelProvider extends FabricModelProvider {
                 BlockModelGenerators.variant(algaeBase.with(BlockModelGenerators.X_ROT_90)));
         gen.blockStateOutput.accept(algaeMultipart);
 
-        // Starfish: multipart unconditional
-        Identifier starfishModel = blockModel("starfish");
+        // Starfish: multipart unconditional (particle=item/starfish, rendered by BlockEntityRenderer)
+        Identifier starfishModel = PARTICLE_ONLY_BLOCK.create(
+                WaterloggedBlocks.STARFISH,
+                new TextureMapping().put(TextureSlot.PARTICLE, Identifier.fromNamespaceAndPath("waterlogged", "item/starfish")),
+                gen.modelOutput);
         MultiPartGenerator starfishMultipart = MultiPartGenerator.multiPart(WaterloggedBlocks.STARFISH);
         starfishMultipart.with(BlockModelGenerators.plainVariant(starfishModel));
         gen.blockStateOutput.accept(starfishMultipart);
 
-        // Dead starfish: multipart unconditional
-        Identifier deadStarfishModel = blockModel("dead_starfish");
+        // Dead starfish: multipart unconditional (particle=item/dead_starfish, rendered by BlockEntityRenderer)
+        Identifier deadStarfishModel = PARTICLE_ONLY_BLOCK.create(
+                WaterloggedBlocks.DEAD_STARFISH,
+                new TextureMapping().put(TextureSlot.PARTICLE, Identifier.fromNamespaceAndPath("waterlogged", "item/dead_starfish")),
+                gen.modelOutput);
         MultiPartGenerator deadStarfishMultipart = MultiPartGenerator.multiPart(WaterloggedBlocks.DEAD_STARFISH);
         deadStarfishMultipart.with(BlockModelGenerators.plainVariant(deadStarfishModel));
         gen.blockStateOutput.accept(deadStarfishMultipart);
@@ -235,10 +271,47 @@ public class WaterloggedModelProvider extends FabricModelProvider {
         itemModels.itemModelOutput.accept(WaterloggedBlocks.SEA_SLUG_EGGS.asItem(),
                 ItemModelUtils.tintedModel(blockModel("sea_slug_eggs"), new CustomModelDataSource(0, 0xFFFFFF)));
 
-        // Items that reference block textures or need custom handling:
-        // algae, sargassum use block/ textures not item/ textures.
-        // roe has two texture layers, sea_slug_bucket has three, oysters has display transforms,
-        // dongfish_bucket has overrides. These are kept as hand-written models/item/ JSONs.
+        // Algae: flat item using block/ texture
+        Identifier algaeItemId = ModelTemplates.FLAT_ITEM.create(
+                ModelLocationUtils.getModelLocation(WaterloggedBlocks.ALGAE.asItem()),
+                new TextureMapping().put(TextureSlot.LAYER0, Identifier.fromNamespaceAndPath("waterlogged", "block/algae")),
+                this.modelOutput);
+        itemModels.itemModelOutput.accept(WaterloggedBlocks.ALGAE.asItem(), ItemModelUtils.plainModel(algaeItemId));
+
+        // Sargassum: flat item using block/ texture
+        Identifier sargassumItemId = ModelTemplates.FLAT_ITEM.create(
+                ModelLocationUtils.getModelLocation(WaterloggedItems.SARGASSUM),
+                new TextureMapping().put(TextureSlot.LAYER0, Identifier.fromNamespaceAndPath("waterlogged", "block/sargassum")),
+                this.modelOutput);
+        itemModels.itemModelOutput.accept(WaterloggedItems.SARGASSUM, ItemModelUtils.plainModel(sargassumItemId));
+
+        // Oysters: items/ definition pointing to model with display transforms (geometry in WaterloggedRawProvider)
+        itemModels.itemModelOutput.accept(WaterloggedBlocks.OYSTERS.asItem(),
+                ItemModelUtils.plainModel(Identifier.fromNamespaceAndPath("waterlogged", "item/oysters")));
+
+        // Sea slug bucket: three-layer tinted model
+        Identifier seaSlugBucketModelId = THREE_LAYERED_ITEM.create(
+                ModelLocationUtils.getModelLocation(WaterloggedItems.SEA_SLUG_BUCKET),
+                new TextureMapping()
+                        .put(TextureSlot.LAYER0, Identifier.fromNamespaceAndPath("waterlogged", "item/sea_slug_bucket"))
+                        .put(TextureSlot.LAYER1, Identifier.fromNamespaceAndPath("waterlogged", "item/sea_slug_bucket_overlay_0"))
+                        .put(TextureSlot.LAYER2, Identifier.fromNamespaceAndPath("waterlogged", "item/sea_slug_bucket_overlay_1")),
+                this.modelOutput);
+        itemModels.itemModelOutput.accept(WaterloggedItems.SEA_SLUG_BUCKET,
+                ItemModelUtils.tintedModel(seaSlugBucketModelId,
+                        new Constant(-1),
+                        new CustomModelDataSource(0, 0xFFFFFF),
+                        new CustomModelDataSource(1, 0xFFFFFF)));
+
+        // Dongfish bucket: two geometry models (items/ condition written by WaterloggedRawProvider)
+        ModelTemplates.FLAT_ITEM.create(
+                Identifier.fromNamespaceAndPath("waterlogged", "item/dongfish_bucket_horngus"),
+                new TextureMapping().put(TextureSlot.LAYER0, Identifier.fromNamespaceAndPath("waterlogged", "item/dongfish_bucket")),
+                this.modelOutput);
+        ModelTemplates.FLAT_ITEM.create(
+                Identifier.fromNamespaceAndPath("waterlogged", "item/dongfish_bucket_no_horngus"),
+                new TextureMapping().put(TextureSlot.LAYER0, Identifier.fromNamespaceAndPath("waterlogged", "item/dongfish_bucket_no_horngus")),
+                this.modelOutput);
     }
 
     private static void simpleBlockState(BlockModelGenerators gen, Block block, String modelPath) {

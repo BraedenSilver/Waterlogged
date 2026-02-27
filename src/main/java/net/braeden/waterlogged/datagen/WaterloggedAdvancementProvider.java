@@ -1,6 +1,8 @@
 package net.braeden.waterlogged.datagen;
 
 import net.braeden.waterlogged.block.WaterloggedBlocks;
+import net.braeden.waterlogged.criteria.TradedWithPelicanCriterion;
+import net.braeden.waterlogged.criteria.WaterloggedCriteria;
 import net.braeden.waterlogged.item.WaterloggedItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
@@ -14,8 +16,10 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
@@ -25,7 +29,8 @@ public class WaterloggedAdvancementProvider extends FabricAdvancementProvider {
         super(output, registriesFuture);
     }
 
-    @Override
+    @SuppressWarnings("removal")
+@Override
     public void generateAdvancement(HolderLookup.Provider registries, Consumer<AdvancementHolder> exporter) {
         var blocks = registries.lookupOrThrow(Registries.BLOCK);
         var items = registries.lookupOrThrow(Registries.ITEM);
@@ -83,8 +88,23 @@ public class WaterloggedAdvancementProvider extends FabricAdvancementProvider {
                 .build(Identifier.fromNamespaceAndPath("waterlogged", "husbandry/obtain_sea_slug_eggs"));
         exporter.accept(obtainSeaSlugEggs);
 
-        // traded_with_pelican is kept as hand-written JSON because it uses
-        // a custom criterion trigger (angling:traded_with_pelican) that is
-        // not yet registered as a Java CriterionTrigger.
+        // Traded with pelican (parent: minecraft:husbandry/tactical_fishing)
+        //noinspection removal
+        AdvancementHolder tradedWithPelican = Advancement.Builder.advancement()
+                .parent(Identifier.withDefaultNamespace("husbandry/tactical_fishing"))
+                .display(
+                        Items.SALMON_BUCKET,
+                        Component.translatable("advancements.husbandry.traded_with_pelican.title"),
+                        Component.translatable("advancements.husbandry.traded_with_pelican.description"),
+                        null,
+                        AdvancementType.TASK,
+                        true,
+                        true,
+                        true)
+                .addCriterion("traded_with_pelican",
+                        WaterloggedCriteria.TRADED_WITH_PELICAN.createCriterion(
+                                new TradedWithPelicanCriterion.TriggerInstance(Optional.empty())))
+                .build(Identifier.fromNamespaceAndPath("waterlogged", "husbandry/traded_with_pelican"));
+        exporter.accept(tradedWithPelican);
     }
 }

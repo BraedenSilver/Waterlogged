@@ -91,6 +91,10 @@ public class WaterloggedBiomeTagProvider extends FabricTagProvider<Biome> {
                 .add(COLD_OCEAN).add(DEEP_COLD_OCEAN)
                 .add(FROZEN_OCEAN).add(DEEP_FROZEN_OCEAN);
 
+        // Right whales — deep cold and frozen oceans
+        builder(WaterloggedBiomeTags.RIGHT_WHALE_SPAWN_IN)
+                .add(DEEP_COLD_OCEAN).add(DEEP_FROZEN_OCEAN);
+
         // Feature biomes
         builder(WaterloggedBiomeTags.OYSTER_REEF_BIOMES)
                 .add(OCEAN).add(DEEP_OCEAN)

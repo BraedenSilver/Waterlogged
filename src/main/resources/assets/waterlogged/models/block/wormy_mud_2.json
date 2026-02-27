@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "waterlogged:block/wormy_mud_2"
-  }
-}

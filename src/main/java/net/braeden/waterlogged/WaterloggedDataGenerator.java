@@ -8,8 +8,8 @@ import net.braeden.waterlogged.datagen.WaterloggedEntityLootTableProvider;
 import net.braeden.waterlogged.datagen.WaterloggedEntityTypeTagProvider;
 import net.braeden.waterlogged.datagen.WaterloggedLangProvider;
 import net.braeden.waterlogged.datagen.WaterloggedModelProvider;
+import net.braeden.waterlogged.datagen.WaterloggedRawProvider;
 import net.braeden.waterlogged.datagen.WaterloggedRecipeProvider;
-import net.braeden.waterlogged.datagen.WaterloggedWorldGenProvider;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 
@@ -25,7 +25,7 @@ public class WaterloggedDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(WaterloggedBiomeTagProvider::new);
         pack.addProvider(WaterloggedBlockLootTableProvider::new);
         pack.addProvider(WaterloggedEntityLootTableProvider::new);
-        pack.addProvider(WaterloggedWorldGenProvider::new);
+        pack.addProvider(WaterloggedRawProvider::new);
         pack.addProvider(WaterloggedModelProvider::new);
         pack.addProvider(WaterloggedAdvancementProvider::new);
     }
