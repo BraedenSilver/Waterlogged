@@ -166,7 +166,7 @@ public class HydrothermalVentFeature extends Feature<NoneFeatureConfiguration> {
                         level.setBlock(pos,
                                 innerDist < 0.9
                                         ? selectInnerMaterial(materialNoise, pos)
-                                        : selectMaterial(materialNoise, pos, deepslate),
+                                        : selectVentOreOrMaterial(random, materialNoise, pos, deepslate),
                                 2);
                     }
                 }
@@ -176,6 +176,21 @@ public class HydrothermalVentFeature extends Feature<NoneFeatureConfiguration> {
 
     private static float lerp(float a, float b, float t) {
         return a + (b - a) * t;
+    }
+
+    // Outer body: rare ore veins hydrothermal heat can produce, falling back to normal rock
+    private BlockState selectVentOreOrMaterial(RandomSource random, ImprovedNoise noise, BlockPos pos, boolean deepslate) {
+        double roll = random.nextDouble();
+        if (roll < 0.0025) {
+            return deepslate ? Blocks.DEEPSLATE_DIAMOND_ORE.defaultBlockState() : Blocks.DIAMOND_ORE.defaultBlockState();
+        } else if (roll < 0.0275) {
+            return deepslate ? Blocks.DEEPSLATE_GOLD_ORE.defaultBlockState() : Blocks.GOLD_ORE.defaultBlockState();
+        } else if (roll < 0.0625) {
+            return random.nextBoolean()
+                    ? (deepslate ? Blocks.DEEPSLATE_COPPER_ORE.defaultBlockState() : Blocks.COPPER_ORE.defaultBlockState())
+                    : (deepslate ? Blocks.DEEPSLATE_IRON_ORE.defaultBlockState() : Blocks.IRON_ORE.defaultBlockState());
+        }
+        return selectMaterial(noise, pos, deepslate);
     }
 
     // Inner lining: cobblestone and stone, as if lava solidified on contact with ocean water

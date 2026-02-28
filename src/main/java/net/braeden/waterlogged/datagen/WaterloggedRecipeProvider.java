@@ -159,6 +159,18 @@ public class WaterloggedRecipeProvider extends FabricRecipeProvider {
                         .unlockedBy(getHasName(Items.STRING), has(Items.STRING))
                         .save(output);
 
+                // Sargassum block compression (4 sargassum → 1 block, 1 block → 4 sargassum)
+                shaped(RecipeCategory.BUILDING_BLOCKS, WaterloggedBlocks.SARGASSUM_BLOCK)
+                        .pattern("##")
+                        .pattern("##")
+                        .define('#', WaterloggedItems.SARGASSUM)
+                        .unlockedBy(getHasName(WaterloggedItems.SARGASSUM), has(WaterloggedItems.SARGASSUM))
+                        .save(output, "waterlogged:sargassum_block_from_sargassum");
+                shapeless(RecipeCategory.MISC, WaterloggedItems.SARGASSUM, 4)
+                        .requires(WaterloggedBlocks.SARGASSUM_BLOCK)
+                        .unlockedBy(getHasName(WaterloggedBlocks.SARGASSUM_BLOCK.asItem()), has(WaterloggedBlocks.SARGASSUM_BLOCK.asItem()))
+                        .save(output, "waterlogged:sargassum_from_sargassum_block");
+
                 // Aquarium Glass (Pearls + Glass)
                 // Assuming shapeless 8 glass + 1 pearl ? Or 4 glass + 1 pearl? Or 1 glass + 1 pearl?
                 // User said "you get aquarium glass with pearls and glass. only works with glass blocks."

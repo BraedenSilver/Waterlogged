@@ -24,7 +24,7 @@ public final class AnglerfishBlockbench {
                 PartPose.offset(0.0F, 21.0F, 0.0F));
         root.addOrReplaceChild("jaw",
                 CubeListBuilder.create()
-                .texOffs(0, 14).addBox(-3.0F, -0.5F, -3.75F, 6.0F, 3.0F, 4.0F, CubeDeformation.NONE),
+                .texOffs(0, 14).addBox(-3.0F, -0.5F, -3.75F, 6.0F, 3.0F, 4.0F, new CubeDeformation(0.25F)),
                 PartPose.offset(0.0F, 0.5F, -0.5F));
         root.addOrReplaceChild("illicium",
                 CubeListBuilder.create()
