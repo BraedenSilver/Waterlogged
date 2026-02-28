@@ -53,6 +53,8 @@ public class SeaSlugEntity extends WaterAnimal implements WormBreeder, Bucketabl
             SynchedEntityData.defineId(SeaSlugEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> BIOLUMINESCENCE =
             SynchedEntityData.defineId(SeaSlugEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> PATTERN_COLOR =
+            SynchedEntityData.defineId(SeaSlugEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Byte> DATA_FLAGS =
             SynchedEntityData.defineId(SeaSlugEntity.class, EntityDataSerializers.BYTE);
     private static final int FLAG_CLIMBING = 0x1;
@@ -79,6 +81,7 @@ public class SeaSlugEntity extends WaterAnimal implements WormBreeder, Bucketabl
         builder.define(COLOR, SeaSlugColor.RED.getId());
         builder.define(PATTERN, SeaSlugPattern.PLAIN.getId());
         builder.define(BIOLUMINESCENCE, SeaSlugBioluminescence.NONE.getId());
+        builder.define(PATTERN_COLOR, SeaSlugColor.BLUE.getId());
         builder.define(DATA_FLAGS, (byte) 0);
     }
 
@@ -122,6 +125,21 @@ public class SeaSlugEntity extends WaterAnimal implements WormBreeder, Bucketabl
         this.getEntityData().set(BIOLUMINESCENCE, biolum.getId());
     }
 
+    public SeaSlugColor getPatternColor() {
+        return SeaSlugColor.byId(this.getEntityData().get(PATTERN_COLOR));
+    }
+
+    public void setPatternColor(SeaSlugColor color) {
+        this.getEntityData().set(PATTERN_COLOR, color.getId());
+    }
+
+    private static SeaSlugColor pickDifferentColor(SeaSlugColor exclude, RandomSource rng) {
+        SeaSlugColor[] all = SeaSlugColor.values();
+        SeaSlugColor pick;
+        do { pick = all[rng.nextInt(all.length)]; } while (pick == exclude);
+        return pick;
+    }
+
     public static boolean canSpawn(EntityType<SeaSlugEntity> type, LevelAccessor level,
             EntitySpawnReason reason, BlockPos pos, RandomSource random) {
         FluidState fluid = level.getFluidState(pos);
@@ -133,11 +151,14 @@ public class SeaSlugEntity extends WaterAnimal implements WormBreeder, Bucketabl
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty,
                                                    EntitySpawnReason spawnReason, @Nullable SpawnGroupData entityData) {
         SpawnGroupData data = super.finalizeSpawn(world, difficulty, spawnReason, entityData);
+        if (spawnReason == EntitySpawnReason.BUCKET) return data;
         var rng = world.getRandom();
         SeaSlugColor[] colors = SeaSlugColor.values();
         SeaSlugPattern[] patterns = SeaSlugPattern.values();
-        this.setColor(colors[rng.nextInt(colors.length)]);
+        SeaSlugColor bodyColor = colors[rng.nextInt(colors.length)];
+        this.setColor(bodyColor);
         this.setPattern(patterns[rng.nextInt(patterns.length)]);
+        this.setPatternColor(pickDifferentColor(bodyColor, rng));
         int biolumRoll = rng.nextInt(10);
         if (biolumRoll == 7) this.setBioluminescence(SeaSlugBioluminescence.BODY);
         else if (biolumRoll == 8) this.setBioluminescence(SeaSlugBioluminescence.PATTERN);
@@ -172,8 +193,9 @@ public class SeaSlugEntity extends WaterAnimal implements WormBreeder, Bucketabl
     public ItemStack getBucketItemStack() {
         ItemStack stack = new ItemStack(WaterloggedItems.SEA_SLUG_BUCKET);
         int argb = this.getColor().getArgb();
+        int patternArgb = this.getPatternColor().getArgb();
         stack.set(DataComponents.CUSTOM_MODEL_DATA,
-                new CustomModelData(java.util.List.of(), java.util.List.of(), java.util.List.of(), java.util.List.of(argb, argb)));
+                new CustomModelData(java.util.List.of(), java.util.List.of(), java.util.List.of(), java.util.List.of(argb, patternArgb)));
         return stack;
     }
 
@@ -183,6 +205,7 @@ public class SeaSlugEntity extends WaterAnimal implements WormBreeder, Bucketabl
             tag.putFloat("Health", this.getHealth());
             tag.putInt("Color", this.getColor().getId());
             tag.putInt("Pattern", this.getPattern().getId());
+            tag.putInt("PatternColor", this.getPatternColor().getId());
             tag.putInt("Bioluminescence", this.getBioluminescence().getId());
         });
     }
@@ -190,9 +213,26 @@ public class SeaSlugEntity extends WaterAnimal implements WormBreeder, Bucketabl
     @Override
     public void loadFromBucketTag(CompoundTag tag) {
         this.setHealth(tag.getFloatOr("Health", this.getMaxHealth()));
-        this.setColor(SeaSlugColor.byId(tag.getIntOr("Color", SeaSlugColor.RED.getId())));
-        this.setPattern(SeaSlugPattern.byId(tag.getIntOr("Pattern", SeaSlugPattern.PLAIN.getId())));
-        this.setBioluminescence(SeaSlugBioluminescence.byId(tag.getIntOr("Bioluminescence", 0)));
+        if (tag.contains("Color")) {
+            SeaSlugColor loadedColor = SeaSlugColor.byId(tag.getIntOr("Color", SeaSlugColor.RED.getId()));
+            this.setColor(loadedColor);
+            this.setPattern(SeaSlugPattern.byId(tag.getIntOr("Pattern", SeaSlugPattern.PLAIN.getId())));
+            this.setPatternColor(SeaSlugColor.byId(tag.getIntOr("PatternColor",
+                    pickDifferentColor(loadedColor, this.random).getId())));
+            this.setBioluminescence(SeaSlugBioluminescence.byId(tag.getIntOr("Bioluminescence", 0)));
+        } else {
+            // Plain creative bucket — randomize like a natural spawn
+            SeaSlugColor[] colors = SeaSlugColor.values();
+            SeaSlugPattern[] patterns = SeaSlugPattern.values();
+            SeaSlugColor bodyColor = colors[this.random.nextInt(colors.length)];
+            this.setColor(bodyColor);
+            this.setPattern(patterns[this.random.nextInt(patterns.length)]);
+            this.setPatternColor(pickDifferentColor(bodyColor, this.random));
+            int biolumRoll = this.random.nextInt(10);
+            if (biolumRoll == 7) this.setBioluminescence(SeaSlugBioluminescence.BODY);
+            else if (biolumRoll == 8) this.setBioluminescence(SeaSlugBioluminescence.PATTERN);
+            else if (biolumRoll == 9) this.setBioluminescence(SeaSlugBioluminescence.BOTH);
+        }
     }
 
     @Override
@@ -207,6 +247,7 @@ public class SeaSlugEntity extends WaterAnimal implements WormBreeder, Bucketabl
         super.addAdditionalSaveData(output);
         output.putInt("Color", this.getColor().getId());
         output.putInt("Pattern", this.getPattern().getId());
+        output.putInt("PatternColor", this.getPatternColor().getId());
         output.putInt("Bioluminescence", this.getBioluminescence().getId());
         output.putBoolean("FromBucket", this.fromBucket);
     }
@@ -214,8 +255,11 @@ public class SeaSlugEntity extends WaterAnimal implements WormBreeder, Bucketabl
     @Override
     public void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
-        this.setColor(SeaSlugColor.byId(input.getIntOr("Color", SeaSlugColor.RED.getId())));
+        SeaSlugColor loadedColor = SeaSlugColor.byId(input.getIntOr("Color", SeaSlugColor.RED.getId()));
+        this.setColor(loadedColor);
         this.setPattern(SeaSlugPattern.byId(input.getIntOr("Pattern", SeaSlugPattern.PLAIN.getId())));
+        this.setPatternColor(SeaSlugColor.byId(input.getIntOr("PatternColor",
+                pickDifferentColor(loadedColor, this.random).getId())));
         this.setBioluminescence(SeaSlugBioluminescence.byId(input.getIntOr("Bioluminescence", 0)));
         this.fromBucket = input.getBooleanOr("FromBucket", false);
     }
@@ -260,6 +304,8 @@ public class SeaSlugEntity extends WaterAnimal implements WormBreeder, Bucketabl
         if (!this.level().isClientSide()) {
             if (wormBredTimer > 0) wormBredTimer--;
             this.setClimbing(this.horizontalCollision);
+
+
         }
 
         if (this.level().isClientSide()) {

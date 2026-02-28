@@ -5,6 +5,7 @@ import net.braeden.waterlogged.entity.WaterloggedEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -73,6 +74,15 @@ public class SeaSlugEggsBlock extends Block implements SimpleWaterloggedBlock, E
     @Override
     public FluidState getFluidState(BlockState state) {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
+        ItemStack stack = super.getCloneItemStack(level, pos, state, includeData);
+        if (level.getBlockEntity(pos) instanceof SeaSlugEggsBlockEntity be) {
+            be.applyPickComponents(stack);
+        }
+        return stack;
     }
 
     @Override

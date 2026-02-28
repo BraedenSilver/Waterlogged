@@ -85,7 +85,8 @@ public class WaterloggedMod implements ModInitializer {
 				ctx -> ctx.getBiomeRegistryEntry().is(WaterloggedBiomeTags.URCHIN_BIOMES),
 				GenerationStep.Decoration.VEGETAL_DECORATION, WaterloggedPlacedFeatures.URCHIN);
 		BiomeModifications.addFeature(
-				ctx -> ctx.getBiomeRegistryEntry().is(BiomeTags.IS_DEEP_OCEAN),
+				ctx -> ctx.getBiomeRegistryEntry().is(BiomeTags.IS_DEEP_OCEAN)
+						&& !ctx.getBiomeKey().equals(ResourceKey.create(Registries.BIOME, Identifier.withDefaultNamespace("deep_lukewarm_ocean"))),
 				GenerationStep.Decoration.VEGETAL_DECORATION, WaterloggedPlacedFeatures.HYDROTHERMAL_VENT);
 
 		PelicanSpawner spawner = new PelicanSpawner();

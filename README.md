@@ -54,7 +54,7 @@ A cave fish found in subterranean pools and aquifers throughout most of the over
 
 ### Seahorse
 
-*Spawns in:* Lukewarm Ocean, Deep Lukewarm Ocean
+*Spawns in:* Lukewarm Ocean, Warm Ocean
 
 A slow, delicate fish that spawns in small groups in warm coastal waters. Feed two seahorses a **Worm** each to breed.
 
@@ -119,7 +119,7 @@ A vibrant nudibranch with a highly varied appearance. Each sea slug has a random
 A scuttling crustacean that walks on land. Comes in **4 variants** tied to specific biomes:
 
 - **Dungeness** — Beach
-- **Ghost** — Swamp, Mangrove Swamp (rare, 5% chance)
+- **Ghost** — Swamp, Mangrove Swamp
 - **Blue Claw** — Stony Shore
 - **Mojang** — Swamp, Mangrove Swamp (rare, 5% chance)
 

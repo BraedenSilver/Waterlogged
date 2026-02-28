@@ -1,6 +1,7 @@
 package net.braeden.waterlogged.item;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
@@ -15,6 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 
@@ -28,10 +30,37 @@ public class PlaceOnWaterBlockItem extends BlockItem {
     public InteractionResult useOn(UseOnContext ctx) {
         BlockPos clicked = ctx.getClickedPos();
         Level level = ctx.getLevel();
-        if (level.getFluidState(clicked).is(FluidTags.WATER)) {
+
+        // Clicking directly on a replaceable water block → float on surface
+        if (level.getFluidState(clicked).is(FluidTags.WATER)
+                && level.getBlockState(clicked).canBeReplaced()) {
             return tryPlace(ctx.getPlayer(), level, ctx.getItemInHand(), clicked.above());
         }
-        return InteractionResult.PASS;
+
+        // Block-face click (side, top, or underside of any solid block)
+        Direction face = ctx.getClickedFace();
+        BlockPos placePos = clicked.relative(face);
+        boolean waterlogged = level.getFluidState(placePos).getType()
+                == net.minecraft.world.level.material.Fluids.WATER;
+
+        BlockState toPlace = getBlock().defaultBlockState()
+                .setValue(BlockStateProperties.FACING, face)
+                .setValue(BlockStateProperties.WATERLOGGED, waterlogged);
+
+        if (!toPlace.canSurvive(level, placePos)) return InteractionResult.FAIL;
+        if (!level.getBlockState(placePos).canBeReplaced()) return InteractionResult.FAIL;
+
+        if (!level.isClientSide()) {
+            level.setBlock(placePos, toPlace, 3);
+            SoundType sound = toPlace.getSoundType();
+            level.playSound(null, placePos, sound.getPlaceSound(), SoundSource.BLOCKS,
+                    (sound.getVolume() + 1f) / 2f, sound.getPitch() * 0.8f);
+            Player player = ctx.getPlayer();
+            if (player == null || !player.getAbilities().instabuild) {
+                ctx.getItemInHand().shrink(1);
+            }
+        }
+        return InteractionResult.SUCCESS;
     }
 
     @Override

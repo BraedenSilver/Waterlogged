@@ -50,6 +50,7 @@ public class WaterloggedBlockLootTableProvider extends FabricBlockLootTableProvi
         // Shears-only drops
         add(WaterloggedBlocks.DUCKWEED, createShearsOnlyDrop(WaterloggedItems.DUCKWEED));
         add(WaterloggedBlocks.SARGASSUM, createShearsOnlyDrop(WaterloggedItems.SARGASSUM));
+        add(WaterloggedBlocks.SARGASSUM_BLOCK, createShearsOnlyDrop(WaterloggedBlocks.SARGASSUM_BLOCK.asItem()));
 
         // Algae: shears only
         add(WaterloggedBlocks.ALGAE, createShearsOnlyDrop(WaterloggedBlocks.ALGAE.asItem()));

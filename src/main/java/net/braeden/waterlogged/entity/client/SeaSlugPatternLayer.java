@@ -38,6 +38,6 @@ public class SeaSlugPatternLayer extends RenderLayer<SeaSlugRenderState, SeaSlug
         if (state.isInvisible || state.pattern == SeaSlugPattern.PLAIN) return;
         Identifier texture = TEXTURES.get(state.pattern);
         if (texture == null) return;
-        coloredCutoutModelCopyLayerRender(this.getParentModel(), texture, poseStack, collector, packedLight, state, 0xFFFFFFFF, 0);
+        coloredCutoutModelCopyLayerRender(this.getParentModel(), texture, poseStack, collector, packedLight, state, state.argbPatternColor, 0);
     }
 }

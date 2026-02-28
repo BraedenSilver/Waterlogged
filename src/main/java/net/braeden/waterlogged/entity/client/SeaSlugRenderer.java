@@ -29,6 +29,7 @@ public class SeaSlugRenderer extends MobRenderer<SeaSlugEntity, SeaSlugRenderSta
         state.ambientAnimationState.copyFrom(entity.ambientAnimationState);
         state.movingAnimationState.copyFrom(entity.movingAnimationState);
         state.argbColor = entity.getColor().getArgb();
+        state.argbPatternColor = entity.getPatternColor().getArgb();
         state.pattern = entity.getPattern();
         state.bioluminescence = entity.getBioluminescence();
     }

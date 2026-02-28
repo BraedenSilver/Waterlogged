@@ -64,7 +64,7 @@ public class SeaSlugBiolumLayer extends RenderLayer<SeaSlugRenderState, SeaSlugM
             Identifier patternTex = PATTERN_TEXTURES.get(state.pattern);
             if (patternTex != null) {
                 coloredCutoutModelCopyLayerRender(model, patternTex, poseStack, collector,
-                        FULL_BRIGHT, state, 0xFFFFFFFF, 0);
+                        FULL_BRIGHT, state, state.argbPatternColor, 0);
             }
         }
     }

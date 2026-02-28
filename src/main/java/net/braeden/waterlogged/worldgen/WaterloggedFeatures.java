@@ -10,6 +10,12 @@ import static net.braeden.waterlogged.WaterloggedMod.MOD_ID;
 
 public class WaterloggedFeatures {
 
+    public static final Feature<NoneFeatureConfiguration> SARGASSUM_PATCH = Registry.register(
+            BuiltInRegistries.FEATURE,
+            Identifier.fromNamespaceAndPath(MOD_ID, "sargassum_patch"),
+            new SargassumPatchFeature()
+    );
+
     public static final Feature<NoneFeatureConfiguration> WATER_ADJACENT_PATCH = Registry.register(
             BuiltInRegistries.FEATURE,
             Identifier.fromNamespaceAndPath(MOD_ID, "water_adjacent_patch"),

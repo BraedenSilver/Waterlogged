@@ -34,6 +34,7 @@ public class WaterloggedClient implements ClientModInitializer {
         BlockRenderLayerMap.putBlock(WaterloggedBlocks.SEA_SLUG_EGGS, ChunkSectionLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(WaterloggedBlocks.PAPYRUS, ChunkSectionLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(WaterloggedBlocks.SARGASSUM, ChunkSectionLayer.CUTOUT);
+        BlockRenderLayerMap.putBlock(WaterloggedBlocks.SARGASSUM_BLOCK, ChunkSectionLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(WaterloggedBlocks.ALGAE, ChunkSectionLayer.TRANSLUCENT);
         BlockRenderLayerMap.putBlock(WaterloggedBlocks.AQUARIUM_GLASS, ChunkSectionLayer.CUTOUT);
 

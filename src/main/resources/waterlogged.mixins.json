@@ -4,6 +4,7 @@
   "package": "net.braeden.waterlogged.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "CreeperCatfishMixin",
     "MobGoalSelectorAccessor",
     "MobPersistenceMixin",
     "VanillaFishWormMixin",

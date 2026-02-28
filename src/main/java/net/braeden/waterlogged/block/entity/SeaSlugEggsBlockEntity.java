@@ -11,6 +11,7 @@ import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.CustomModelData;
 
@@ -29,13 +30,16 @@ import net.minecraft.world.level.storage.ValueOutput;
 public class SeaSlugEggsBlockEntity extends BlockEntity {
 
     private int parent1Color = 0;
+    private int parent1PatternColor = 1; // default BLUE, different from default RED body
     private int parent1Pattern = 0;
     private int parent1Biolum = 0;
     private int parent2Color = 0;
+    private int parent2PatternColor = 1;
     private int parent2Pattern = 0;
     private int parent2Biolum = 0;
     /** Color ID of the parent that laid this egg cluster, used to tint the block model. */
     private int layingParentColorId = 0;
+    private int layingParentPatternColorId = 1;
     private int age = 0;
 
     private static final int HATCH_TICKS = 6000;
@@ -48,14 +52,17 @@ public class SeaSlugEggsBlockEntity extends BlockEntity {
         super(WaterloggedEntities.SEA_SLUG_EGGS, pos, state);
     }
 
-    public void setParents(SeaSlugEntity mob, SeaSlugEntity partner, int layingParentColorId) {
-        this.parent1Color   = mob.getColor().getId();
-        this.parent1Pattern = mob.getPattern().getId();
-        this.parent1Biolum  = mob.getBioluminescence().getId();
-        this.parent2Color   = partner.getColor().getId();
-        this.parent2Pattern = partner.getPattern().getId();
-        this.parent2Biolum  = partner.getBioluminescence().getId();
-        this.layingParentColorId = layingParentColorId;
+    public void setParents(SeaSlugEntity mob, SeaSlugEntity partner, int layingParentColorId, int layingParentPatternColorId) {
+        this.parent1Color        = mob.getColor().getId();
+        this.parent1PatternColor = mob.getPatternColor().getId();
+        this.parent1Pattern      = mob.getPattern().getId();
+        this.parent1Biolum       = mob.getBioluminescence().getId();
+        this.parent2Color        = partner.getColor().getId();
+        this.parent2PatternColor = partner.getPatternColor().getId();
+        this.parent2Pattern      = partner.getPattern().getId();
+        this.parent2Biolum       = partner.getBioluminescence().getId();
+        this.layingParentColorId        = layingParentColorId;
+        this.layingParentPatternColorId = layingParentPatternColorId;
         setChanged();
         if (level != null) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
@@ -63,6 +70,25 @@ public class SeaSlugEggsBlockEntity extends BlockEntity {
     }
 
     public int getLayingParentColorId() { return layingParentColorId; }
+
+    /** Called by the block's getCloneItemStack to transfer variant data onto the picked item. */
+    public void applyPickComponents(ItemStack stack) {
+        CompoundTag tag = new CompoundTag();
+        tag.putInt("Parent1Color",        parent1Color);
+        tag.putInt("Parent1PatternColor", parent1PatternColor);
+        tag.putInt("Parent1Pattern",      parent1Pattern);
+        tag.putInt("Parent1Biolum",       parent1Biolum);
+        tag.putInt("Parent2Color",        parent2Color);
+        tag.putInt("Parent2PatternColor", parent2PatternColor);
+        tag.putInt("Parent2Pattern",      parent2Pattern);
+        tag.putInt("Parent2Biolum",       parent2Biolum);
+        tag.putInt("LayingParentColor",        layingParentColorId);
+        tag.putInt("LayingParentPatternColor", layingParentPatternColorId);
+        stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+        int argb = SeaSlugColor.byId(layingParentColorId).getArgb();
+        stack.set(DataComponents.CUSTOM_MODEL_DATA,
+                new CustomModelData(List.of(), List.of(), List.of(), List.of(argb)));
+    }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, SeaSlugEggsBlockEntity be) {
         if (level.isClientSide()) return;
@@ -79,7 +105,14 @@ public class SeaSlugEggsBlockEntity extends BlockEntity {
         int count = MIN_BABIES + rng.nextInt(MAX_BABIES - MIN_BABIES + 1);
         for (int i = 0; i < count; i++) {
             SeaSlugEntity slug = new SeaSlugEntity(WaterloggedEntities.SEA_SLUG, level);
-            slug.setColor(inheritTrait(rng, be.parent1Color, be.parent2Color, SeaSlugColor.values()));
+            SeaSlugColor bodyColor = inheritTrait(rng, be.parent1Color, be.parent2Color, SeaSlugColor.values());
+            SeaSlugColor patternColor = inheritTrait(rng, be.parent1PatternColor, be.parent2PatternColor, SeaSlugColor.values());
+            if (patternColor == bodyColor) {
+                SeaSlugColor[] all = SeaSlugColor.values();
+                do { patternColor = all[rng.nextInt(all.length)]; } while (patternColor == bodyColor);
+            }
+            slug.setColor(bodyColor);
+            slug.setPatternColor(patternColor);
             slug.setPattern(inheritTrait(rng, be.parent1Pattern, be.parent2Pattern, SeaSlugPattern.values()));
             slug.setBioluminescence(inheritTrait(rng, be.parent1Biolum, be.parent2Biolum, SeaSlugBioluminescence.values()));
             slug.setPersistenceRequired();
@@ -104,13 +137,16 @@ public class SeaSlugEggsBlockEntity extends BlockEntity {
         super.collectImplicitComponents(components);
         // CUSTOM_DATA: stores all parent data for restoration when the item is placed
         CompoundTag tag = new CompoundTag();
-        tag.putInt("Parent1Color",   parent1Color);
-        tag.putInt("Parent1Pattern", parent1Pattern);
-        tag.putInt("Parent1Biolum",  parent1Biolum);
-        tag.putInt("Parent2Color",   parent2Color);
-        tag.putInt("Parent2Pattern", parent2Pattern);
-        tag.putInt("Parent2Biolum",  parent2Biolum);
-        tag.putInt("LayingParentColor", layingParentColorId);
+        tag.putInt("Parent1Color",        parent1Color);
+        tag.putInt("Parent1PatternColor", parent1PatternColor);
+        tag.putInt("Parent1Pattern",      parent1Pattern);
+        tag.putInt("Parent1Biolum",       parent1Biolum);
+        tag.putInt("Parent2Color",        parent2Color);
+        tag.putInt("Parent2PatternColor", parent2PatternColor);
+        tag.putInt("Parent2Pattern",      parent2Pattern);
+        tag.putInt("Parent2Biolum",       parent2Biolum);
+        tag.putInt("LayingParentColor",        layingParentColorId);
+        tag.putInt("LayingParentPatternColor", layingParentPatternColorId);
         components.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
         // CUSTOM_MODEL_DATA: stores ARGB color of the laying parent for the item model tint source
         int argb = SeaSlugColor.byId(layingParentColorId).getArgb();
@@ -124,39 +160,48 @@ public class SeaSlugEggsBlockEntity extends BlockEntity {
         CustomData data = components.get(DataComponents.CUSTOM_DATA);
         if (data != null) {
             CompoundTag tag = data.copyTag();
-            parent1Color   = tag.getIntOr("Parent1Color",   0);
-            parent1Pattern = tag.getIntOr("Parent1Pattern", 0);
-            parent1Biolum  = tag.getIntOr("Parent1Biolum",  0);
-            parent2Color   = tag.getIntOr("Parent2Color",   0);
-            parent2Pattern = tag.getIntOr("Parent2Pattern", 0);
-            parent2Biolum  = tag.getIntOr("Parent2Biolum",  0);
-            layingParentColorId = tag.getIntOr("LayingParentColor", 0);
+            parent1Color        = tag.getIntOr("Parent1Color",        0);
+            parent1PatternColor = tag.getIntOr("Parent1PatternColor", 1);
+            parent1Pattern      = tag.getIntOr("Parent1Pattern",      0);
+            parent1Biolum       = tag.getIntOr("Parent1Biolum",       0);
+            parent2Color        = tag.getIntOr("Parent2Color",        0);
+            parent2PatternColor = tag.getIntOr("Parent2PatternColor", 1);
+            parent2Pattern      = tag.getIntOr("Parent2Pattern",      0);
+            parent2Biolum       = tag.getIntOr("Parent2Biolum",       0);
+            layingParentColorId        = tag.getIntOr("LayingParentColor",        0);
+            layingParentPatternColorId = tag.getIntOr("LayingParentPatternColor", 1);
         }
     }
 
     @Override
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
-        output.putInt("Parent1Color",   parent1Color);
-        output.putInt("Parent1Pattern", parent1Pattern);
-        output.putInt("Parent1Biolum",  parent1Biolum);
-        output.putInt("Parent2Color",   parent2Color);
-        output.putInt("Parent2Pattern", parent2Pattern);
-        output.putInt("Parent2Biolum",  parent2Biolum);
-        output.putInt("LayingParentColor", layingParentColorId);
+        output.putInt("Parent1Color",        parent1Color);
+        output.putInt("Parent1PatternColor", parent1PatternColor);
+        output.putInt("Parent1Pattern",      parent1Pattern);
+        output.putInt("Parent1Biolum",       parent1Biolum);
+        output.putInt("Parent2Color",        parent2Color);
+        output.putInt("Parent2PatternColor", parent2PatternColor);
+        output.putInt("Parent2Pattern",      parent2Pattern);
+        output.putInt("Parent2Biolum",       parent2Biolum);
+        output.putInt("LayingParentColor",        layingParentColorId);
+        output.putInt("LayingParentPatternColor", layingParentPatternColorId);
         output.putInt("Age", age);
     }
 
     @Override
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
-        parent1Color   = input.getIntOr("Parent1Color",   0);
-        parent1Pattern = input.getIntOr("Parent1Pattern", 0);
-        parent1Biolum  = input.getIntOr("Parent1Biolum",  0);
-        parent2Color   = input.getIntOr("Parent2Color",   0);
-        parent2Pattern = input.getIntOr("Parent2Pattern", 0);
-        parent2Biolum  = input.getIntOr("Parent2Biolum",  0);
-        layingParentColorId = input.getIntOr("LayingParentColor", 0);
+        parent1Color        = input.getIntOr("Parent1Color",        0);
+        parent1PatternColor = input.getIntOr("Parent1PatternColor", 1);
+        parent1Pattern      = input.getIntOr("Parent1Pattern",      0);
+        parent1Biolum       = input.getIntOr("Parent1Biolum",       0);
+        parent2Color        = input.getIntOr("Parent2Color",        0);
+        parent2PatternColor = input.getIntOr("Parent2PatternColor", 1);
+        parent2Pattern      = input.getIntOr("Parent2Pattern",      0);
+        parent2Biolum       = input.getIntOr("Parent2Biolum",       0);
+        layingParentColorId        = input.getIntOr("LayingParentColor",        0);
+        layingParentPatternColorId = input.getIntOr("LayingParentPatternColor", 1);
         age = input.getIntOr("Age", 0);
     }
 

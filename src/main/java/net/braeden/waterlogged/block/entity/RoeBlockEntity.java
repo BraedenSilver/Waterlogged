@@ -8,6 +8,7 @@ import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.CustomModelData;
 
@@ -100,6 +101,23 @@ public class RoeBlockEntity extends BlockEntity {
     }
 
     public int getParentVariantId() { return parentVariantId; }
+
+    /** Called by the block's getCloneItemStack to transfer variant data onto the picked item. */
+    public void applyPickComponents(ItemStack stack) {
+        CompoundTag tag = new CompoundTag();
+        tag.putInt("TintColor0", tintColor0);
+        tag.putInt("TintColor1", tintColor1);
+        tag.putString("ParentType", parentTypeId);
+        tag.putInt("Parent1Variant", parent1Variant);
+        tag.putInt("Parent2Variant", parent2Variant);
+        tag.putInt("ParentVariantId", parentVariantId);
+        stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+        if (tintColor0 != -1) {
+            int c2 = (tintColor1 != -1) ? tintColor1 : tintColor0;
+            stack.set(DataComponents.CUSTOM_MODEL_DATA,
+                    new CustomModelData(List.of(), List.of(), List.of(), List.of(tintColor0, c2)));
+        }
+    }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, RoeBlockEntity be) {
         if (level.isClientSide()) return;

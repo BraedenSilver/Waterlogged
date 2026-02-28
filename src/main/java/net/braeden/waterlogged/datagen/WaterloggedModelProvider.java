@@ -112,7 +112,10 @@ public class WaterloggedModelProvider extends FabricModelProvider {
         simpleBlockState(gen, WaterloggedBlocks.OYSTERS, "block/oysters");
         simpleBlockState(gen, WaterloggedBlocks.ROE, "block/roe");
         // items/roe.json registered with tints in generateItemModels()
-        simpleBlockState(gen, WaterloggedBlocks.SARGASSUM, "block/sargassum");
+        // Sargassum: facing-variant blockstate written by WaterloggedRawProvider
+        // Sargassum block: full cube with cutout transparency (geometry written by WaterloggedRawProvider)
+        simpleBlockState(gen, WaterloggedBlocks.SARGASSUM_BLOCK, "block/sargassum_block");
+        gen.registerSimpleItemModel(WaterloggedBlocks.SARGASSUM_BLOCK, blockModel("sargassum_block"));
 
         // Sea slug eggs: random y-rotation selection
         Identifier seaSlugEggsModel = blockModel("sea_slug_eggs");

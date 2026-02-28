@@ -11,6 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.CustomModelData;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -38,6 +39,18 @@ public class StarfishBlockEntity extends BlockEntity {
         if (level != null) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
         }
+    }
+
+    /** Called by the block's getCloneItemStack to transfer variant data onto the picked item. */
+    public void applyPickComponents(ItemStack stack) {
+        CompoundTag tag = new CompoundTag();
+        tag.putInt("Color", color.getId());
+        stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+        int argb = (color == StarfishColor.RAINBOW)
+                ? color.getArgbForTicks(level != null ? level.getGameTime() : 0, 0F)
+                : color.getArgb();
+        stack.set(DataComponents.CUSTOM_MODEL_DATA,
+                new CustomModelData(List.of(), List.of(), List.of(), List.of(argb)));
     }
 
     @Override

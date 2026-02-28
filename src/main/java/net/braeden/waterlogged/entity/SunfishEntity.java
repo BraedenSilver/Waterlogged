@@ -25,7 +25,10 @@ import net.braeden.waterlogged.entity.ai.WormTemptGoal;
 import net.minecraft.world.entity.ai.goal.TryFindWaterGoal;
 import net.minecraft.world.entity.animal.fish.AbstractFish;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -148,8 +151,22 @@ public class SunfishEntity extends AbstractFish implements WormBreeder {
     }
 
     @Override
-    public net.minecraft.world.item.ItemStack getBucketItemStack() {
-        return new net.minecraft.world.item.ItemStack(WaterloggedItems.SUNFISH_BUCKET);
+    public ItemStack getBucketItemStack() {
+        return new ItemStack(WaterloggedItems.SUNFISH_BUCKET);
+    }
+
+    @Override
+    public void saveToBucketTag(ItemStack stack) {
+        CustomData.update(DataComponents.BUCKET_ENTITY_DATA, stack, tag -> {
+            tag.putFloat("Health", this.getHealth());
+            tag.putInt("Variant", this.getVariant().getId());
+        });
+    }
+
+    @Override
+    public void loadFromBucketTag(CompoundTag tag) {
+        this.setHealth(tag.getFloatOr("Health", this.getMaxHealth()));
+        this.setVariant(SunfishVariant.byId(tag.getIntOr("Variant", SunfishVariant.BLUEGILL.getId())));
     }
 
     @Override

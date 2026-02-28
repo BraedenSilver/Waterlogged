@@ -8,6 +8,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 
 import java.util.concurrent.CompletableFuture;
@@ -38,6 +39,11 @@ public class WaterloggedEntityTypeTagProvider extends FabricTagProvider.EntityTy
     private static final ResourceKey<EntityType<?>> DONGFISH = angling("dongfish");
     private static final ResourceKey<EntityType<?>> ANOMALOCARIS = angling("anomalocaris");
     private static final ResourceKey<EntityType<?>> ANGLERFISH = angling("anglerfish");
+    private static final ResourceKey<EntityType<?>> ORCA = angling("orca");
+    private static final ResourceKey<EntityType<?>> RIGHT_WHALE = angling("right_whale");
+
+    private static final TagKey<EntityType<?>> NOT_SCARY_FOR_PUFFERFISH =
+            TagKey.create(Registries.ENTITY_TYPE, Identifier.withDefaultNamespace("not_scary_for_pufferfish"));
 
     public WaterloggedEntityTypeTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
@@ -75,6 +81,12 @@ public class WaterloggedEntityTypeTagProvider extends FabricTagProvider.EntityTy
         builder(EntityTypeTags.AXOLOTL_HUNT_TARGETS)
                 .add(SUNFISH).add(FRY).add(SEA_SLUG).add(CRAB)
                 .add(DONGFISH).add(CATFISH).add(SEAHORSE).add(BUBBLE_EYE);
+
+        // minecraft:not_scary_for_pufferfish — pufferfish won't puff up at mod fish
+        builder(NOT_SCARY_FOR_PUFFERFISH)
+                .add(FRY).add(SUNFISH).add(SEA_SLUG).add(CATFISH).add(SEAHORSE)
+                .add(BUBBLE_EYE).add(DONGFISH).add(ANOMALOCARIS).add(ANGLERFISH)
+                .add(MAHI_MAHI).add(ORCA).add(RIGHT_WHALE);
     }
 
     private static ResourceKey<EntityType<?>> mc(String id) {

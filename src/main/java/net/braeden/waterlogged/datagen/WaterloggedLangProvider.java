@@ -44,7 +44,22 @@ public class WaterloggedLangProvider extends FabricLanguageProvider {
         builder.add("sunfish_variant.waterlogged.bluegill_and_pumpkinseed_hybrid", "Bluegill and Pumpkinseed Hybrid");
         builder.add("sunfish_variant.waterlogged.diansus_diansur", "Diansu's Diansur");
 
-        // Sea slug colors
+        // Starfish colors
+        builder.add("starfish_color.waterlogged.red", "Red");
+        builder.add("starfish_color.waterlogged.blue", "Blue");
+        builder.add("starfish_color.waterlogged.orange", "Orange");
+        builder.add("starfish_color.waterlogged.yellow", "Yellow");
+        builder.add("starfish_color.waterlogged.pink", "Pink");
+
+        // Sea slug colors (enum values used at runtime)
+        builder.add("sea_slug_color.waterlogged.red", "Red");
+        builder.add("sea_slug_color.waterlogged.blue", "Blue");
+        builder.add("sea_slug_color.waterlogged.yellow", "Yellow");
+        builder.add("sea_slug_color.waterlogged.green", "Green");
+        builder.add("sea_slug_color.waterlogged.purple", "Purple");
+        builder.add("sea_slug_color.waterlogged.orange", "Orange");
+
+        // Sea slug colors (legacy / data-driven names kept for backwards compat)
         builder.add("sea_slug_color.waterlogged.ivory", "Ivory");
         builder.add("sea_slug_color.waterlogged.onyx", "Onyx");
         builder.add("sea_slug_color.waterlogged.periwinkle", "Periwinkle");
@@ -105,6 +120,8 @@ public class WaterloggedLangProvider extends FabricLanguageProvider {
         builder.add("item.waterlogged.duckweed", "Duckweed");
         builder.add("block.waterlogged.sargassum", "Sargassum");
         builder.add("item.waterlogged.sargassum", "Sargassum");
+        builder.add("block.waterlogged.sargassum_block", "Sargassum Block");
+        builder.add("item.waterlogged.sargassum_block", "Sargassum Block");
         builder.add("block.waterlogged.urchin", "Urchin");
         builder.add("item.waterlogged.urchin", "Urchin");
         builder.add("block.waterlogged.aquarium_glass", "Aquarium Glass");

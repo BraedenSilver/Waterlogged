@@ -13,6 +13,8 @@ public class SeaSlugRenderState extends LivingEntityRenderState {
     public final AnimationState movingAnimationState = new AnimationState();
     /** Packed ARGB body tint color. */
     public int argbColor = 0xFFFFFFFF;
+    /** Packed ARGB pattern overlay tint color. */
+    public int argbPatternColor = 0xFFFFFFFF;
     public SeaSlugPattern pattern = SeaSlugPattern.PLAIN;
     public SeaSlugBioluminescence bioluminescence = SeaSlugBioluminescence.NONE;
 }

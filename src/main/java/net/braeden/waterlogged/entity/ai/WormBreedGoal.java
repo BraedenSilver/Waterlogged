@@ -129,7 +129,7 @@ public class WormBreedGoal extends Goal {
                     .setValue(SeaSlugEggsBlock.GLOWING, mobGlowing);
             level.setBlock(targetRoePos, eggState1, 3);
             if (level.getBlockEntity(targetRoePos) instanceof SeaSlugEggsBlockEntity eg1) {
-                eg1.setParents(slugMob, slugPartner, slugMob.getColor().getId());
+                eg1.setParents(slugMob, slugPartner, slugMob.getColor().getId(), slugMob.getPatternColor().getId());
             }
             // Egg 2 laid by the partner (near its current position).
             BlockPos partnerRoePos = findRoePos(level, slugPartner.blockPosition());
@@ -140,7 +140,7 @@ public class WormBreedGoal extends Goal {
                         .setValue(SeaSlugEggsBlock.GLOWING, partnerGlowing);
                 level.setBlock(partnerRoePos, eggState2, 3);
                 if (level.getBlockEntity(partnerRoePos) instanceof SeaSlugEggsBlockEntity eg2) {
-                    eg2.setParents(slugMob, slugPartner, slugPartner.getColor().getId());
+                    eg2.setParents(slugMob, slugPartner, slugPartner.getColor().getId(), slugPartner.getPatternColor().getId());
                 }
             }
         } else {

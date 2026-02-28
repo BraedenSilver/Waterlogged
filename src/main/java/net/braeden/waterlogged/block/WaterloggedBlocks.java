@@ -128,7 +128,7 @@ public class WaterloggedBlocks {
             false);
 
     public static final Block SARGASSUM = register("sargassum",
-            props -> new WaterFloatingPlant(props),
+            props -> new SargassumPlantBlock(props),
             BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_YELLOW)
                     .destroyTime(0f)
@@ -136,6 +136,17 @@ public class WaterloggedBlocks {
                     .noCollision()
                     .sound(SoundType.WET_GRASS),
             false);
+
+    public static final Block SARGASSUM_BLOCK = register("sargassum_block",
+            props -> new SargassumBlock(props),
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_YELLOW)
+                    .strength(0.3f)
+                    .noOcclusion()
+                    .isSuffocating((state, world, pos) -> false)
+                    .isViewBlocking((state, world, pos) -> false)
+                    .sound(SoundType.WET_GRASS),
+            true);
 
     public static final Block PAPYRUS = register("papyrus",
             props -> new PapyrusBlock(props),

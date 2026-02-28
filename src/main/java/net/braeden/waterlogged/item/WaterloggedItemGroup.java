@@ -35,6 +35,7 @@ public class WaterloggedItemGroup {
                 output.accept(WaterloggedBlocks.ANEMONE);
                 output.accept(WaterloggedBlocks.PAPYRUS);
                 output.accept(WaterloggedItems.SARGASSUM);
+                output.accept(WaterloggedBlocks.SARGASSUM_BLOCK);
 
                 // Block items with no block item (registered separately in WaterloggedItems)
                 output.accept(WaterloggedItems.ROE);

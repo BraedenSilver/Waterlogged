@@ -1,6 +1,8 @@
 package net.braeden.waterlogged.item;
 
 import net.braeden.waterlogged.item.RoeBlockItem;
+import net.braeden.waterlogged.item.SeaSlugBucketItem;
+import net.braeden.waterlogged.item.SunfishBucketItem;
 import net.braeden.waterlogged.item.UrchinBucketItem;
 import net.braeden.waterlogged.item.WormItem;
 import net.braeden.waterlogged.block.WaterloggedBlocks;
@@ -69,9 +71,13 @@ public class WaterloggedItems {
             id -> new PlaceOnWaterBlockItem(WaterloggedBlocks.SARGASSUM,
                     new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
 
-    public static final Item SUNFISH_BUCKET = registerBucket("sunfish", WaterloggedEntities.SUNFISH);
+    public static final Item SUNFISH_BUCKET = register("sunfish_bucket",
+            id -> new SunfishBucketItem(WaterloggedEntities.SUNFISH,
+                    new Item.Properties().stacksTo(1).setId(ResourceKey.create(Registries.ITEM, id))));
     public static final Item FRY_BUCKET = registerBucket("fry", WaterloggedEntities.FRY);
-    public static final Item SEA_SLUG_BUCKET = registerBucket("sea_slug", WaterloggedEntities.SEA_SLUG);
+    public static final Item SEA_SLUG_BUCKET = register("sea_slug_bucket",
+            id -> new SeaSlugBucketItem(WaterloggedEntities.SEA_SLUG,
+                    new Item.Properties().stacksTo(1).setId(ResourceKey.create(Registries.ITEM, id))));
     public static final Item CRAB_BUCKET = registerBucket("crab", WaterloggedEntities.CRAB);
     public static final Item DONGFISH_BUCKET = registerBucket("dongfish", WaterloggedEntities.DONGFISH);
     public static final Item CATFISH_BUCKET = registerBucket("catfish", WaterloggedEntities.CATFISH);

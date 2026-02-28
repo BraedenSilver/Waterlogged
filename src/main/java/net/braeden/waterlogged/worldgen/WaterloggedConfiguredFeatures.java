@@ -9,8 +9,9 @@ import static net.braeden.waterlogged.WaterloggedMod.MOD_ID;
 
 public class WaterloggedConfiguredFeatures {
 
-    public static final ResourceKey<ConfiguredFeature<?, ?>> DUCKWEED    = key("duckweed");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> SARGASSUM   = key("sargassum");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> DUCKWEED        = key("duckweed");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> SARGASSUM       = key("sargassum");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> SARGASSUM_BLOCK = key("sargassum_block");
     public static final ResourceKey<ConfiguredFeature<?, ?>> PAPYRUS     = key("papyrus");
     public static final ResourceKey<ConfiguredFeature<?, ?>> CLAM        = key("clam");
     public static final ResourceKey<ConfiguredFeature<?, ?>> OYSTERS     = key("oysters");

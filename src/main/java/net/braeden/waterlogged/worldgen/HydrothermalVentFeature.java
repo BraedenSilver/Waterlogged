@@ -160,7 +160,7 @@ public class HydrothermalVentFeature extends Feature<NoneFeatureConfiguration> {
                         boolean suppressDecay = t > 0.4f || (effOuter - effInner) < 1.5;
                         // Inner 50% of wall always solid; outer 50% decays probabilistically
                         double wallDepth = (effOuter - dist) / Math.max(0.01, effOuter - effInner);
-                        if (!suppressDecay && wallDepth < 0.5 && random.nextDouble() > Math.pow(wallDepth * 2.0, 0.35)) continue;
+                        if (!suppressDecay && wallDepth < 0.5 && random.nextDouble() > Math.pow(wallDepth * 2.0, 0.3)) continue;
                         // Innermost face is cobblestone/stone (solidified lava contact); outer body noise-driven
                         double innerDist = dist - effInner;
                         level.setBlock(pos,

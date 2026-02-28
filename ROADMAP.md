@@ -6,7 +6,7 @@ Planned additions for future versions.
 
 ### Ocean / General
 - [ ] **Mantis Shrimp** — scares away Drowned Zombies
-- [ ] **Dogfish** — pack-oriented like underwater wolves; scares away Bogged Skeletons
+- [ ] **Dogfish** — Scares away Bogged Skeletons
 - [ ] **Lobster**
 - [ ] **Shark**
 - [ ] **Krill**

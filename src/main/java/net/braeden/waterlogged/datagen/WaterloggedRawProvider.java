@@ -40,6 +40,9 @@ public class WaterloggedRawProvider implements DataProvider {
         futures.add(save(cache, asset("particles/algae.json"),  particleAlgae()));
         futures.add(save(cache, asset("particles/worm.json"),   particleWorm()));
 
+        // ── Blockstates that need facing variants ──────────────────────────────
+        futures.add(save(cache, asset("blockstates/sargassum.json"), blockstateSargassum()));
+
         // ── Complex block models ───────────────────────────────────────────────
         futures.add(save(cache, asset("models/block/algae.json"),         blockAlgae()));
         futures.add(save(cache, asset("models/block/clam.json"),          blockClam()));
@@ -49,7 +52,8 @@ public class WaterloggedRawProvider implements DataProvider {
         futures.add(save(cache, asset("models/block/papyrus_age1.json"),  blockPapyrusAge1()));
         futures.add(save(cache, asset("models/block/papyrus_age2.json"),  blockPapyrusAge2()));
         futures.add(save(cache, asset("models/block/roe.json"),           blockRoe()));
-        futures.add(save(cache, asset("models/block/sargassum.json"),     blockSargassum()));
+        futures.add(save(cache, asset("models/block/sargassum.json"),       blockSargassum()));
+        futures.add(save(cache, asset("models/block/sargassum_block.json"), blockSargassumBlock()));
         futures.add(save(cache, asset("models/block/sea_slug_eggs.json"), blockSeaSlugEggs()));
 
         // ── Item models that can't be expressed via ModelTemplate ──────────────
@@ -79,6 +83,7 @@ public class WaterloggedRawProvider implements DataProvider {
         futures.add(save(cache, data("worldgen/configured_feature/oysters.json"),         cfOysters()));
         futures.add(save(cache, data("worldgen/configured_feature/papyrus.json"),         cfPapyrus()));
         futures.add(save(cache, data("worldgen/configured_feature/sargassum.json"),       cfSargassum()));
+        futures.add(save(cache, data("worldgen/configured_feature/sargassum_block.json"), cfSargassumBlock()));
         futures.add(save(cache, data("worldgen/configured_feature/starfish.json"),        cfStarfish()));
         futures.add(save(cache, data("worldgen/configured_feature/urchin.json"),          cfUrchin()));
         futures.add(save(cache, data("worldgen/configured_feature/wormy_dirt.json"),      cfWormyDirt()));
@@ -94,6 +99,7 @@ public class WaterloggedRawProvider implements DataProvider {
         futures.add(save(cache, data("worldgen/placed_feature/oysters.json"),         pfOysters()));
         futures.add(save(cache, data("worldgen/placed_feature/papyrus.json"),         pfPapyrus()));
         futures.add(save(cache, data("worldgen/placed_feature/sargassum.json"),       pfSargassum()));
+        futures.add(save(cache, data("worldgen/placed_feature/sargassum_block.json"), pfSargassumBlock()));
         futures.add(save(cache, data("worldgen/placed_feature/starfish.json"),        pfStarfish()));
         futures.add(save(cache, data("worldgen/placed_feature/urchin.json"),          pfUrchin()));
         futures.add(save(cache, data("worldgen/placed_feature/wormy_dirt.json"),      pfWormyDirt()));
@@ -580,6 +586,44 @@ public class WaterloggedRawProvider implements DataProvider {
         return root;
     }
 
+    private JsonObject blockstateSargassum() {
+        // Uses multipart so WATERLOGGED is ignored (only FACING drives the model)
+        JsonObject root = new JsonObject();
+        JsonArray parts = new JsonArray();
+        parts.add(bsPart("facing=up",    "waterlogged:block/sargassum",   0,   0));
+        parts.add(bsPart("facing=down",  "waterlogged:block/sargassum", 180,   0));
+        parts.add(bsPart("facing=north", "waterlogged:block/sargassum",  90,   0));
+        parts.add(bsPart("facing=south", "waterlogged:block/sargassum",  90, 180));
+        parts.add(bsPart("facing=east",  "waterlogged:block/sargassum",  90,  90));
+        parts.add(bsPart("facing=west",  "waterlogged:block/sargassum",  90, 270));
+        root.add("multipart", parts);
+        return root;
+    }
+
+    private JsonObject bsPart(String when, String model, int x, int y) {
+        JsonObject part = new JsonObject();
+        JsonObject whenObj = new JsonObject();
+        String[] kv = when.split("=");
+        whenObj.addProperty(kv[0], kv[1]);
+        part.add("when", whenObj);
+        JsonObject apply = new JsonObject();
+        apply.addProperty("model", model);
+        if (x != 0) apply.addProperty("x", x);
+        if (y != 0) apply.addProperty("y", y);
+        part.add("apply", apply);
+        return part;
+    }
+
+    private JsonObject blockSargassumBlock() {
+        // Full cube with cutout_mipped transparency, inheriting from minecraft:block/leaves
+        JsonObject root = new JsonObject();
+        root.addProperty("parent", "minecraft:block/leaves");
+        JsonObject textures = new JsonObject();
+        textures.addProperty("all", "waterlogged:block/sargassum_block");
+        root.add("textures", textures);
+        return root;
+    }
+
     private JsonObject blockSargassum() {
         JsonObject root = new JsonObject();
         root.addProperty("parent", "minecraft:block/block");
@@ -854,9 +898,43 @@ public class WaterloggedRawProvider implements DataProvider {
     }
 
     private JsonObject cfSargassum() {
-        return randomPatch(80, 10, 0,
-                simpleBlock(wlState("waterlogged:sargassum")),
-                null);
+        // Custom feature: places floating sargassum mat + underwater block columns together
+        JsonObject root = new JsonObject();
+        root.addProperty("type", "waterlogged:sargassum_patch");
+        root.add("config", new JsonObject());
+        return root;
+    }
+
+    private JsonObject cfSargassumBlock() {
+        // random_patch wrapping an inline block_column that hangs DOWN from the water surface
+        JsonObject blockColumn = new JsonObject();
+        blockColumn.addProperty("type", "minecraft:block_column");
+        JsonObject config = new JsonObject();
+        config.addProperty("direction", "down");
+        // Only place in water — stops naturally at the ocean floor
+        JsonObject allowed = new JsonObject();
+        allowed.addProperty("type", "minecraft:matching_fluids");
+        JsonArray fluids = new JsonArray();
+        fluids.add("minecraft:water");
+        allowed.add("fluids", fluids);
+        config.add("allowed_placement", allowed);
+        config.addProperty("prioritize_tip", false);
+        // Each column is 2–6 blocks tall
+        JsonArray layers = new JsonArray();
+        JsonObject layer = new JsonObject();
+        JsonObject height = new JsonObject();
+        height.addProperty("type", "minecraft:uniform");
+        height.addProperty("min_inclusive", 2);
+        height.addProperty("max_inclusive", 6);
+        layer.add("height", height);
+        JsonObject provider = new JsonObject();
+        provider.addProperty("type", "minecraft:simple_state_provider");
+        provider.add("state", wlState("waterlogged:sargassum_block", prop("waterlogged", "true")));
+        layer.add("provider", provider);
+        layers.add(layer);
+        config.add("layers", layers);
+        blockColumn.add("config", config);
+        return randomPatch(20, 8, 0, blockColumn, null);
     }
 
     private JsonObject cfStarfish() {
@@ -908,7 +986,7 @@ public class WaterloggedRawProvider implements DataProvider {
     }
     private JsonObject pfHydrothermalVent() {
         return placedFeature("waterlogged:hydrothermal_vent",
-                rarityFilter(64), inSquare(), heightmap("OCEAN_FLOOR_WG"), biome());
+                rarityFilter(80), inSquare(), heightmap("OCEAN_FLOOR_WG"), biome());
     }
     private JsonObject pfOysters() {
         return placedFeature("waterlogged:oysters",
@@ -920,7 +998,11 @@ public class WaterloggedRawProvider implements DataProvider {
     }
     private JsonObject pfSargassum() {
         return placedFeature("waterlogged:sargassum",
-                rarityFilter(20), inSquare(), heightmap("MOTION_BLOCKING"), biome());
+                rarityFilter(50), inSquare(), heightmap("MOTION_BLOCKING"), biome());
+    }
+    private JsonObject pfSargassumBlock() {
+        return placedFeature("waterlogged:sargassum_block",
+                rarityFilter(5), inSquare(), heightmap("MOTION_BLOCKING"), biome());
     }
     private JsonObject pfStarfish() {
         return placedFeature("waterlogged:starfish",

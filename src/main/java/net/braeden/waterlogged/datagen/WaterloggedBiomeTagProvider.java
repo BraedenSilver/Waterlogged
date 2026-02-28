@@ -66,7 +66,7 @@ public class WaterloggedBiomeTagProvider extends FabricTagProvider<Biome> {
         builder(WaterloggedBiomeTags.SUNFISH_SPAWN_IN).add(SWAMP);
         builder(WaterloggedBiomeTags.SEA_SLUG_SPAWN_IN).add(WARM_OCEAN);
         builder(WaterloggedBiomeTags.CATFISH_SPAWN_IN).add(SWAMP);
-        builder(WaterloggedBiomeTags.SEAHORSE_SPAWN_IN).add(LUKEWARM_OCEAN).add(DEEP_LUKEWARM_OCEAN);
+        builder(WaterloggedBiomeTags.SEAHORSE_SPAWN_IN).add(LUKEWARM_OCEAN).add(WARM_OCEAN);
         builder(WaterloggedBiomeTags.BUBBLE_EYE_SPAWN_IN)
                 .add(RIVER).add(FROZEN_RIVER)
                 .add(FOREST).add(BIRCH_FOREST).add(OLD_GROWTH_BIRCH_FOREST).add(DARK_FOREST);
