@@ -103,8 +103,9 @@ public class WaterloggedBiomeTagProvider extends FabricTagProvider<Biome> {
         builder(WaterloggedBiomeTags.CLAMS_BIOMES)
                 .add(WARM_OCEAN)
                 .add(LUKEWARM_OCEAN).add(DEEP_LUKEWARM_OCEAN);
-        builder(WaterloggedBiomeTags.DUCKWEED_BIOMES).add(SWAMP);
+        builder(WaterloggedBiomeTags.DUCKWEED_BIOMES).add(SWAMP).add(MANGROVE_SWAMP);
         builder(WaterloggedBiomeTags.SARGASSUM_BIOMES).add(LUKEWARM_OCEAN).add(DEEP_LUKEWARM_OCEAN);
+        builder(WaterloggedBiomeTags.SARGASSUM_BEACH_BIOMES).add(BEACH);
         builder(WaterloggedBiomeTags.PAPYRUS_BIOMES).add(SAVANNA).add(SAVANNA_PLATEAU).add(WINDSWEPT_SAVANNA).add(DESERT);
 
         // Starfish and anemone — shallow warm/lukewarm ocean (reef-like biomes)
@@ -139,6 +140,8 @@ public class WaterloggedBiomeTagProvider extends FabricTagProvider<Biome> {
                 .add(SWAMP);
         builder(WaterloggedBiomeTags.WORMY_MUD_BIOMES)
                 .add(MANGROVE_SWAMP);
+
+        builder(WaterloggedBiomeTags.SWAMP_LOG_BIOMES).add(SWAMP);
     }
 
     private static ResourceKey<Biome> mc(String id) {

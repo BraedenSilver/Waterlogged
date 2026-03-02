@@ -142,9 +142,9 @@ public class WaterloggedRecipeProvider extends FabricRecipeProvider {
                 ).unlockedBy(getHasName(WaterloggedItems.RAW_ANGLERFISH), has(WaterloggedItems.RAW_ANGLERFISH))
                         .save(output, "waterlogged:cooked_anglerfish_from_campfire_cooking");
 
-                // Paper from papyrus (shaped: 3 papyrus → 1 paper)
+                // Paper from papyrus (shaped: 2 papyrus → 1 paper)
                 shaped(RecipeCategory.MISC, Items.PAPER)
-                        .pattern("###")
+                        .pattern("##")
                         .define('#', WaterloggedBlocks.PAPYRUS)
                         .unlockedBy(getHasName(WaterloggedBlocks.PAPYRUS.asItem()), has(WaterloggedBlocks.PAPYRUS.asItem()))
                         .save(output, "waterlogged:paper_from_papyrus");

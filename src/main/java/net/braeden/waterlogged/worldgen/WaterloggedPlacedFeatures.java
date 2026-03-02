@@ -12,6 +12,7 @@ public class WaterloggedPlacedFeatures {
     public static final ResourceKey<PlacedFeature> DUCKWEED        = key("duckweed");
     public static final ResourceKey<PlacedFeature> SARGASSUM       = key("sargassum");
     public static final ResourceKey<PlacedFeature> SARGASSUM_BLOCK = key("sargassum_block");
+    public static final ResourceKey<PlacedFeature> SARGASSUM_BEACH = key("sargassum_beach");
     public static final ResourceKey<PlacedFeature> PAPYRUS     = key("papyrus");
     public static final ResourceKey<PlacedFeature> CLAM        = key("clam");
     public static final ResourceKey<PlacedFeature> OYSTERS     = key("oysters");
@@ -23,6 +24,7 @@ public class WaterloggedPlacedFeatures {
     public static final ResourceKey<PlacedFeature> WORMY_DIRT  = key("wormy_dirt");
     public static final ResourceKey<PlacedFeature> WORMY_MUD        = key("wormy_mud");
     public static final ResourceKey<PlacedFeature> HYDROTHERMAL_VENT = key("hydrothermal_vent");
+    public static final ResourceKey<PlacedFeature> SWAMP_LOG         = key("swamp_log");
 
     private static ResourceKey<PlacedFeature> key(String name) {
         return ResourceKey.create(Registries.PLACED_FEATURE, Identifier.fromNamespaceAndPath(MOD_ID, name));

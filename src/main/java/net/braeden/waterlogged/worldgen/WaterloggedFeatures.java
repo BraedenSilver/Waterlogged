@@ -10,6 +10,18 @@ import static net.braeden.waterlogged.WaterloggedMod.MOD_ID;
 
 public class WaterloggedFeatures {
 
+    public static final Feature<NoneFeatureConfiguration> BEACH_SARGASSUM = Registry.register(
+            BuiltInRegistries.FEATURE,
+            Identifier.fromNamespaceAndPath(MOD_ID, "beach_sargassum"),
+            new BeachSargassumFeature()
+    );
+
+    public static final Feature<NoneFeatureConfiguration> DUCKWEED_SHORE = Registry.register(
+            BuiltInRegistries.FEATURE,
+            Identifier.fromNamespaceAndPath(MOD_ID, "duckweed_shore"),
+            new DuckweedShoreFeature()
+    );
+
     public static final Feature<NoneFeatureConfiguration> SARGASSUM_PATCH = Registry.register(
             BuiltInRegistries.FEATURE,
             Identifier.fromNamespaceAndPath(MOD_ID, "sargassum_patch"),
@@ -38,6 +50,12 @@ public class WaterloggedFeatures {
             BuiltInRegistries.FEATURE,
             Identifier.fromNamespaceAndPath(MOD_ID, "hydrothermal_vent"),
             new HydrothermalVentFeature()
+    );
+
+    public static final Feature<NoneFeatureConfiguration> SWAMP_LOG = Registry.register(
+            BuiltInRegistries.FEATURE,
+            Identifier.fromNamespaceAndPath(MOD_ID, "swamp_log"),
+            new SwampLogFeature()
     );
 
     public static void init() {

@@ -3,8 +3,8 @@ package net.braeden.waterlogged.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -12,22 +12,17 @@ import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class PapyrusBlock extends Block implements BonemealableBlock, SimpleWaterloggedBlock {
+public class PapyrusBlock extends Block implements BonemealableBlock {
 
     public static final IntegerProperty AGE = BlockStateProperties.AGE_2; // 0-2
-    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final int MAX_AGE = 2;
 
     // Hitboxes for each growth stage
@@ -37,32 +32,27 @@ public class PapyrusBlock extends Block implements BonemealableBlock, SimpleWate
 
     public PapyrusBlock(BlockBehaviour.Properties props) {
         super(props);
-        registerDefaultState(stateDefinition.any().setValue(AGE, 0).setValue(WATERLOGGED, false));
+        registerDefaultState(stateDefinition.any().setValue(AGE, 0));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(AGE, WATERLOGGED);
+        builder.add(AGE);
     }
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        BlockPos below = pos.below();
-        return level.getBlockState(below).isFaceSturdy(level, below, Direction.UP);
-    }
-
-    @Override
-    public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-        FluidState fluidState = ctx.getLevel().getFluidState(ctx.getClickedPos());
-        return defaultBlockState().setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
+        Block below = level.getBlockState(pos.below()).getBlock();
+        return below == Blocks.DIRT || below == Blocks.GRASS_BLOCK ||
+               below == Blocks.SAND || below == Blocks.FARMLAND;
     }
 
     @Override
     protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess tickAccess,
                                      BlockPos pos, Direction direction, BlockPos neighborPos,
                                      BlockState neighborState, RandomSource random) {
-        if (state.getValue(WATERLOGGED)) {
-            tickAccess.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+        if (level.getFluidState(pos).is(FluidTags.WATER)) {
+            return Blocks.AIR.defaultBlockState();
         }
         if (!state.canSurvive(level, pos)) {
             return Blocks.AIR.defaultBlockState();
@@ -109,8 +99,4 @@ public class PapyrusBlock extends Block implements BonemealableBlock, SimpleWate
         };
     }
 
-    @Override
-    public FluidState getFluidState(BlockState state) {
-        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
-    }
 }

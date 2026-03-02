@@ -83,11 +83,13 @@ public class WaterloggedRawProvider implements DataProvider {
         futures.add(save(cache, data("worldgen/configured_feature/oysters.json"),         cfOysters()));
         futures.add(save(cache, data("worldgen/configured_feature/papyrus.json"),         cfPapyrus()));
         futures.add(save(cache, data("worldgen/configured_feature/sargassum.json"),       cfSargassum()));
+        futures.add(save(cache, data("worldgen/configured_feature/sargassum_beach.json"), cfSargassumBeach()));
         futures.add(save(cache, data("worldgen/configured_feature/sargassum_block.json"), cfSargassumBlock()));
         futures.add(save(cache, data("worldgen/configured_feature/starfish.json"),        cfStarfish()));
         futures.add(save(cache, data("worldgen/configured_feature/urchin.json"),          cfUrchin()));
         futures.add(save(cache, data("worldgen/configured_feature/wormy_dirt.json"),      cfWormyDirt()));
         futures.add(save(cache, data("worldgen/configured_feature/wormy_mud.json"),       cfWormyMud()));
+        futures.add(save(cache, data("worldgen/configured_feature/swamp_log.json"),       cfSwampLog()));
 
         // ── Worldgen: placed features ──────────────────────────────────────────
         futures.add(save(cache, data("worldgen/placed_feature/algae.json"),           pfAlgae()));
@@ -99,11 +101,13 @@ public class WaterloggedRawProvider implements DataProvider {
         futures.add(save(cache, data("worldgen/placed_feature/oysters.json"),         pfOysters()));
         futures.add(save(cache, data("worldgen/placed_feature/papyrus.json"),         pfPapyrus()));
         futures.add(save(cache, data("worldgen/placed_feature/sargassum.json"),       pfSargassum()));
+        futures.add(save(cache, data("worldgen/placed_feature/sargassum_beach.json"), pfSargassumBeach()));
         futures.add(save(cache, data("worldgen/placed_feature/sargassum_block.json"), pfSargassumBlock()));
         futures.add(save(cache, data("worldgen/placed_feature/starfish.json"),        pfStarfish()));
         futures.add(save(cache, data("worldgen/placed_feature/urchin.json"),          pfUrchin()));
         futures.add(save(cache, data("worldgen/placed_feature/wormy_dirt.json"),      pfWormyDirt()));
         futures.add(save(cache, data("worldgen/placed_feature/wormy_mud.json"),       pfWormyMud()));
+        futures.add(save(cache, data("worldgen/placed_feature/swamp_log.json"),       pfSwampLog()));
 
         return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new));
     }
@@ -874,7 +878,10 @@ public class WaterloggedRawProvider implements DataProvider {
     }
 
     private JsonObject cfDuckweed() {
-        return simpleBlock(wlState("waterlogged:duckweed"));
+        JsonObject root = new JsonObject();
+        root.addProperty("type", "waterlogged:duckweed_shore");
+        root.add("config", new JsonObject());
+        return root;
     }
 
     private JsonObject cfHydrothermalVent() {
@@ -901,6 +908,14 @@ public class WaterloggedRawProvider implements DataProvider {
         // Custom feature: places floating sargassum mat + underwater block columns together
         JsonObject root = new JsonObject();
         root.addProperty("type", "waterlogged:sargassum_patch");
+        root.add("config", new JsonObject());
+        return root;
+    }
+
+    private JsonObject cfSargassumBeach() {
+        // Custom feature: scatters dry sargassum on beach sand (washed ashore)
+        JsonObject root = new JsonObject();
+        root.addProperty("type", "waterlogged:beach_sargassum");
         root.add("config", new JsonObject());
         return root;
     }
@@ -962,6 +977,14 @@ public class WaterloggedRawProvider implements DataProvider {
                 target("minecraft:block_match","minecraft:muddy_mangrove_roots","waterlogged:wormy_mud"));
     }
 
+    private JsonObject cfSwampLog() {
+        // Custom feature: places a short horizontal oak log on water or solid ground in swamps
+        JsonObject root = new JsonObject();
+        root.addProperty("type", "waterlogged:swamp_log");
+        root.add("config", new JsonObject());
+        return root;
+    }
+
     // ── Worldgen: placed features ──────────────────────────────────────────────
 
     private JsonObject pfAlgae() {
@@ -981,8 +1004,13 @@ public class WaterloggedRawProvider implements DataProvider {
                 rarityFilter(2), count(1), inSquare(), heightmap("OCEAN_FLOOR"), waterFilter(), biome());
     }
     private JsonObject pfDuckweed() {
+        // count(2): each origin triggers 64 internal attempts for shore-adjacent positions
         return placedFeature("waterlogged:duckweed",
-                count(4), inSquare(), heightmap("MOTION_BLOCKING"), biome());
+                count(2), inSquare(), heightmap("MOTION_BLOCKING"), biome());
+    }
+    private JsonObject pfSargassumBeach() {
+        return placedFeature("waterlogged:sargassum_beach",
+                rarityFilter(8), inSquare(), heightmap("MOTION_BLOCKING"), biome());
     }
     private JsonObject pfHydrothermalVent() {
         return placedFeature("waterlogged:hydrothermal_vent",
@@ -1019,6 +1047,12 @@ public class WaterloggedRawProvider implements DataProvider {
     private JsonObject pfWormyMud() {
         return placedFeature("waterlogged:wormy_mud",
                 rarityFilter(8), inSquare(), heightmap("MOTION_BLOCKING_NO_LEAVES"), biome());
+    }
+
+    private JsonObject pfSwampLog() {
+        // rarity_filter(6): ~1 in 6 chunks — visible but not clogging
+        return placedFeature("waterlogged:swamp_log",
+                rarityFilter(6), inSquare(), heightmap("MOTION_BLOCKING"), biome());
     }
 
     // ── Worldgen builder helpers ───────────────────────────────────────────────

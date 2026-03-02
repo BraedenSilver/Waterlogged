@@ -275,20 +275,24 @@ Bucketable: Fry, Sunfish, Catfish, Dongfish, Seahorse, Bubble Eye, Anglerfish, M
 
 | Feature | Biomes |
 |---------|--------|
-| Algae | Most water biomes |
-| Duckweed | Freshwater biomes |
-| Sargassum | Ocean biomes |
-| Papyrus | Swamp, Mangrove Swamp, River |
-| Clams | Shallow coastal biomes |
-| Oysters | Ocean reef biomes |
-| Starfish | Ocean floor biomes |
-| Anemone | Ocean biomes |
-| Urchin | Ocean biomes |
+| Algae | Ocean, Deep Ocean, Cold Ocean, Lukewarm Ocean, Warm Ocean, and swamp variants |
+| Duckweed | Swamp, Mangrove Swamp — hugs shorelines within 1–3 blocks of land |
+| Sargassum | Lukewarm Ocean, Deep Lukewarm Ocean |
+| Sargassum (beach wash-up) | Beach — dry patches on sand, no water |
+| Papyrus | Swamp, Mangrove Swamp, Savanna, Desert |
+| Swamp Logs | Swamp — fallen and floating oak logs with moss, mushrooms, and duckweed |
+| Clams | Warm Ocean, Lukewarm Ocean, Deep Lukewarm Ocean |
+| Oysters | Ocean, Deep Ocean, Cold Ocean, Deep Cold Ocean, Frozen Ocean, Deep Frozen Ocean |
+| Starfish | Warm Ocean, Lukewarm Ocean |
+| Anemone | Warm Ocean, Lukewarm Ocean |
+| Urchin | Most ocean biomes |
 | Wormy Dirt | Common overworld biomes (underground) |
 | Wormy Mud | Mangrove Swamp (underground) |
-| Hydrothermal Vents | Deep ocean (rare) |
+| Hydrothermal Vents | Deep ocean, excluding Deep Lukewarm Ocean (rare) |
 
-**Hydrothermal Vents** are rare structures that generate only in the deepest ocean water.
+**Hydrothermal Vents** are rare structures that generate only in the deepest ocean water. **Swamp Logs** are 5–7 block oak logs that spawn floating on water or lying on solid ground, decorated with moss carpet, mushrooms, and duckweed.
+
+**Vanilla change:** Lily pads are now bonemealable — using bonemeal on a lily pad spreads it to an adjacent water block.
 
 ---
 

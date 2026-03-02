@@ -55,6 +55,9 @@ public class WaterloggedMod implements ModInitializer {
 				ctx -> ctx.getBiomeRegistryEntry().is(WaterloggedBiomeTags.SARGASSUM_BIOMES),
 				GenerationStep.Decoration.VEGETAL_DECORATION, WaterloggedPlacedFeatures.SARGASSUM);
 		BiomeModifications.addFeature(
+				ctx -> ctx.getBiomeRegistryEntry().is(WaterloggedBiomeTags.SARGASSUM_BEACH_BIOMES),
+				GenerationStep.Decoration.VEGETAL_DECORATION, WaterloggedPlacedFeatures.SARGASSUM_BEACH);
+		BiomeModifications.addFeature(
 				ctx -> ctx.getBiomeRegistryEntry().is(WaterloggedBiomeTags.PAPYRUS_BIOMES),
 				GenerationStep.Decoration.VEGETAL_DECORATION, WaterloggedPlacedFeatures.PAPYRUS);
 		BiomeModifications.addFeature(
@@ -88,6 +91,9 @@ public class WaterloggedMod implements ModInitializer {
 				ctx -> ctx.getBiomeRegistryEntry().is(BiomeTags.IS_DEEP_OCEAN)
 						&& !ctx.getBiomeKey().equals(ResourceKey.create(Registries.BIOME, Identifier.withDefaultNamespace("deep_lukewarm_ocean"))),
 				GenerationStep.Decoration.VEGETAL_DECORATION, WaterloggedPlacedFeatures.HYDROTHERMAL_VENT);
+		BiomeModifications.addFeature(
+				ctx -> ctx.getBiomeRegistryEntry().is(WaterloggedBiomeTags.SWAMP_LOG_BIOMES),
+				GenerationStep.Decoration.VEGETAL_DECORATION, WaterloggedPlacedFeatures.SWAMP_LOG);
 
 		PelicanSpawner spawner = new PelicanSpawner();
 		ServerTickEvents.END_WORLD_TICK.register(level -> spawner.spawn(level, true, true));
