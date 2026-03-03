@@ -13,5 +13,11 @@ public class WaterloggedCriteria {
             new TradedWithPelicanCriterion()
     );
 
+    public static final CaughtFishWithNetCriterion CAUGHT_FISH_WITH_NET = Registry.register(
+            BuiltInRegistries.TRIGGER_TYPES,
+            Identifier.fromNamespaceAndPath(MOD_ID, "caught_fish_with_net"),
+            new CaughtFishWithNetCriterion()
+    );
+
     public static void init() {}
 }

@@ -1,6 +1,6 @@
 package net.braeden.waterlogged.datagen;
 
-import net.braeden.waterlogged.block.WaterloggedBlocks;
+import net.braeden.waterlogged.criteria.CaughtFishWithNetCriterion;
 import net.braeden.waterlogged.criteria.TradedWithPelicanCriterion;
 import net.braeden.waterlogged.criteria.WaterloggedCriteria;
 import net.braeden.waterlogged.item.WaterloggedItems;
@@ -10,14 +10,10 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementType;
 import net.minecraft.advancements.criterion.InventoryChangeTrigger;
-import net.minecraft.advancements.criterion.ItemUsedOnLocationTrigger;
-import net.minecraft.advancements.criterion.LocationPredicate;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Blocks;
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -32,28 +28,19 @@ public class WaterloggedAdvancementProvider extends FabricAdvancementProvider {
     @SuppressWarnings("removal")
 @Override
     public void generateAdvancement(HolderLookup.Provider registries, Consumer<AdvancementHolder> exporter) {
-        var blocks = registries.lookupOrThrow(Registries.BLOCK);
-        var items = registries.lookupOrThrow(Registries.ITEM);
-
-        // Root advancement: put worm in block
+        // Root advancement: collect a worm
         AdvancementHolder putWormInBlock = Advancement.Builder.advancement()
                 .display(
                         WaterloggedItems.WORM,
-                        Component.translatable("advancements.husbandry.put_worm_in_block.title"),
-                        Component.translatable("advancements.husbandry.put_worm_in_block.description"),
+                        Component.translatable("advancements.husbandry.dirt_noodle.title"),
+                        Component.translatable("advancements.husbandry.dirt_noodle.description"),
                         null,
                         AdvancementType.TASK,
                         true,
                         true,
                         false)
-                .addCriterion("put_worm_in_block",
-                        ItemUsedOnLocationTrigger.TriggerInstance.itemUsedOnBlock(
-                                LocationPredicate.Builder.location().setBlock(
-                                        net.minecraft.advancements.criterion.BlockPredicate.Builder.block()
-                                                .of(blocks, Blocks.DIRT, Blocks.MUD, WaterloggedBlocks.WORMY_DIRT, WaterloggedBlocks.WORMY_MUD)),
-                                net.minecraft.advancements.criterion.ItemPredicate.Builder.item()
-                                        .of(items, WaterloggedItems.WORM)))
-                .build(Identifier.fromNamespaceAndPath("waterlogged", "husbandry/put_worm_in_block"));
+                .addCriterion("worm", InventoryChangeTrigger.TriggerInstance.hasItems(WaterloggedItems.WORM))
+                .build(Identifier.fromNamespaceAndPath("waterlogged", "husbandry/dirt_noodle"));
         exporter.accept(putWormInBlock);
 
         // Obtain roe (parent: put worm in block)
@@ -106,5 +93,24 @@ public class WaterloggedAdvancementProvider extends FabricAdvancementProvider {
                                 new TradedWithPelicanCriterion.TriggerInstance(Optional.empty())))
                 .build(Identifier.fromNamespaceAndPath("waterlogged", "husbandry/traded_with_pelican"));
         exporter.accept(tradedWithPelican);
+
+        // Caught fish with net (parent: minecraft:husbandry/tactical_fishing)
+        //noinspection removal
+        AdvancementHolder caughtFishWithNet = Advancement.Builder.advancement()
+                .parent(Identifier.withDefaultNamespace("husbandry/tactical_fishing"))
+                .display(
+                        WaterloggedItems.FISHING_NET,
+                        Component.translatable("advancements.husbandry.caught_fish_with_net.title"),
+                        Component.translatable("advancements.husbandry.caught_fish_with_net.description"),
+                        null,
+                        AdvancementType.TASK,
+                        true,
+                        true,
+                        false)
+                .addCriterion("caught_fish_with_net",
+                        WaterloggedCriteria.CAUGHT_FISH_WITH_NET.createCriterion(
+                                new CaughtFishWithNetCriterion.TriggerInstance(Optional.empty())))
+                .build(Identifier.fromNamespaceAndPath("waterlogged", "husbandry/caught_fish_with_net"));
+        exporter.accept(caughtFishWithNet);
     }
 }

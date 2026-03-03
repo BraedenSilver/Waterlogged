@@ -21,7 +21,7 @@ A Fabric mod for Minecraft 1.21.11 that expands the aquatic experience with new 
 | Fry | From Roe | Inherits parent appearance; grows into adult in ~5 min | — | — | ✓ |
 | Sunfish | Swamp | 9 variants; 5% mutation on breed; name tag "Diansu" unlocks Diansus Diansur | Raw Sunfish | ✓ | ✓ |
 | Catfish | Swamp | Eats nearby Algae | Raw Catfish | ✓ | ✓ |
-| Dongfish | Underground water¹ | Shears trim its "horngus"; sheared state saved in bucket | — | ✓ | ✓ |
+| Dongfish | Dark or nighttime water | Shears trim its "horngus"; sheared state saved in bucket | — | ✓ | ✓ |
 | Seahorse | Lukewarm/Warm Ocean | Spawns in small groups | — | ✓ | ✓ |
 | Bubble Eye | Rivers, Forest biomes² | Spawns in small groups | Raw Bubble Eye | ✓ | ✓ |
 | Mahi Mahi | Warm/Lukewarm Oceans | — | Raw Mahi Mahi | ✓ | ✓ |
@@ -31,9 +31,8 @@ A Fabric mod for Minecraft 1.21.11 that expands the aquatic experience with new 
 | Crab | Coastal biomes³ | Walks on land; 4 biome variants | Raw Crab Legs | ✓ | ✓ |
 | Orca | Cold/Frozen Oceans | Forms pods; adults defend calves; 25% spawn as calves; hostile if threatened | — | — | — |
 | Right Whale | Deep Cold/Frozen Ocean | 30% spawn as calves; Shears barnacles → 1–3 Nautilus Shells per level | — | — | — |
-| Pelican | Coastal⁴ | Catches and carries fish; trade a fish with it → *Paying the Bill* | — | — | — |
+| Pelican | Coastal⁴ | Catches and carries fish; trade a raw fish **or mob bucket** with it → *Paying the Bill* (bucket returned as empty Water Bucket) | — | — | — |
 
-¹ Plains, Forest, Taiga, Swamp, Savanna, Desert, River, and more
 ² River, Frozen River, Forest, Birch Forest, Old Growth Birch Forest, Dark Forest
 ³ Dungeness: Beach | Ghost: Swamp/Mangrove Swamp | Blue Claw: Stony Shore | Mojang: Swamp/Mangrove Swamp (5%)
 ⁴ Spawns like a Wandering Trader; despawns naturally
@@ -88,7 +87,7 @@ All raw modded fish (except crab legs) have a **25% chance** to appear when fish
 
 ### Tools
 
-**Fishing Net** — Left-click a fish to capture it and receive its raw drop. Durability: 131. Enchantable.
+**Fishing Net** — Left-click a fish to capture it and receive its raw drop. Durability: 131. Enchantable. Unlocks *Catch a Fish... Without a Rod, Again!*
 
 ### Materials
 
@@ -134,7 +133,7 @@ Bucketable: Fry, Sunfish, Catfish, Dongfish, Seahorse, Bubble Eye, Anglerfish, M
 | Wormy Dirt | Common overworld biomes |
 | Wormy Mud | Mangrove Swamp |
 
-**Pond Cypress** are large swamp trees (15–20 blocks) with buttress roots, cypress knees, inverted-cone crowns, and draping vines. Place 9 oak saplings in a 3×3 grid to grow one manually.
+**Pond Cypress** are large swamp trees (15–20 blocks) with buttress roots, cypress knees, inverted-cone crowns, and draping vines. Place 9 oak saplings in a 3×3 grid to grow one manually — bone meal requires a random number of applications (average ~3) before the tree sprouts.
 
 **Vanilla change:** Bonemeal on a lily pad now spreads it to an adjacent water block.
 
@@ -144,10 +143,11 @@ Bucketable: Fry, Sunfish, Catfish, Dongfish, Seahorse, Bubble Eye, Anglerfish, M
 
 | Advancement | How to Get |
 |-------------|------------|
-| **A (Blocky) Can of Worms** | Place a Worm in Wormy Dirt or Wormy Mud |
+| **Dirt Noodle** | Collect a Worm |
 | **Uncured Caviar** | Collect Roe with Silk Touch |
 | **Forbidden Cinnamon Roll** | Collect Sea Slug Eggs with Silk Touch |
-| **Paying the Bill** | Trade a fish with a Pelican while it's holding one |
+| **Paying the Bill** | Trade a raw fish or mob bucket with a Pelican while it's holding one |
+| **Catch a Fish... Without a Rod, Again!** | Catch a fish using a Fishing Net |
 
 ---
 

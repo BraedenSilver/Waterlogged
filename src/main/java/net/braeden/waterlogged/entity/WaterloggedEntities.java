@@ -98,7 +98,7 @@ public class WaterloggedEntities {
     public static final EntityType<DongfishEntity> DONGFISH = Registry.register(
             BuiltInRegistries.ENTITY_TYPE,
             ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "dongfish")),
-            EntityType.Builder.<DongfishEntity>of(DongfishEntity::new, MobCategory.WATER_AMBIENT)
+            EntityType.Builder.<DongfishEntity>of(DongfishEntity::new, MobCategory.UNDERGROUND_WATER_CREATURE)
                     .sized(0.4f, 0.3f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "dongfish")))
     );
@@ -194,7 +194,7 @@ public class WaterloggedEntities {
         SpawnPlacements.register(CRAB, SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CrabEntity::canSpawn);
         SpawnPlacements.register(DONGFISH, SpawnPlacementTypes.IN_WATER,
-                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WaterAnimal::checkSurfaceWaterAnimalSpawnRules);
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, DongfishEntity::canSpawn);
         SpawnPlacements.register(CATFISH, SpawnPlacementTypes.IN_WATER,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WaterAnimal::checkSurfaceWaterAnimalSpawnRules);
         SpawnPlacements.register(SEAHORSE, SpawnPlacementTypes.IN_WATER,

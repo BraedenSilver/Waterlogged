@@ -261,16 +261,19 @@ public class PelicanEntity extends Animal implements FlyingAnimal {
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (!this.level().isClientSide() && hasHeldEntity() && !hasTraded() && isFishItem(stack)) {
+        if (!this.level().isClientSide() && hasHeldEntity() && !hasTraded() && (isFishItem(stack) || isBucketItem(stack))) {
             ServerLevel serverLevel = (ServerLevel) this.level();
             ItemStack feedCopy = stack.copy(); // save before shrink for particles
 
             // Release the held entity
             releaseHeldEntity(serverLevel);
 
-            // Consume the fish from the player
+            // Consume the fish/bucket from the player; return empty water bucket for mob buckets
             if (!player.getAbilities().instabuild) {
                 stack.shrink(1);
+                if (isBucketItem(feedCopy)) {
+                    player.addItem(new ItemStack(Items.WATER_BUCKET));
+                }
             }
 
             // Mark as traded
@@ -318,6 +321,28 @@ public class PelicanEntity extends Animal implements FlyingAnimal {
                 || item == net.braeden.waterlogged.item.WaterloggedItems.RAW_CATFISH
                 || item == net.braeden.waterlogged.item.WaterloggedItems.RAW_BUBBLE_EYE
                 || item == net.braeden.waterlogged.item.WaterloggedItems.RAW_ANGLERFISH;
+    }
+
+    private boolean isBucketItem(ItemStack stack) {
+        if (stack.isEmpty()) return false;
+        var item = stack.getItem();
+        // Vanilla mob buckets
+        if (item == Items.COD_BUCKET || item == Items.SALMON_BUCKET || item == Items.TROPICAL_FISH_BUCKET
+                || item == Items.PUFFERFISH_BUCKET || item == Items.AXOLOTL_BUCKET || item == Items.TADPOLE_BUCKET)
+            return true;
+        // Modded mob buckets
+        return item == net.braeden.waterlogged.item.WaterloggedItems.SUNFISH_BUCKET
+                || item == net.braeden.waterlogged.item.WaterloggedItems.FRY_BUCKET
+                || item == net.braeden.waterlogged.item.WaterloggedItems.SEA_SLUG_BUCKET
+                || item == net.braeden.waterlogged.item.WaterloggedItems.CRAB_BUCKET
+                || item == net.braeden.waterlogged.item.WaterloggedItems.DONGFISH_BUCKET
+                || item == net.braeden.waterlogged.item.WaterloggedItems.CATFISH_BUCKET
+                || item == net.braeden.waterlogged.item.WaterloggedItems.SEAHORSE_BUCKET
+                || item == net.braeden.waterlogged.item.WaterloggedItems.BUBBLE_EYE_BUCKET
+                || item == net.braeden.waterlogged.item.WaterloggedItems.ANOMALOCARIS_BUCKET
+                || item == net.braeden.waterlogged.item.WaterloggedItems.ANGLERFISH_BUCKET
+                || item == net.braeden.waterlogged.item.WaterloggedItems.MAHI_MAHI_BUCKET
+                || item == net.braeden.waterlogged.item.WaterloggedItems.URCHIN_BUCKET;
     }
 
     // --- Sounds ---

@@ -218,13 +218,15 @@ public class WaterloggedLangProvider extends FabricLanguageProvider {
         builder.add("subtitles.entity.orca.hurt", "Orca hurts");
 
         // Advancements
-        builder.add("advancements.husbandry.put_worm_in_block.title", "A (Blocky) Can of Worms");
-        builder.add("advancements.husbandry.put_worm_in_block.description", "Stick a Worm into some Dirt or Mud, where it can reproduce if buried");
+        builder.add("advancements.husbandry.dirt_noodle.title", "Dirt Noodle");
+        builder.add("advancements.husbandry.dirt_noodle.description", "Collect a Worm");
         builder.add("advancements.husbandry.obtain_roe.title", "Uncured Caviar");
         builder.add("advancements.husbandry.obtain_roe.description", "Pick up Fish Roe, using Silk Touch");
         builder.add("advancements.husbandry.obtain_sea_slug_eggs.title", "Forbidden Cinnamon Roll");
         builder.add("advancements.husbandry.obtain_sea_slug_eggs.description", "Pick up Sea Slug Eggs, using Silk Touch");
         builder.add("advancements.husbandry.traded_with_pelican.title", "Paying the Bill");
         builder.add("advancements.husbandry.traded_with_pelican.description", "Trade the Fish inside a Pelican's Beak for another Fish");
+        builder.add("advancements.husbandry.caught_fish_with_net.title", "Catch a Fish... Without a Rod, Again!");
+        builder.add("advancements.husbandry.caught_fish_with_net.description", "Catch a fish using a Fishing Net");
     }
 }

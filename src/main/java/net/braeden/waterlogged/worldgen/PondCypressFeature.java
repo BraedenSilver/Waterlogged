@@ -16,6 +16,11 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.material.FluidState;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Bald / Pond Cypress (Taxodium distichum / ascendens).
  *
@@ -124,8 +129,13 @@ public class PondCypressFeature extends Feature<NoneFeatureConfiguration> {
         // ── Duckweed — same method as SwampLogFeature ─────────────────────────
         placeDuckweed(level, base, rand);
 
-        // ── Moss carpet — ground cover under the canopy ───────────────────────
-        placeMossCarpet(level, base, rand);
+        // ── Swamp plants — moss carpet, firefly bushes, blue orchids ──────────
+        placeSwampPlants(level, base, rand);
+
+        // ── Leaf decay — BFS from logs to set correct distance on all leaves ──
+        // scheduleTick() is a no-op in WorldGenLevel, so we compute distances
+        // ourselves: every leaf gets PERSISTENT=false + the correct distance value.
+        finalizeLeavesDecay(level, base, height);
     }
 
     // ── Branch helpers ────────────────────────────────────────────────────────
@@ -268,13 +278,16 @@ public class PondCypressFeature extends Feature<NoneFeatureConfiguration> {
         }
     }
 
-    /** Scatters moss carpet on solid ground within ~4 blocks of the trunk base. */
-    private static void placeMossCarpet(WorldGenLevel level, BlockPos base, RandomSource rand) {
-        int radius = 4;
+    /** Scatters moss carpet, firefly bushes, and blue orchids on solid dry ground near the trunk. */
+    private static void placeSwampPlants(WorldGenLevel level, BlockPos base, RandomSource rand) {
+        int radius = 5;
+        BlockState mossCarpet   = Blocks.MOSS_CARPET.defaultBlockState();
+        BlockState fireflyBush  = Blocks.FIREFLY_BUSH.defaultBlockState();
+        BlockState blueOrchid   = Blocks.BLUE_ORCHID.defaultBlockState();
+
         for (int dx = -radius; dx <= radius; dx++) {
             for (int dz = -radius; dz <= radius; dz++) {
                 if (dx * dx + dz * dz > radius * radius) continue;
-                if (rand.nextFloat() > 0.65f) continue;
                 for (int dy = 1; dy >= -4; dy--) {
                     BlockPos pos = base.offset(dx, dy, dz);
                     if (!level.getFluidState(pos).isEmpty()) break; // water — skip
@@ -282,9 +295,25 @@ public class PondCypressFeature extends Feature<NoneFeatureConfiguration> {
                     if (state.isAir() || state.is(BlockTags.LEAVES) || state.is(BlockTags.LOGS)) continue;
                     if (!state.isFaceSturdy(level, pos, Direction.UP)) break;
                     BlockPos above = pos.above();
-                    if (level.getBlockState(above).isAir()) {
-                        level.setBlock(above, Blocks.MOSS_CARPET.defaultBlockState(), 2);
+                    if (!level.getBlockState(above).isAir()) break;
+
+                    float roll = rand.nextFloat();
+                    if (roll < 0.10f) {
+                        if (fireflyBush.canSurvive(level, above))
+                            level.setBlock(above, fireflyBush, 2);
+                    } else if (roll < 0.45f) {
+                        level.setBlock(above, mossCarpet, 2);
+                    } else if (roll < 0.50f) {
+                        if (blueOrchid.canSurvive(level, above))
+                            level.setBlock(above, blueOrchid, 2);
+                    } else if (roll < 0.55f) {
+                        BlockState mushroom = rand.nextBoolean()
+                                ? Blocks.BROWN_MUSHROOM.defaultBlockState()
+                                : Blocks.RED_MUSHROOM.defaultBlockState();
+                        if (mushroom.canSurvive(level, above))
+                            level.setBlock(above, mushroom, 2);
                     }
+                    // else ~45% — leave bare
                     break;
                 }
             }
@@ -435,6 +464,68 @@ public class PondCypressFeature extends Feature<NoneFeatureConfiguration> {
 
     private static void setLeaf(WorldGenLevel level, BlockPos pos) {
         if (isReplaceable(level, pos)) level.setBlock(pos, LEAVES, 2);
+    }
+
+    /**
+     * BFS from all log-adjacent positions to compute the true leaf distance for
+     * every oak leaf in the tree's bounding box. scheduleTick() is a no-op in
+     * WorldGenLevel, so we must set the distance value ourselves. Each leaf is
+     * written as PERSISTENT=false with its computed distance so normal decay
+     * cascades correctly when logs are removed later.
+     */
+    private static void finalizeLeavesDecay(WorldGenLevel level, BlockPos base, int height) {
+        int r = 9;
+        int yMin = -3;
+        int yMax = height + 6;
+
+        // BFS seeded from leaves directly adjacent to any log
+        Deque<BlockPos> queue = new ArrayDeque<>();
+        Map<Long, Integer> dist = new HashMap<>();
+
+        for (int x = -r; x <= r; x++) {
+            for (int y = yMin; y <= yMax; y++) {
+                for (int z = -r; z <= r; z++) {
+                    BlockPos p = base.offset(x, y, z);
+                    if (!level.getBlockState(p).is(BlockTags.LOGS)) continue;
+                    for (Direction d : Direction.values()) {
+                        BlockPos adj = p.relative(d);
+                        long key = adj.asLong();
+                        if (dist.containsKey(key)) continue;
+                        if (!level.getBlockState(adj).is(BlockTags.LEAVES)) continue;
+                        dist.put(key, 1);
+                        queue.add(adj);
+                    }
+                }
+            }
+        }
+
+        while (!queue.isEmpty()) {
+            BlockPos p = queue.poll();
+            int d = dist.get(p.asLong());
+            if (d >= 7) continue;
+            for (Direction dir : Direction.values()) {
+                BlockPos nb = p.relative(dir);
+                long key = nb.asLong();
+                if (dist.containsKey(key)) continue;
+                if (!level.getBlockState(nb).is(BlockTags.LEAVES)) continue;
+                dist.put(key, d + 1);
+                queue.add(nb);
+            }
+        }
+
+        // Write PERSISTENT=false + correct distance to every PERSISTENT oak leaf we placed
+        for (int x = -r; x <= r; x++) {
+            for (int y = yMin; y <= yMax; y++) {
+                for (int z = -r; z <= r; z++) {
+                    BlockPos p = base.offset(x, y, z);
+                    BlockState s = level.getBlockState(p);
+                    if (!s.is(Blocks.OAK_LEAVES) || !s.getValue(LeavesBlock.PERSISTENT)) continue;
+                    int leafDist = dist.getOrDefault(p.asLong(), 7);
+                    level.setBlock(p, s.setValue(LeavesBlock.PERSISTENT, false)
+                            .setValue(LeavesBlock.DISTANCE, leafDist), 2);
+                }
+            }
+        }
     }
 
     // ── Math helpers ──────────────────────────────────────────────────────────

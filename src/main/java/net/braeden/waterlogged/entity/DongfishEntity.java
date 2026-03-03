@@ -26,7 +26,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.entity.AnimationState;
@@ -79,6 +84,11 @@ public class DongfishEntity extends AbstractFish implements WormBreeder {
         this.goalSelector.addGoal(3, new RandomSwimmingGoal(this, 1.0, 40));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0f));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
+    }
+
+    public static boolean canSpawn(EntityType<DongfishEntity> type, LevelAccessor level,
+            EntitySpawnReason reason, BlockPos pos, RandomSource random) {
+        return level.getBlockState(pos).is(Blocks.WATER) && level.getRawBrightness(pos, 0) < 8;
     }
 
     public static AttributeSupplier.Builder createAttributes() {

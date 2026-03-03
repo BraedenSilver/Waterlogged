@@ -1,11 +1,13 @@
 package net.braeden.waterlogged.item;
 
+import net.braeden.waterlogged.criteria.WaterloggedCriteria;
 import net.braeden.waterlogged.entity.AnglerfishEntity;
 import net.braeden.waterlogged.entity.BubbleEyeEntity;
 import net.braeden.waterlogged.entity.CatfishEntity;
 import net.braeden.waterlogged.entity.CrabEntity;
 import net.braeden.waterlogged.entity.MahiMahiEntity;
 import net.braeden.waterlogged.entity.SunfishEntity;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -55,6 +57,9 @@ public class FishingNetItem extends Item {
             drainFood(player);
             EquipmentSlot slot = hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
             stack.hurtAndBreak(1, player, slot);
+            if (player instanceof ServerPlayer sp) {
+                WaterloggedCriteria.CAUGHT_FISH_WITH_NET.trigger(sp);
+            }
         }
     }
 
