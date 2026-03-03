@@ -155,4 +155,6 @@ Bucketable: Fry, Sunfish, Catfish, Dongfish, Seahorse, Bubble Eye, Anglerfish, M
 
 Made by **Braeden Silver**, **EightSidedSquare**, **Diansu**, and **Sillvia**.
 
+Based on [Angling](https://github.com/8s2/Angling) by EightSidedSquare.
+
 Licensed under [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/).
