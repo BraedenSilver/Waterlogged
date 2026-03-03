@@ -90,6 +90,7 @@ public class WaterloggedRawProvider implements DataProvider {
         futures.add(save(cache, data("worldgen/configured_feature/wormy_dirt.json"),      cfWormyDirt()));
         futures.add(save(cache, data("worldgen/configured_feature/wormy_mud.json"),       cfWormyMud()));
         futures.add(save(cache, data("worldgen/configured_feature/swamp_log.json"),       cfSwampLog()));
+        futures.add(save(cache, data("worldgen/configured_feature/pond_cypress.json"),    cfPondCypress()));
 
         // ── Worldgen: placed features ──────────────────────────────────────────
         futures.add(save(cache, data("worldgen/placed_feature/algae.json"),           pfAlgae()));
@@ -108,6 +109,7 @@ public class WaterloggedRawProvider implements DataProvider {
         futures.add(save(cache, data("worldgen/placed_feature/wormy_dirt.json"),      pfWormyDirt()));
         futures.add(save(cache, data("worldgen/placed_feature/wormy_mud.json"),       pfWormyMud()));
         futures.add(save(cache, data("worldgen/placed_feature/swamp_log.json"),       pfSwampLog()));
+        futures.add(save(cache, data("worldgen/placed_feature/pond_cypress.json"),    pfPondCypress()));
 
         return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new));
     }
@@ -985,6 +987,14 @@ public class WaterloggedRawProvider implements DataProvider {
         return root;
     }
 
+    private JsonObject cfPondCypress() {
+        // Custom feature: Taxodium ascendens — buttressed cypress tree in swamp biomes
+        JsonObject root = new JsonObject();
+        root.addProperty("type", "waterlogged:pond_cypress");
+        root.add("config", new JsonObject());
+        return root;
+    }
+
     // ── Worldgen: placed features ──────────────────────────────────────────────
 
     private JsonObject pfAlgae() {
@@ -1053,6 +1063,13 @@ public class WaterloggedRawProvider implements DataProvider {
         // rarity_filter(6): ~1 in 6 chunks — visible but not clogging
         return placedFeature("waterlogged:swamp_log",
                 rarityFilter(6), inSquare(), heightmap("MOTION_BLOCKING"), biome());
+    }
+
+    private JsonObject pfPondCypress() {
+        // No rarity filter — every chunk gets one attempt (maximum density)
+        // MOTION_BLOCKING heightmap may land on canopy; PondCypressFeature.findGround() scans down
+        return placedFeature("waterlogged:pond_cypress",
+                inSquare(), heightmap("MOTION_BLOCKING"), biome());
     }
 
     // ── Worldgen builder helpers ───────────────────────────────────────────────

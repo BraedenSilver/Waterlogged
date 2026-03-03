@@ -38,7 +38,8 @@ public class WaterloggedBiomeTags {
     public static final TagKey<Biome> WORMY_DIRT_BIOMES = create("wormy_dirt_biomes");
     public static final TagKey<Biome> WORMY_MUD_BIOMES = create("wormy_mud_biomes");
     public static final TagKey<Biome> URCHIN_BIOMES    = create("urchin_biomes");
-    public static final TagKey<Biome> SWAMP_LOG_BIOMES = create("swamp_log_biomes");
+    public static final TagKey<Biome> SWAMP_LOG_BIOMES    = create("swamp_log_biomes");
+    public static final TagKey<Biome> POND_CYPRESS_BIOMES = create("pond_cypress_biomes");
 
     private static TagKey<Biome> create(String id) {
         return TagKey.create(Registries.BIOME, Identifier.fromNamespaceAndPath(MOD_ID, id));

@@ -25,6 +25,7 @@ public class WaterloggedPlacedFeatures {
     public static final ResourceKey<PlacedFeature> WORMY_MUD        = key("wormy_mud");
     public static final ResourceKey<PlacedFeature> HYDROTHERMAL_VENT = key("hydrothermal_vent");
     public static final ResourceKey<PlacedFeature> SWAMP_LOG         = key("swamp_log");
+    public static final ResourceKey<PlacedFeature> POND_CYPRESS      = key("pond_cypress");
 
     private static ResourceKey<PlacedFeature> key(String name) {
         return ResourceKey.create(Registries.PLACED_FEATURE, Identifier.fromNamespaceAndPath(MOD_ID, name));

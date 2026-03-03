@@ -142,6 +142,7 @@ public class WaterloggedBiomeTagProvider extends FabricTagProvider<Biome> {
                 .add(MANGROVE_SWAMP);
 
         builder(WaterloggedBiomeTags.SWAMP_LOG_BIOMES).add(SWAMP);
+        builder(WaterloggedBiomeTags.POND_CYPRESS_BIOMES).add(SWAMP);
     }
 
     private static ResourceKey<Biome> mc(String id) {

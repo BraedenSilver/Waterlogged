@@ -22,6 +22,7 @@ public class WaterloggedConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> URCHIN            = key("urchin");
     public static final ResourceKey<ConfiguredFeature<?, ?>> HYDROTHERMAL_VENT = key("hydrothermal_vent");
     public static final ResourceKey<ConfiguredFeature<?, ?>> SWAMP_LOG        = key("swamp_log");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> POND_CYPRESS     = key("pond_cypress");
 
     private static ResourceKey<ConfiguredFeature<?, ?>> key(String name) {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE, Identifier.fromNamespaceAndPath(MOD_ID, name));

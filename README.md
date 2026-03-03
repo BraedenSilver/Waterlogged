@@ -280,6 +280,7 @@ Bucketable: Fry, Sunfish, Catfish, Dongfish, Seahorse, Bubble Eye, Anglerfish, M
 | Sargassum | Lukewarm Ocean, Deep Lukewarm Ocean |
 | Sargassum (beach wash-up) | Beach — dry patches on sand, no water |
 | Papyrus | Swamp, Mangrove Swamp, Savanna, Desert |
+| Pond Cypress | Swamp — tall cypress trees with buttress roots, cypress knees, and hanging vines; replaces vanilla swamp oak |
 | Swamp Logs | Swamp — fallen and floating oak logs with moss, mushrooms, and duckweed |
 | Clams | Warm Ocean, Lukewarm Ocean, Deep Lukewarm Ocean |
 | Oysters | Ocean, Deep Ocean, Cold Ocean, Deep Cold Ocean, Frozen Ocean, Deep Frozen Ocean |
@@ -290,7 +291,7 @@ Bucketable: Fry, Sunfish, Catfish, Dongfish, Seahorse, Bubble Eye, Anglerfish, M
 | Wormy Mud | Mangrove Swamp (underground) |
 | Hydrothermal Vents | Deep ocean, excluding Deep Lukewarm Ocean (rare) |
 
-**Hydrothermal Vents** are rare structures that generate only in the deepest ocean water. **Swamp Logs** are 5–7 block oak logs that spawn floating on water or lying on solid ground, decorated with moss carpet, mushrooms, and duckweed.
+**Hydrothermal Vents** are rare structures that generate only in the deepest ocean water. **Swamp Logs** are 5–7 block oak logs that spawn floating on water or lying on solid ground, decorated with moss carpet, mushrooms, and duckweed. **Pond Cypress** trees are large (15–20 block) swamp trees with a wine-glass trunk flare, buttress roots, cypress knees, inverted-cone crown, draping vines, and a scatter of moss carpet on the ground beneath the canopy. Vanilla swamp oak trees are replaced by cypress in Swamp biomes. Place 9 oak saplings in a 3×3 grid to grow one manually.
 
 **Vanilla change:** Lily pads are now bonemealable — using bonemeal on a lily pad spreads it to an adjacent water block.
 

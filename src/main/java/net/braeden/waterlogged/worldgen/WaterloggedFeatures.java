@@ -58,6 +58,12 @@ public class WaterloggedFeatures {
             new SwampLogFeature()
     );
 
+    public static final Feature<NoneFeatureConfiguration> POND_CYPRESS = Registry.register(
+            BuiltInRegistries.FEATURE,
+            Identifier.fromNamespaceAndPath(MOD_ID, "pond_cypress"),
+            new PondCypressFeature()
+    );
+
     public static void init() {
         // Features registered via static field initializers above
     }

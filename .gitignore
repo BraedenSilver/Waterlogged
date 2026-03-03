@@ -48,3 +48,6 @@ PLANNED_FEATURES.md
 # Generated BlockBench files (regenerate with: bash scripts/make_bbmodels.sh)
 /BlockBench/
 /Scripts/
+
+# Tree concept scratch files (reference designs, not committed)
+/_tree-concepts/

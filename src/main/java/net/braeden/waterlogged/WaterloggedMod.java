@@ -15,6 +15,7 @@ import net.braeden.waterlogged.criteria.WaterloggedCriteria;
 import net.braeden.waterlogged.particle.WaterloggedParticles;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.minecraft.tags.BiomeTags;
@@ -94,6 +95,17 @@ public class WaterloggedMod implements ModInitializer {
 		BiomeModifications.addFeature(
 				ctx -> ctx.getBiomeRegistryEntry().is(WaterloggedBiomeTags.SWAMP_LOG_BIOMES),
 				GenerationStep.Decoration.VEGETAL_DECORATION, WaterloggedPlacedFeatures.SWAMP_LOG);
+		BiomeModifications.addFeature(
+				ctx -> ctx.getBiomeRegistryEntry().is(WaterloggedBiomeTags.POND_CYPRESS_BIOMES),
+				GenerationStep.Decoration.VEGETAL_DECORATION, WaterloggedPlacedFeatures.POND_CYPRESS);
+		// Remove vanilla swamp oak trees from cypress biomes so cypress fills that role
+		BiomeModifications.create(Identifier.fromNamespaceAndPath(MOD_ID, "swamp_tree_adjustment"))
+				.add(ModificationPhase.REMOVALS,
+						ctx -> ctx.getBiomeRegistryEntry().is(WaterloggedBiomeTags.POND_CYPRESS_BIOMES),
+						ctx -> ctx.getGenerationSettings().removeFeature(
+								GenerationStep.Decoration.VEGETAL_DECORATION,
+								ResourceKey.create(Registries.PLACED_FEATURE,
+										Identifier.withDefaultNamespace("trees_swamp"))));
 
 		PelicanSpawner spawner = new PelicanSpawner();
 		ServerTickEvents.END_WORLD_TICK.register(level -> spawner.spawn(level, true, true));

@@ -11,6 +11,7 @@
     "PufferfishWormMixin",
     "ComposterBlockMixin",
     "LilyPadBonemealMixin",
+    "OakSaplingCypressMixin",
     "TropicalFishBucketMixin"
   ],
   "client": [
