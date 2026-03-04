@@ -3,14 +3,15 @@
 # Waterlogged
 
 ![Minecraft](https://img.shields.io/badge/Minecraft-1.21.11-62b47a?style=flat&logo=creeper&logoColor=white)
-![Loader](https://img.shields.io/badge/Loader-Fabric-dbb68a?style=flat)
+![Fabric](https://img.shields.io/badge/Fabric-0.18.4+-dbb68a?style=flat)
+![NeoForge](https://img.shields.io/badge/NeoForge-21.11.x-f57542?style=flat)
 ![Version](https://img.shields.io/badge/Version-1.0.1-6fa8dc?style=flat)
 ![Java](https://img.shields.io/badge/Java-21+-f6a623?style=flat&logo=openjdk&logoColor=white)
 ![License](https://img.shields.io/badge/License-CC0--1.0-lightgrey?style=flat)
 
 [Roadmap →](ROADMAP.md)
 
-A Fabric mod for Minecraft 1.21.11 that expands the aquatic experience with new creatures, plants, and structures.
+A **Fabric + NeoForge** mod for Minecraft 1.21.11 that expands the aquatic experience with new creatures, plants, and structures. Both loaders are built from a single source tree using [Stonecutter](https://stonecutter.kikugie.dev/).
 
 ---
 
@@ -148,6 +149,21 @@ Bucketable: Fry, Sunfish, Catfish, Dongfish, Seahorse, Bubble Eye, Anglerfish, M
 | **Forbidden Cinnamon Roll** | Collect Sea Slug Eggs with Silk Touch |
 | **Paying the Bill** | Trade a raw fish or mob bucket with a Pelican while it's holding one |
 | **Catch a Fish... Without a Rod, Again!** | Catch a fish using a Fishing Net |
+
+---
+
+## Building
+
+Requires **Java 21**. Both loader jars are produced from a single source tree via [Stonecutter](https://stonecutter.kikugie.dev/).
+
+```bash
+./gradlew build          # Build both Fabric + NeoForge → build/libs/
+./gradlew runDatagen     # Regenerate data files → src/main/generated/
+./gradlew runClient      # Launch dev client (active Stonecutter version)
+./gradlew runServer      # Launch dev server
+```
+
+The active Stonecutter version is set in `stonecutter.gradle` (default: `1.21.11-fabric`). Loader-specific build scripts are `fabric.gradle` and `neoforge.gradle`.
 
 ---
 

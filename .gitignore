@@ -57,3 +57,6 @@ PLANNED_FEATURES.md
 
 # ─── Miscellaneous ──────────────────────────────────────────────────────────
 /scripts/
+
+# ─── GitHub Copilot instructions ─────────────────────────────────────────────
+/.github/copilot-instructions.md
