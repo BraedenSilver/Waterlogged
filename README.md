@@ -1,4 +1,4 @@
-![Banner](banner.png)
+![Banner](docs/banner.png)
 
 # Waterlogged
 
@@ -9,7 +9,7 @@
 ![Java](https://img.shields.io/badge/Java-21+-f6a623?style=flat&logo=openjdk&logoColor=white)
 ![License](https://img.shields.io/badge/License-CC0--1.0-lightgrey?style=flat)
 
-[Roadmap →](ROADMAP.md)
+[Roadmap →](docs/ROADMAP.md)
 
 A **Fabric + NeoForge** mod for Minecraft 1.21.11 that expands the aquatic experience with new creatures, plants, and structures. Both loaders are built from a single source tree using [Stonecutter](https://stonecutter.kikugie.dev/).
 

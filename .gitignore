@@ -44,19 +44,16 @@ src/main/generated/
 # ─── Project docs / scratch ─────────────────────────────────────────────────
 CLAUDE.md
 .claude/
-TODO.md
+docs/TODO.md
 ADDING_AN_ANIMAL.txt
 PLANNED_FEATURES.md
 *.bak
 
-# ─── Generated BlockBench files (regenerate with: bash scripts/make_bbmodels.sh)
-/BlockBench/
+# ─── Generated BlockBench files (regenerate with: bash tools/make_bbmodels.sh)
+/tools/
 
 # ─── Tree concept scratch files (reference designs, not committed) ──────────
-/_tree-concepts/
-
-# ─── Miscellaneous ──────────────────────────────────────────────────────────
-/scripts/
+/docs/concepts/
 
 # ─── GitHub Copilot instructions ─────────────────────────────────────────────
 /.github/copilot-instructions.md
