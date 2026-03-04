@@ -3,14 +3,11 @@ package net.braeden.waterlogged.entity.client;
 import net.braeden.waterlogged.entity.client.blockbench.SeaSlugBlockbench;
 import net.braeden.waterlogged.entity.client.blockbench.SeaSlugAnimations;
 import net.braeden.waterlogged.entity.client.state.SeaSlugRenderState;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 
-@Environment(EnvType.CLIENT)
 public class SeaSlugModel extends EntityModel<SeaSlugRenderState> {
     private final KeyframeAnimation ambientAnimation;
     private final KeyframeAnimation movingAnimation;

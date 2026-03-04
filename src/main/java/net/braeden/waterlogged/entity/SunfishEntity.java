@@ -86,6 +86,9 @@ public class SunfishEntity extends AbstractFish implements WormBreeder {
     }
 
     @Override
+//?if neoforge {
+/*    @SuppressWarnings("deprecation")*/
+//?}
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty,
                                                    EntitySpawnReason spawnReason, @Nullable SpawnGroupData entityData) {
         SpawnGroupData data = super.finalizeSpawn(world, difficulty, spawnReason, entityData);

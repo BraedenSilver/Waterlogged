@@ -1,13 +1,10 @@
 package net.braeden.waterlogged.entity.client.blockbench;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.Keyframe;
 import net.minecraft.client.animation.KeyframeAnimations;
 
-@Environment(EnvType.CLIENT)
 public final class AnglerfishAnimations {
     private AnglerfishAnimations() {}
 

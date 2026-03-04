@@ -164,6 +164,9 @@ public class OrcaEntity extends AbstractFish {
 
     @Override
     @Nullable
+//?if neoforge {
+/*    @SuppressWarnings("deprecation")*/
+//?}
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty,
                                         EntitySpawnReason reason, @Nullable SpawnGroupData groupData) {
         SpawnGroupData data = super.finalizeSpawn(world, difficulty, reason, groupData);

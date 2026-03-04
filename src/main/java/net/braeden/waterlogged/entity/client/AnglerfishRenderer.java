@@ -2,13 +2,10 @@ package net.braeden.waterlogged.entity.client;
 
 import net.braeden.waterlogged.entity.AnglerfishEntity;
 import net.braeden.waterlogged.entity.client.state.AnglerfishRenderState;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;
 
-@Environment(EnvType.CLIENT)
 public class AnglerfishRenderer extends MobRenderer<AnglerfishEntity, AnglerfishRenderState, AnglerfishModel> {
     private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/anglerfish/anglerfish.png");
     private static final Identifier OVERLAY_TEXTURE = Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/anglerfish/anglerfish_overlay.png");

@@ -1,4 +1,5 @@
 package net.braeden.waterlogged.datagen;
+//?if fabric {
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
@@ -230,3 +231,4 @@ public class WaterloggedLangProvider extends FabricLanguageProvider {
         builder.add("advancements.husbandry.caught_fish_with_net.description", "Catch a fish using a Fishing Net");
     }
 }
+//?}

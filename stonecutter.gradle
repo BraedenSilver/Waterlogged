@@ -1,0 +1,7 @@
+plugins.apply 'dev.kikugie.stonecutter'
+
+stonecutter.active '1.21.11-fabric'
+
+// ─── Root shortcuts ───────────────────────────────────────────────────────
+// Root-level `build`, `runClient`, `runServer` cascade into ALL subprojects.
+// NeoForge tasks are no longer gated — both loaders compile clean.

@@ -1,4 +1,5 @@
 package net.braeden.waterlogged.datagen;
+//?if fabric {
 
 import net.braeden.waterlogged.entity.WaterloggedEntities;
 import net.braeden.waterlogged.item.WaterloggedItems;
@@ -95,3 +96,4 @@ public class WaterloggedEntityLootTableProvider extends FabricEntityLootTablePro
                         .add(LootItem.lootTableItem(Items.BONE_MEAL))));
     }
 }
+//?}

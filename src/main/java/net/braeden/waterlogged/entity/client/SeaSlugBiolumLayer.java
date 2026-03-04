@@ -4,8 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.braeden.waterlogged.entity.client.state.SeaSlugRenderState;
 import net.braeden.waterlogged.entity.util.SeaSlugBioluminescence;
 import net.braeden.waterlogged.entity.util.SeaSlugPattern;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
@@ -19,7 +17,6 @@ import java.util.Map;
  * Body bioluminescence re-renders the body texture at max light with the entity's color tint.
  * Pattern bioluminescence re-renders the pattern overlay at max light.
  */
-@Environment(EnvType.CLIENT)
 public class SeaSlugBiolumLayer extends RenderLayer<SeaSlugRenderState, SeaSlugModel> {
 
     private static final Identifier BODY_TEXTURE =

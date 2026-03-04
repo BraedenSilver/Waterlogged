@@ -1,4 +1,5 @@
 package net.braeden.waterlogged.datagen;
+//?if fabric {
 
 import net.braeden.waterlogged.criteria.CaughtFishWithNetCriterion;
 import net.braeden.waterlogged.criteria.TradedWithPelicanCriterion;
@@ -114,3 +115,4 @@ public class WaterloggedAdvancementProvider extends FabricAdvancementProvider {
         exporter.accept(caughtFishWithNet);
     }
 }
+//?}

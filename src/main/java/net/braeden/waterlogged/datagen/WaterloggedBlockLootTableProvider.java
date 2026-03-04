@@ -1,4 +1,5 @@
 package net.braeden.waterlogged.datagen;
+//?if fabric {
 
 import net.braeden.waterlogged.block.WaterloggedBlocks;
 import net.braeden.waterlogged.block.PapyrusBlock;
@@ -168,3 +169,4 @@ public class WaterloggedBlockLootTableProvider extends FabricBlockLootTableProvi
         return builder;
     }
 }
+//?}

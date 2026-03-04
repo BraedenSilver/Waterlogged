@@ -12,20 +12,29 @@ import net.braeden.waterlogged.entity.client.UrchinBlockEntityRenderer;
 import net.braeden.waterlogged.block.WaterloggedBlocks;
 import net.braeden.waterlogged.entity.WaterloggedEntities;
 import net.braeden.waterlogged.particle.WaterloggedParticles;
+//?if fabric {
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+//?} else {
+/*import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;*/
+//?}
 
+//?if fabric {
 public class WaterloggedClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-
         // Block render layers
         BlockRenderLayerMap.putBlock(WaterloggedBlocks.ROE, ChunkSectionLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(WaterloggedBlocks.DUCKWEED, ChunkSectionLayer.CUTOUT);
@@ -56,22 +65,22 @@ public class WaterloggedClient implements ClientModInitializer {
 
         // Model layer definitions
         EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.STARFISH,       StarfishModel::getTexturedModelData);
-        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.ANEMONE,       AnemoneModel::getTexturedModelData);
-        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.URCHIN,        UrchinModel::getTexturedModelData);
-        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.FRY,          FryModel::getTexturedModelData);
-        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.SUNFISH,       SunfishModel::getTexturedModelData);
-        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.PELICAN,       PelicanModel::getTexturedModelData);
-        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.SEA_SLUG,      SeaSlugModel::getTexturedModelData);
-        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.CRAB,          CrabModel::getTexturedModelData);
-        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.DONGFISH,      DongfishModel::getTexturedModelData);
-        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.CATFISH,       CatfishModel::getTexturedModelData);
-        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.SEAHORSE,      SeahorseModel::getTexturedModelData);
-        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.BUBBLE_EYE,    BubbleEyeModel::getTexturedModelData);
-        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.ANOMALOCARIS,  AnomalocarisModel::getTexturedModelData);
-        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.ANGLERFISH,    AnglerfishModel::getTexturedModelData);
-        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.MAHI_MAHI,     MahiMahiModel::getTexturedModelData);
-        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.ORCA,           OrcaModel::getTexturedModelData);
-        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.RIGHT_WHALE,    RightWhaleModel::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.ANEMONE,        AnemoneModel::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.URCHIN,         UrchinModel::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.FRY,            FryModel::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.SUNFISH,        SunfishModel::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.PELICAN,        PelicanModel::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.SEA_SLUG,       SeaSlugModel::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.CRAB,           CrabModel::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.DONGFISH,       DongfishModel::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.CATFISH,        CatfishModel::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.SEAHORSE,       SeahorseModel::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.BUBBLE_EYE,     BubbleEyeModel::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.ANOMALOCARIS,   AnomalocarisModel::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.ANGLERFISH,     AnglerfishModel::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.MAHI_MAHI,      MahiMahiModel::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.ORCA,            OrcaModel::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(WaterloggedEntityModelLayers.RIGHT_WHALE,     RightWhaleModel::getTexturedModelData);
 
         // Block entity renderers
         BlockEntityRenderers.register(WaterloggedEntities.STARFISH, StarfishBlockEntityRenderer::new);
@@ -92,7 +101,6 @@ public class WaterloggedClient implements ClientModInitializer {
             return -1;
         }, WaterloggedBlocks.ROE);
 
-        // Tint each egg cluster with the color of the parent that laid it.
         ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> {
             if (world == null || pos == null) return -1;
             if (world.getBlockEntity(pos) instanceof SeaSlugEggsBlockEntity eggs) {
@@ -100,6 +108,83 @@ public class WaterloggedClient implements ClientModInitializer {
             }
             return -1;
         }, WaterloggedBlocks.SEA_SLUG_EGGS);
-
     }
+//?} else {
+/*@EventBusSubscriber(modid = "waterlogged", value = Dist.CLIENT)
+public class WaterloggedClient {
+
+    // Block render layers on NeoForge 1.21+ are set via "render_type" in model JSON.
+    // Ensure datagen models include "render_type": "minecraft:cutout" / "minecraft:translucent".
+
+    @SubscribeEvent
+    public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        // Entity renderers
+        event.registerEntityRenderer(WaterloggedEntities.FRY,          FryRenderer::new);
+        event.registerEntityRenderer(WaterloggedEntities.SUNFISH,       SunfishRenderer::new);
+        event.registerEntityRenderer(WaterloggedEntities.PELICAN,       PelicanRenderer::new);
+        event.registerEntityRenderer(WaterloggedEntities.SEA_SLUG,      SeaSlugRenderer::new);
+        event.registerEntityRenderer(WaterloggedEntities.CRAB,          CrabRenderer::new);
+        event.registerEntityRenderer(WaterloggedEntities.DONGFISH,      DongfishRenderer::new);
+        event.registerEntityRenderer(WaterloggedEntities.CATFISH,       CatfishRenderer::new);
+        event.registerEntityRenderer(WaterloggedEntities.SEAHORSE,      SeahorseRenderer::new);
+        event.registerEntityRenderer(WaterloggedEntities.BUBBLE_EYE,    BubbleEyeRenderer::new);
+        event.registerEntityRenderer(WaterloggedEntities.ANOMALOCARIS,  AnomalocarisRenderer::new);
+        event.registerEntityRenderer(WaterloggedEntities.ANGLERFISH,    AnglerfishRenderer::new);
+        event.registerEntityRenderer(WaterloggedEntities.MAHI_MAHI,     MahiMahiRenderer::new);
+        event.registerEntityRenderer(WaterloggedEntities.ORCA,           OrcaRenderer::new);
+        event.registerEntityRenderer(WaterloggedEntities.RIGHT_WHALE,    RightWhaleRenderer::new);
+
+        // Block entity renderers
+        event.registerBlockEntityRenderer(WaterloggedEntities.STARFISH, StarfishBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(WaterloggedEntities.ANEMONE, AnemoneBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(WaterloggedEntities.URCHIN, UrchinBlockEntityRenderer::new);
+    }
+
+    @SubscribeEvent
+    public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(WaterloggedEntityModelLayers.STARFISH,       StarfishModel::getTexturedModelData);
+        event.registerLayerDefinition(WaterloggedEntityModelLayers.ANEMONE,        AnemoneModel::getTexturedModelData);
+        event.registerLayerDefinition(WaterloggedEntityModelLayers.URCHIN,         UrchinModel::getTexturedModelData);
+        event.registerLayerDefinition(WaterloggedEntityModelLayers.FRY,            FryModel::getTexturedModelData);
+        event.registerLayerDefinition(WaterloggedEntityModelLayers.SUNFISH,        SunfishModel::getTexturedModelData);
+        event.registerLayerDefinition(WaterloggedEntityModelLayers.PELICAN,        PelicanModel::getTexturedModelData);
+        event.registerLayerDefinition(WaterloggedEntityModelLayers.SEA_SLUG,       SeaSlugModel::getTexturedModelData);
+        event.registerLayerDefinition(WaterloggedEntityModelLayers.CRAB,           CrabModel::getTexturedModelData);
+        event.registerLayerDefinition(WaterloggedEntityModelLayers.DONGFISH,       DongfishModel::getTexturedModelData);
+        event.registerLayerDefinition(WaterloggedEntityModelLayers.CATFISH,        CatfishModel::getTexturedModelData);
+        event.registerLayerDefinition(WaterloggedEntityModelLayers.SEAHORSE,       SeahorseModel::getTexturedModelData);
+        event.registerLayerDefinition(WaterloggedEntityModelLayers.BUBBLE_EYE,     BubbleEyeModel::getTexturedModelData);
+        event.registerLayerDefinition(WaterloggedEntityModelLayers.ANOMALOCARIS,   AnomalocarisModel::getTexturedModelData);
+        event.registerLayerDefinition(WaterloggedEntityModelLayers.ANGLERFISH,     AnglerfishModel::getTexturedModelData);
+        event.registerLayerDefinition(WaterloggedEntityModelLayers.MAHI_MAHI,      MahiMahiModel::getTexturedModelData);
+        event.registerLayerDefinition(WaterloggedEntityModelLayers.ORCA,            OrcaModel::getTexturedModelData);
+        event.registerLayerDefinition(WaterloggedEntityModelLayers.RIGHT_WHALE,     RightWhaleModel::getTexturedModelData);
+    }
+
+    @SubscribeEvent
+    public static void registerParticles(RegisterParticleProvidersEvent event) {
+        event.registerSpriteSet(WaterloggedParticles.ALGAE, AlgaeParticle.Factory::new);
+        event.registerSpriteSet(WaterloggedParticles.WORM, WormParticle.Factory::new);
+    }
+
+    @SubscribeEvent
+    public static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
+        event.register((state, world, pos, tintIndex) -> {
+            if (world == null || pos == null) return -1;
+            if (world.getBlockEntity(pos) instanceof RoeBlockEntity roe) {
+                int argb = roe.getTintArgb();
+                if (argb != -1) return argb;
+            }
+            return -1;
+        }, WaterloggedBlocks.ROE);
+
+        event.register((state, world, pos, tintIndex) -> {
+            if (world == null || pos == null) return -1;
+            if (world.getBlockEntity(pos) instanceof SeaSlugEggsBlockEntity eggs) {
+                return SeaSlugColor.byId(eggs.getLayingParentColorId()).getArgb();
+            }
+            return -1;
+        }, WaterloggedBlocks.SEA_SLUG_EGGS);
+    }*/
+//?}
 }

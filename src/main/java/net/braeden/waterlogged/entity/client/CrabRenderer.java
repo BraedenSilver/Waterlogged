@@ -3,8 +3,6 @@ package net.braeden.waterlogged.entity.client;
 import net.braeden.waterlogged.entity.CrabEntity;
 import net.braeden.waterlogged.entity.client.state.CrabRenderState;
 import net.braeden.waterlogged.entity.util.CrabVariant;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -12,7 +10,6 @@ import net.minecraft.resources.Identifier;
 
 import java.util.Map;
 
-@Environment(EnvType.CLIENT)
 public class CrabRenderer extends MobRenderer<CrabEntity, CrabRenderState, CrabModel> {
 
     private static final Map<CrabVariant, Identifier> TEXTURES = Map.of(

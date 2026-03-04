@@ -1,6 +1,10 @@
 package net.braeden.waterlogged.mixin;
 
+//?if fabric {
 import net.fabricmc.loader.api.FabricLoader;
+//?} else {
+/*import net.neoforged.fml.ModList;*/
+//?}
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -22,7 +26,11 @@ public class WaterloggedMixinPlugin implements IMixinConfigPlugin {
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
         if(mixinClassName.toLowerCase().contains("sodium")) {
+            //?if fabric {
             return FabricLoader.getInstance().isModLoaded("sodium");
+            //?} else {
+            /*return ModList.get().isLoaded("sodium");*/
+            //?}
         }
         return true;
     }

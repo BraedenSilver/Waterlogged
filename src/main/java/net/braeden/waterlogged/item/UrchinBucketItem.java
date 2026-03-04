@@ -36,7 +36,11 @@ public class UrchinBucketItem extends Item {
         Player player = ctx.getPlayer();
         if (!level.isClientSide()) {
             level.setBlock(placePos, newState, 3);
+//?if fabric {
             SoundType sound = newState.getSoundType();
+//?} else {
+/*            SoundType sound = newState.getSoundType(level, placePos, null);*/
+//?}
             level.playSound(null, placePos, sound.getPlaceSound(), SoundSource.BLOCKS,
                     (sound.getVolume() + 1f) / 2f, sound.getPitch() * 0.8f);
             if (player != null && !player.getAbilities().instabuild) {

@@ -1,4 +1,5 @@
 package net.braeden.waterlogged.datagen;
+//?if fabric {
 
 import net.braeden.waterlogged.tags.WaterloggedBlockTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -93,3 +94,4 @@ public class WaterloggedBlockTagProvider extends FabricTagProvider.BlockTagProvi
         return ResourceKey.create(Registries.BLOCK, Identifier.withDefaultNamespace(id));
     }
 }
+//?}

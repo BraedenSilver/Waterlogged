@@ -148,6 +148,9 @@ public class SeaSlugEntity extends WaterAnimal implements WormBreeder, Bucketabl
     }
 
     @Override
+//?if neoforge {
+/*    @SuppressWarnings("deprecation")*/
+//?}
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty,
                                                    EntitySpawnReason spawnReason, @Nullable SpawnGroupData entityData) {
         SpawnGroupData data = super.finalizeSpawn(world, difficulty, spawnReason, entityData);

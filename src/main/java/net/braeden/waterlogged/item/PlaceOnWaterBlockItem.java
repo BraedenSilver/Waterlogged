@@ -52,7 +52,11 @@ public class PlaceOnWaterBlockItem extends BlockItem {
 
         if (!level.isClientSide()) {
             level.setBlock(placePos, toPlace, 3);
+//?if fabric {
             SoundType sound = toPlace.getSoundType();
+//?} else {
+/*            SoundType sound = toPlace.getSoundType(level, placePos, null);*/
+//?}
             level.playSound(null, placePos, sound.getPlaceSound(), SoundSource.BLOCKS,
                     (sound.getVolume() + 1f) / 2f, sound.getPitch() * 0.8f);
             Player player = ctx.getPlayer();
@@ -83,7 +87,11 @@ public class PlaceOnWaterBlockItem extends BlockItem {
         }
         if (!level.isClientSide()) {
             level.setBlock(placePos, state, 3);
+//?if fabric {
             SoundType sound = state.getSoundType();
+//?} else {
+/*            SoundType sound = state.getSoundType(level, placePos, null);*/
+//?}
             level.playSound(null, placePos, sound.getPlaceSound(), SoundSource.BLOCKS,
                     (sound.getVolume() + 1f) / 2f, sound.getPitch() * 0.8f);
             if (player == null || !player.getAbilities().instabuild) {

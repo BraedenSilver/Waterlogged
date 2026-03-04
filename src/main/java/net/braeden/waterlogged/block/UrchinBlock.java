@@ -136,7 +136,11 @@ public class UrchinBlock extends Block implements SimpleWaterloggedBlock, Entity
     }
 
     @Override
+//?if fabric {
     public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
+//?} else {
+/*    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, net.minecraft.world.entity.player.Player player) {*/
+//?}
         return new ItemStack(WaterloggedItems.URCHIN_BUCKET);
     }
 

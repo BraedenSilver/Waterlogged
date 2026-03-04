@@ -3,14 +3,11 @@ package net.braeden.waterlogged.entity.client;
 import net.braeden.waterlogged.entity.client.blockbench.SunfishBlockbench;
 import net.braeden.waterlogged.entity.client.blockbench.SunfishAnimations;
 import net.braeden.waterlogged.entity.client.state.SunfishRenderState;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 
-@Environment(EnvType.CLIENT)
 public class SunfishModel extends EntityModel<SunfishRenderState> {
     private final KeyframeAnimation idleAnimation;
     private final KeyframeAnimation floppingAnimation;

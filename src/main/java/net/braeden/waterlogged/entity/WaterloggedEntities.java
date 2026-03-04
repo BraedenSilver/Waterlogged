@@ -2,19 +2,30 @@ package net.braeden.waterlogged.entity;
 
 import net.braeden.waterlogged.block.entity.*;
 import net.braeden.waterlogged.block.WaterloggedBlocks;
+//?if fabric {
 import net.braeden.waterlogged.tags.WaterloggedBiomeTags;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
+//?} else {
+/*import java.util.Set;
+import net.neoforged.neoforge.registries.RegisterEvent;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;*/
+//?}
+//?if fabric {
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+//?}
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacementTypes;
+//?if fabric {
 import net.minecraft.world.entity.SpawnPlacements;
+//?}
 import net.minecraft.world.entity.animal.fish.WaterAnimal;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -23,152 +34,117 @@ import static net.braeden.waterlogged.WaterloggedMod.MOD_ID;
 
 public class WaterloggedEntities {
 
-    // Block Entity Types
-    public static final BlockEntityType<RoeBlockEntity> ROE = Registry.register(
-            BuiltInRegistries.BLOCK_ENTITY_TYPE,
-            Identifier.fromNamespaceAndPath(MOD_ID, "roe"),
-            FabricBlockEntityTypeBuilder.create(RoeBlockEntity::new, WaterloggedBlocks.ROE).build()
-    );
-
-    public static final BlockEntityType<StarfishBlockEntity> STARFISH = Registry.register(
-            BuiltInRegistries.BLOCK_ENTITY_TYPE,
-            Identifier.fromNamespaceAndPath(MOD_ID, "starfish"),
-            FabricBlockEntityTypeBuilder.create(StarfishBlockEntity::new, WaterloggedBlocks.STARFISH, WaterloggedBlocks.DEAD_STARFISH).build()
-    );
-
-    public static final BlockEntityType<SeaSlugEggsBlockEntity> SEA_SLUG_EGGS = Registry.register(
-            BuiltInRegistries.BLOCK_ENTITY_TYPE,
-            Identifier.fromNamespaceAndPath(MOD_ID, "sea_slug_eggs"),
-            FabricBlockEntityTypeBuilder.create(SeaSlugEggsBlockEntity::new, WaterloggedBlocks.SEA_SLUG_EGGS).build()
-    );
-
-    public static final BlockEntityType<AnemoneBlockEntity> ANEMONE = Registry.register(
-            BuiltInRegistries.BLOCK_ENTITY_TYPE,
-            Identifier.fromNamespaceAndPath(MOD_ID, "anemone"),
-            FabricBlockEntityTypeBuilder.create(AnemoneBlockEntity::new, WaterloggedBlocks.ANEMONE).build()
-    );
-
-    public static final BlockEntityType<UrchinBlockEntity> URCHIN = Registry.register(
-            BuiltInRegistries.BLOCK_ENTITY_TYPE,
-            Identifier.fromNamespaceAndPath(MOD_ID, "urchin"),
-            FabricBlockEntityTypeBuilder.create(UrchinBlockEntity::new, WaterloggedBlocks.URCHIN).build()
-    );
+    // Block Entity Types — populated by Fabric static block or NeoForge RegisterEvent
+    public static BlockEntityType<RoeBlockEntity> ROE;
+    public static BlockEntityType<StarfishBlockEntity> STARFISH;
+    public static BlockEntityType<SeaSlugEggsBlockEntity> SEA_SLUG_EGGS;
+    public static BlockEntityType<AnemoneBlockEntity> ANEMONE;
+    public static BlockEntityType<UrchinBlockEntity> URCHIN;
 
     // Entity Types
-    public static final EntityType<FryEntity> FRY = Registry.register(
-            BuiltInRegistries.ENTITY_TYPE,
-            ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "fry")),
-            EntityType.Builder.<FryEntity>of(FryEntity::new, MobCategory.WATER_AMBIENT)
-                    .sized(0.2f, 0.15f)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "fry")))
-    );
+    public static EntityType<FryEntity> FRY;
+    public static EntityType<SunfishEntity> SUNFISH;
+    public static EntityType<PelicanEntity> PELICAN;
+    public static EntityType<SeaSlugEntity> SEA_SLUG;
+    public static EntityType<CrabEntity> CRAB;
+    public static EntityType<DongfishEntity> DONGFISH;
+    public static EntityType<CatfishEntity> CATFISH;
+    public static EntityType<SeahorseEntity> SEAHORSE;
+    public static EntityType<BubbleEyeEntity> BUBBLE_EYE;
+    public static EntityType<AnomalocarisEntity> ANOMALOCARIS;
+    public static EntityType<AnglerfishEntity> ANGLERFISH;
+    public static EntityType<MahiMahiEntity> MAHI_MAHI;
+    public static EntityType<OrcaEntity> ORCA;
+    public static EntityType<RightWhaleEntity> RIGHT_WHALE;
 
-    public static final EntityType<SunfishEntity> SUNFISH = Registry.register(
-            BuiltInRegistries.ENTITY_TYPE,
-            ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "sunfish")),
-            EntityType.Builder.<SunfishEntity>of(SunfishEntity::new, MobCategory.WATER_AMBIENT)
-                    .sized(0.5f, 0.3f)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "sunfish")))
-    );
+//?if fabric {
+    static {
+        ROE = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "roe"),
+                FabricBlockEntityTypeBuilder.create(RoeBlockEntity::new, WaterloggedBlocks.ROE).build());
+        STARFISH = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "starfish"),
+                FabricBlockEntityTypeBuilder.create(StarfishBlockEntity::new, WaterloggedBlocks.STARFISH, WaterloggedBlocks.DEAD_STARFISH).build());
+        SEA_SLUG_EGGS = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "sea_slug_eggs"),
+                FabricBlockEntityTypeBuilder.create(SeaSlugEggsBlockEntity::new, WaterloggedBlocks.SEA_SLUG_EGGS).build());
+        ANEMONE = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "anemone"),
+                FabricBlockEntityTypeBuilder.create(AnemoneBlockEntity::new, WaterloggedBlocks.ANEMONE).build());
+        URCHIN = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "urchin"),
+                FabricBlockEntityTypeBuilder.create(UrchinBlockEntity::new, WaterloggedBlocks.URCHIN).build());
 
-    public static final EntityType<PelicanEntity> PELICAN = Registry.register(
-            BuiltInRegistries.ENTITY_TYPE,
-            ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "pelican")),
-            EntityType.Builder.<PelicanEntity>of(PelicanEntity::new, MobCategory.AMBIENT)
-                    .sized(0.7f, 1.65f)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "pelican")))
-    );
+        FRY = registerEntity("fry", FryEntity::new, MobCategory.WATER_AMBIENT, 0.2f, 0.15f);
+        SUNFISH = registerEntity("sunfish", SunfishEntity::new, MobCategory.WATER_AMBIENT, 0.5f, 0.3f);
+        PELICAN = registerEntity("pelican", PelicanEntity::new, MobCategory.AMBIENT, 0.7f, 1.65f);
+        SEA_SLUG = registerEntity("sea_slug", SeaSlugEntity::new, MobCategory.WATER_AMBIENT, 0.5f, 0.3f);
+        CRAB = registerEntity("crab", CrabEntity::new, MobCategory.CREATURE, 0.7f, 0.4f);
+        DONGFISH = registerEntity("dongfish", DongfishEntity::new, MobCategory.UNDERGROUND_WATER_CREATURE, 0.4f, 0.3f);
+        CATFISH = registerEntity("catfish", CatfishEntity::new, MobCategory.WATER_AMBIENT, 0.6f, 0.4f);
+        SEAHORSE = registerEntity("seahorse", SeahorseEntity::new, MobCategory.WATER_AMBIENT, 0.35f, 0.6f);
+        BUBBLE_EYE = registerEntity("bubble_eye", BubbleEyeEntity::new, MobCategory.WATER_AMBIENT, 0.4f, 0.3f);
+        ANOMALOCARIS = registerEntity("anomalocaris", AnomalocarisEntity::new, MobCategory.UNDERGROUND_WATER_CREATURE, 0.8f, 0.3f);
+        ANGLERFISH = registerEntity("anglerfish", AnglerfishEntity::new, MobCategory.WATER_AMBIENT, 0.8f, 0.5f);
+        MAHI_MAHI = registerEntity("mahi_mahi", MahiMahiEntity::new, MobCategory.WATER_CREATURE, 1f, 0.8f);
+        ORCA = registerEntity("orca", OrcaEntity::new, MobCategory.WATER_CREATURE, 3.5f, 2.5f);
+        RIGHT_WHALE = registerEntity("right_whale", RightWhaleEntity::new, MobCategory.WATER_CREATURE, 4.2f, 3.0f);
+    }
 
-    public static final EntityType<SeaSlugEntity> SEA_SLUG = Registry.register(
-            BuiltInRegistries.ENTITY_TYPE,
-            ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "sea_slug")),
-            EntityType.Builder.<SeaSlugEntity>of(SeaSlugEntity::new, MobCategory.WATER_AMBIENT)
-                    .sized(0.5f, 0.3f)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "sea_slug")))
-    );
+    private static <T extends net.minecraft.world.entity.Entity> EntityType<T> registerEntity(
+            String name, EntityType.EntityFactory<T> factory, MobCategory category, float width, float height) {
+        ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, name));
+        //noinspection unchecked
+        return (EntityType<T>) Registry.register(BuiltInRegistries.ENTITY_TYPE, key,
+                EntityType.Builder.of(factory, category).sized(width, height).build(key));
+    }
+//?} else {
+/*    public static void registerAll(RegisterEvent event) {
+        event.register(Registries.BLOCK_ENTITY_TYPE, helper -> {
+            ROE = new BlockEntityType<>(RoeBlockEntity::new, Set.of(WaterloggedBlocks.ROE));
+            helper.register(Identifier.fromNamespaceAndPath(MOD_ID, "roe"), ROE);
 
-    public static final EntityType<CrabEntity> CRAB = Registry.register(
-            BuiltInRegistries.ENTITY_TYPE,
-            ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "crab")),
-            EntityType.Builder.<CrabEntity>of(CrabEntity::new, MobCategory.CREATURE)
-                    .sized(0.7f, 0.4f)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "crab")))
-    );
+            STARFISH = new BlockEntityType<>(StarfishBlockEntity::new, Set.of(WaterloggedBlocks.STARFISH, WaterloggedBlocks.DEAD_STARFISH));
+            helper.register(Identifier.fromNamespaceAndPath(MOD_ID, "starfish"), STARFISH);
 
-    public static final EntityType<DongfishEntity> DONGFISH = Registry.register(
-            BuiltInRegistries.ENTITY_TYPE,
-            ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "dongfish")),
-            EntityType.Builder.<DongfishEntity>of(DongfishEntity::new, MobCategory.UNDERGROUND_WATER_CREATURE)
-                    .sized(0.4f, 0.3f)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "dongfish")))
-    );
+            SEA_SLUG_EGGS = new BlockEntityType<>(SeaSlugEggsBlockEntity::new, Set.of(WaterloggedBlocks.SEA_SLUG_EGGS));
+            helper.register(Identifier.fromNamespaceAndPath(MOD_ID, "sea_slug_eggs"), SEA_SLUG_EGGS);
 
-    public static final EntityType<CatfishEntity> CATFISH = Registry.register(
-            BuiltInRegistries.ENTITY_TYPE,
-            ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "catfish")),
-            EntityType.Builder.<CatfishEntity>of(CatfishEntity::new, MobCategory.WATER_AMBIENT)
-                    .sized(0.6f, 0.4f)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "catfish")))
-    );
+            ANEMONE = new BlockEntityType<>(AnemoneBlockEntity::new, Set.of(WaterloggedBlocks.ANEMONE));
+            helper.register(Identifier.fromNamespaceAndPath(MOD_ID, "anemone"), ANEMONE);
 
-    public static final EntityType<SeahorseEntity> SEAHORSE = Registry.register(
-            BuiltInRegistries.ENTITY_TYPE,
-            ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "seahorse")),
-            EntityType.Builder.<SeahorseEntity>of(SeahorseEntity::new, MobCategory.WATER_AMBIENT)
-                    .sized(0.35f, 0.6f)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "seahorse")))
-    );
+            URCHIN = new BlockEntityType<>(UrchinBlockEntity::new, Set.of(WaterloggedBlocks.URCHIN));
+            helper.register(Identifier.fromNamespaceAndPath(MOD_ID, "urchin"), URCHIN);
+        });
 
-    public static final EntityType<BubbleEyeEntity> BUBBLE_EYE = Registry.register(
-            BuiltInRegistries.ENTITY_TYPE,
-            ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "bubble_eye")),
-            EntityType.Builder.<BubbleEyeEntity>of(BubbleEyeEntity::new, MobCategory.WATER_AMBIENT)
-                    .sized(0.4f, 0.3f)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "bubble_eye")))
-    );
+        event.register(Registries.ENTITY_TYPE, helper -> {
+            FRY = registerEntityNeo(helper, "fry", FryEntity::new, MobCategory.WATER_AMBIENT, 0.2f, 0.15f);
+            SUNFISH = registerEntityNeo(helper, "sunfish", SunfishEntity::new, MobCategory.WATER_AMBIENT, 0.5f, 0.3f);
+            PELICAN = registerEntityNeo(helper, "pelican", PelicanEntity::new, MobCategory.AMBIENT, 0.7f, 1.65f);
+            SEA_SLUG = registerEntityNeo(helper, "sea_slug", SeaSlugEntity::new, MobCategory.WATER_AMBIENT, 0.5f, 0.3f);
+            CRAB = registerEntityNeo(helper, "crab", CrabEntity::new, MobCategory.CREATURE, 0.7f, 0.4f);
+            DONGFISH = registerEntityNeo(helper, "dongfish", DongfishEntity::new, MobCategory.UNDERGROUND_WATER_CREATURE, 0.4f, 0.3f);
+            CATFISH = registerEntityNeo(helper, "catfish", CatfishEntity::new, MobCategory.WATER_AMBIENT, 0.6f, 0.4f);
+            SEAHORSE = registerEntityNeo(helper, "seahorse", SeahorseEntity::new, MobCategory.WATER_AMBIENT, 0.35f, 0.6f);
+            BUBBLE_EYE = registerEntityNeo(helper, "bubble_eye", BubbleEyeEntity::new, MobCategory.WATER_AMBIENT, 0.4f, 0.3f);
+            ANOMALOCARIS = registerEntityNeo(helper, "anomalocaris", AnomalocarisEntity::new, MobCategory.UNDERGROUND_WATER_CREATURE, 0.8f, 0.3f);
+            ANGLERFISH = registerEntityNeo(helper, "anglerfish", AnglerfishEntity::new, MobCategory.WATER_AMBIENT, 0.8f, 0.5f);
+            MAHI_MAHI = registerEntityNeo(helper, "mahi_mahi", MahiMahiEntity::new, MobCategory.WATER_CREATURE, 1f, 0.8f);
+            ORCA = registerEntityNeo(helper, "orca", OrcaEntity::new, MobCategory.WATER_CREATURE, 3.5f, 2.5f);
+            RIGHT_WHALE = registerEntityNeo(helper, "right_whale", RightWhaleEntity::new, MobCategory.WATER_CREATURE, 4.2f, 3.0f);
+        });
+    }
 
-    public static final EntityType<AnomalocarisEntity> ANOMALOCARIS = Registry.register(
-            BuiltInRegistries.ENTITY_TYPE,
-            ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "anomalocaris")),
-            EntityType.Builder.<AnomalocarisEntity>of(AnomalocarisEntity::new, MobCategory.UNDERGROUND_WATER_CREATURE)
-                    .sized(0.8f, 0.3f)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "anomalocaris")))
-    );
-
-    public static final EntityType<AnglerfishEntity> ANGLERFISH = Registry.register(
-            BuiltInRegistries.ENTITY_TYPE,
-            ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "anglerfish")),
-            EntityType.Builder.<AnglerfishEntity>of(AnglerfishEntity::new, MobCategory.WATER_AMBIENT)
-                    .sized(0.8f, 0.5f)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "anglerfish")))
-    );
-
-    public static final EntityType<MahiMahiEntity> MAHI_MAHI = Registry.register(
-            BuiltInRegistries.ENTITY_TYPE,
-            ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "mahi_mahi")),
-            EntityType.Builder.<MahiMahiEntity>of(MahiMahiEntity::new, MobCategory.WATER_CREATURE)
-                    .sized(1f, 0.8f)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "mahi_mahi")))
-    );
-
-    public static final EntityType<OrcaEntity> ORCA = Registry.register(
-            BuiltInRegistries.ENTITY_TYPE,
-            ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "orca")),
-            EntityType.Builder.<OrcaEntity>of(OrcaEntity::new, MobCategory.WATER_CREATURE)
-                    .sized(3.5f, 2.5f)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "orca")))
-    );
-
-    public static final EntityType<RightWhaleEntity> RIGHT_WHALE = Registry.register(
-            BuiltInRegistries.ENTITY_TYPE,
-            ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "right_whale")),
-            EntityType.Builder.<RightWhaleEntity>of(RightWhaleEntity::new, MobCategory.WATER_CREATURE)
-                    .sized(4.2f, 3.0f)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "right_whale")))
-    );
+    private static <T extends net.minecraft.world.entity.Entity> EntityType<T> registerEntityNeo(
+            RegisterEvent.RegisterHelper<EntityType<?>> helper,
+            String name, EntityType.EntityFactory<T> factory, MobCategory category, float width, float height) {
+        Identifier id = Identifier.fromNamespaceAndPath(MOD_ID, name);
+        ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, id);
+        //noinspection unchecked
+        EntityType<T> type = (EntityType<T>) EntityType.Builder.of(factory, category).sized(width, height).build(key);
+        helper.register(id, type);
+        return type;
+    }*/
+//?}
 
     public static void init() {
         // Register attributes
+//?if fabric {
         FabricDefaultAttributeRegistry.register(FRY, FryEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(SUNFISH, SunfishEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(PELICAN, PelicanEntity.createAttributes());
@@ -183,8 +159,12 @@ public class WaterloggedEntities {
         FabricDefaultAttributeRegistry.register(MAHI_MAHI, MahiMahiEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(ORCA, OrcaEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(RIGHT_WHALE, RightWhaleEntity.createAttributes());
+//?} else {
+/*        // Attributes registered via WaterloggedEntities.registerAttributes() listener*/
+//?}
 
         // Register spawn placements
+//?if fabric {
         SpawnPlacements.register(FRY, SpawnPlacementTypes.IN_WATER,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WaterAnimal::checkSurfaceWaterAnimalSpawnRules);
         SpawnPlacements.register(SUNFISH, SpawnPlacementTypes.IN_WATER,
@@ -211,8 +191,12 @@ public class WaterloggedEntities {
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WaterAnimal::checkSurfaceWaterAnimalSpawnRules);
         SpawnPlacements.register(RIGHT_WHALE, SpawnPlacementTypes.IN_WATER,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WaterAnimal::checkSurfaceWaterAnimalSpawnRules);
+//?} else {
+/*        // Spawn placements registered via WaterloggedEntities.registerSpawnPlacements() listener*/
+//?}
 
         // Register biome spawns
+//?if fabric {
         BiomeModifications.addSpawn(
                 biome -> biome.getBiomeRegistryEntry().is(WaterloggedBiomeTags.SUNFISH_SPAWN_IN),
                 MobCategory.WATER_AMBIENT, SUNFISH, 5, 2, 5
@@ -261,5 +245,57 @@ public class WaterloggedEntities {
                 biome -> biome.getBiomeRegistryEntry().is(WaterloggedBiomeTags.RIGHT_WHALE_SPAWN_IN),
                 MobCategory.WATER_CREATURE, RIGHT_WHALE, 2, 1, 3
         );
+//?} else {
+/*        // NeoForge: biome spawns handled via data/waterlogged/neoforge/biome_modifier/spawn_*.json*/
+//?}
     }
+
+//?if fabric {
+//?} else {
+/*    public static void registerAttributes(EntityAttributeCreationEvent event) {
+        event.put(FRY, FryEntity.createAttributes().build());
+        event.put(SUNFISH, SunfishEntity.createAttributes().build());
+        event.put(PELICAN, PelicanEntity.createAttributes().build());
+        event.put(SEA_SLUG, SeaSlugEntity.createAttributes().build());
+        event.put(CRAB, CrabEntity.createAttributes().build());
+        event.put(DONGFISH, DongfishEntity.createAttributes().build());
+        event.put(CATFISH, CatfishEntity.createAttributes().build());
+        event.put(SEAHORSE, SeahorseEntity.createAttributes().build());
+        event.put(BUBBLE_EYE, BubbleEyeEntity.createAttributes().build());
+        event.put(ANOMALOCARIS, AnomalocarisEntity.createAttributes().build());
+        event.put(ANGLERFISH, AnglerfishEntity.createAttributes().build());
+        event.put(MAHI_MAHI, MahiMahiEntity.createAttributes().build());
+        event.put(ORCA, OrcaEntity.createAttributes().build());
+        event.put(RIGHT_WHALE, RightWhaleEntity.createAttributes().build());
+    }
+
+    public static void registerSpawnPlacements(RegisterSpawnPlacementsEvent event) {
+        event.register(FRY, SpawnPlacementTypes.IN_WATER,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WaterAnimal::checkSurfaceWaterAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(SUNFISH, SpawnPlacementTypes.IN_WATER,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WaterAnimal::checkSurfaceWaterAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(SEA_SLUG, SpawnPlacementTypes.IN_WATER,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, SeaSlugEntity::canSpawn, RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(CRAB, SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CrabEntity::canSpawn, RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(DONGFISH, SpawnPlacementTypes.IN_WATER,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, DongfishEntity::canSpawn, RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(CATFISH, SpawnPlacementTypes.IN_WATER,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WaterAnimal::checkSurfaceWaterAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(SEAHORSE, SpawnPlacementTypes.IN_WATER,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WaterAnimal::checkSurfaceWaterAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(BUBBLE_EYE, SpawnPlacementTypes.IN_WATER,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WaterAnimal::checkSurfaceWaterAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(ANOMALOCARIS, SpawnPlacementTypes.IN_WATER,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AnomalocarisEntity::canSpawn, RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(ANGLERFISH, SpawnPlacementTypes.IN_WATER,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WaterAnimal::checkSurfaceWaterAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(MAHI_MAHI, SpawnPlacementTypes.IN_WATER,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WaterAnimal::checkSurfaceWaterAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(ORCA, SpawnPlacementTypes.IN_WATER,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WaterAnimal::checkSurfaceWaterAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(RIGHT_WHALE, SpawnPlacementTypes.IN_WATER,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WaterAnimal::checkSurfaceWaterAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
+    }*/
+//?}
 }

@@ -2,13 +2,10 @@ package net.braeden.waterlogged.entity.client;
 
 import net.braeden.waterlogged.entity.AnomalocarisEntity;
 import net.braeden.waterlogged.entity.client.state.AnomalocarisRenderState;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;
 
-@Environment(EnvType.CLIENT)
 public class AnomalocarisRenderer extends MobRenderer<AnomalocarisEntity, AnomalocarisRenderState, AnomalocarisModel> {
     private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/anomalocaris/anomalocaris.png");
 

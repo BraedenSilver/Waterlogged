@@ -3,14 +3,11 @@ package net.braeden.waterlogged.entity.client;
 import net.braeden.waterlogged.entity.client.blockbench.OrcaBlockbench;
 import net.braeden.waterlogged.entity.client.blockbench.OrcaAnimations;
 import net.braeden.waterlogged.entity.client.state.OrcaRenderState;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 
-@Environment(EnvType.CLIENT)
 public class OrcaModel extends EntityModel<OrcaRenderState> {
 
     private final ModelPart modelRoot;

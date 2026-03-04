@@ -10,7 +10,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
+//?if fabric {
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+//?}
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -89,6 +91,9 @@ public class ClamBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
+//?if neoforge {
+/*    @SuppressWarnings("deprecation")*/
+//?}
     public BlockState mirror(BlockState state, Mirror mirror) {
         return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
@@ -118,7 +123,11 @@ public class ClamBlock extends Block implements SimpleWaterloggedBlock {
             Holder<Enchantment> fortune = level.registryAccess()
                     .lookupOrThrow(Registries.ENCHANTMENT)
                     .getOrThrow(Enchantments.FORTUNE);
+//?if fabric {
             int fortuneLevel = EnchantmentHelper.getItemEnchantmentLevel(fortune, stack);
+//?} else {
+/*            int fortuneLevel = stack.getEnchantmentLevel(fortune);*/
+//?}
             float chance = 0.05f + 0.03f * fortuneLevel;
             if (level.getRandom().nextFloat() < chance) {
                 popExperience(level, pos, level.getRandom().nextIntBetweenInclusive(1, 2));

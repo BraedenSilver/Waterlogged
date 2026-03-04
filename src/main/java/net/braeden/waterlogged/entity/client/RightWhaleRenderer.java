@@ -3,13 +3,10 @@ package net.braeden.waterlogged.entity.client;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.braeden.waterlogged.entity.RightWhaleEntity;
 import net.braeden.waterlogged.entity.client.state.RightWhaleRenderState;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;
 
-@Environment(EnvType.CLIENT)
 public class RightWhaleRenderer extends MobRenderer<RightWhaleEntity, RightWhaleRenderState, RightWhaleModel> {
 
     private static final Identifier TEXTURE =

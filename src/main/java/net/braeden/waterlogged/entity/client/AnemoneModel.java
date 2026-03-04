@@ -3,15 +3,12 @@ package net.braeden.waterlogged.entity.client;
 import net.braeden.waterlogged.entity.client.blockbench.AnemoneAnimations;
 import net.braeden.waterlogged.entity.client.blockbench.AnemoneBlockbench;
 import net.braeden.waterlogged.entity.client.state.AnemoneBlockEntityRenderState;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 
-@Environment(EnvType.CLIENT)
 public class AnemoneModel extends Model<AnemoneBlockEntityRenderState> {
 
     private final KeyframeAnimation vibingAnimation;

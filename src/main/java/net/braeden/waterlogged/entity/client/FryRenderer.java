@@ -2,14 +2,11 @@ package net.braeden.waterlogged.entity.client;
 
 import net.braeden.waterlogged.entity.FryEntity;
 import net.braeden.waterlogged.entity.client.state.FryRenderState;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.animal.fish.TropicalFish;
 
-@Environment(EnvType.CLIENT)
 public class FryRenderer extends MobRenderer<FryEntity, FryRenderState, FryModel> {
     private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/fry/fry.png");
     private static final Identifier INNARDS_TEXTURE = Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/fry/fry_innards.png");

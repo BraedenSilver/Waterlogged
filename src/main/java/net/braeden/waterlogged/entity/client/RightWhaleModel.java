@@ -3,14 +3,11 @@ package net.braeden.waterlogged.entity.client;
 import net.braeden.waterlogged.entity.client.blockbench.RightWhaleAnimations;
 import net.braeden.waterlogged.entity.client.blockbench.RightWhaleBlockbench;
 import net.braeden.waterlogged.entity.client.state.RightWhaleRenderState;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 
-@Environment(EnvType.CLIENT)
 public class RightWhaleModel extends EntityModel<RightWhaleRenderState> {
 
     private final ModelPart modelRoot;

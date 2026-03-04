@@ -2,13 +2,10 @@ package net.braeden.waterlogged.entity.client;
 
 import net.braeden.waterlogged.entity.MahiMahiEntity;
 import net.braeden.waterlogged.entity.client.state.MahiMahiRenderState;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;
 
-@Environment(EnvType.CLIENT)
 public class MahiMahiRenderer extends MobRenderer<MahiMahiEntity, MahiMahiRenderState, MahiMahiModel> {
     private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/mahi_mahi/mahi_mahi.png");
 

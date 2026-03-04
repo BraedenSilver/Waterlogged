@@ -3,14 +3,11 @@ package net.braeden.waterlogged.entity.client;
 import net.braeden.waterlogged.entity.client.blockbench.BubbleEyeBlockbench;
 import net.braeden.waterlogged.entity.client.blockbench.BubbleEyeAnimations;
 import net.braeden.waterlogged.entity.client.state.BubbleEyeRenderState;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 
-@Environment(EnvType.CLIENT)
 public class BubbleEyeModel extends EntityModel<BubbleEyeRenderState> {
     private final KeyframeAnimation idleAnimation;
     private final KeyframeAnimation flopAnimation;

@@ -3,14 +3,11 @@ package net.braeden.waterlogged.entity.client;
 import net.braeden.waterlogged.entity.client.blockbench.MahiMahiBlockbench;
 import net.braeden.waterlogged.entity.client.blockbench.MahiMahiAnimations;
 import net.braeden.waterlogged.entity.client.state.MahiMahiRenderState;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 
-@Environment(EnvType.CLIENT)
 public class MahiMahiModel extends EntityModel<MahiMahiRenderState> {
     private final KeyframeAnimation idleAnimation;
     private final KeyframeAnimation flopAnimation;

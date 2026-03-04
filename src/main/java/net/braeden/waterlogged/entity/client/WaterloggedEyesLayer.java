@@ -1,7 +1,5 @@
 package net.braeden.waterlogged.entity.client;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.EyesLayer;
@@ -14,7 +12,6 @@ import net.minecraft.resources.Identifier;
  * Generic glow overlay layer — equivalent to EnderEyesLayer/SpiderEyesLayer.
  * Renders the provided texture at full brightness regardless of block light.
  */
-@Environment(EnvType.CLIENT)
 public class WaterloggedEyesLayer<S extends LivingEntityRenderState, M extends EntityModel<S>>
         extends EyesLayer<S, M> {
 

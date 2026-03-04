@@ -1,4 +1,5 @@
 package net.braeden.waterlogged;
+//?if fabric {
 
 import net.braeden.waterlogged.datagen.WaterloggedAdvancementProvider;
 import net.braeden.waterlogged.datagen.WaterloggedBiomeTagProvider;
@@ -30,3 +31,4 @@ public class WaterloggedDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(WaterloggedAdvancementProvider::new);
     }
 }
+//?}

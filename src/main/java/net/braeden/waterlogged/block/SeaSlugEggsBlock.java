@@ -77,8 +77,13 @@ public class SeaSlugEggsBlock extends Block implements SimpleWaterloggedBlock, E
     }
 
     @Override
+//?if fabric {
     public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
         ItemStack stack = super.getCloneItemStack(level, pos, state, includeData);
+//?} else {
+/*    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, net.minecraft.world.entity.player.Player player) {
+        ItemStack stack = super.getCloneItemStack(level, pos, state, includeData, player);*/
+//?}
         if (level.getBlockEntity(pos) instanceof SeaSlugEggsBlockEntity be) {
             be.applyPickComponents(stack);
         }

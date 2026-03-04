@@ -2,13 +2,10 @@ package net.braeden.waterlogged.entity.client;
 
 import net.braeden.waterlogged.entity.DongfishEntity;
 import net.braeden.waterlogged.entity.client.state.DongfishRenderState;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;
 
-@Environment(EnvType.CLIENT)
 public class DongfishRenderer extends MobRenderer<DongfishEntity, DongfishRenderState, DongfishModel> {
     private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/dongfish/dongfish.png");
 

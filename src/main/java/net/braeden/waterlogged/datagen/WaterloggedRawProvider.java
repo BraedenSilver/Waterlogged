@@ -1,4 +1,5 @@
 package net.braeden.waterlogged.datagen;
+//?if fabric {
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -45,6 +46,7 @@ public class WaterloggedRawProvider implements DataProvider {
 
         // ── Complex block models ───────────────────────────────────────────────
         futures.add(save(cache, asset("models/block/algae.json"),         blockAlgae()));
+        futures.add(save(cache, asset("models/block/aquarium_glass.json"), blockAquariumGlass()));
         futures.add(save(cache, asset("models/block/clam.json"),          blockClam()));
         futures.add(save(cache, asset("models/block/duckweed.json"),      blockDuckweed()));
         futures.add(save(cache, asset("models/block/oysters.json"),       blockOysters()));
@@ -110,6 +112,44 @@ public class WaterloggedRawProvider implements DataProvider {
         futures.add(save(cache, data("worldgen/placed_feature/wormy_mud.json"),       pfWormyMud()));
         futures.add(save(cache, data("worldgen/placed_feature/swamp_log.json"),       pfSwampLog()));
         futures.add(save(cache, data("worldgen/placed_feature/pond_cypress.json"),    pfPondCypress()));
+
+        // ── NeoForge biome modifiers (ignored by Fabric, consumed by NeoForge) ──
+        futures.add(save(cache, data("neoforge/biome_modifier/add_duckweed.json"),          biomeAddFeature("#waterlogged:duckweed_biomes",       "waterlogged:duckweed",          "vegetal_decoration")));
+        futures.add(save(cache, data("neoforge/biome_modifier/add_sargassum.json"),         biomeAddFeature("#waterlogged:sargassum_biomes",      "waterlogged:sargassum",         "vegetal_decoration")));
+        futures.add(save(cache, data("neoforge/biome_modifier/add_sargassum_beach.json"),   biomeAddFeature("#waterlogged:sargassum_beach_biomes", "waterlogged:sargassum_beach",  "vegetal_decoration")));
+        futures.add(save(cache, data("neoforge/biome_modifier/add_papyrus.json"),           biomeAddFeature("#waterlogged:papyrus_biomes",        "waterlogged:papyrus",           "vegetal_decoration")));
+        futures.add(save(cache, data("neoforge/biome_modifier/add_clam.json"),              biomeAddFeature("#waterlogged:clams_biomes",          "waterlogged:clam",              "vegetal_decoration")));
+        futures.add(save(cache, data("neoforge/biome_modifier/add_oysters.json"),           biomeAddFeature("#waterlogged:oyster_reef_biomes",    "waterlogged:oysters",           "vegetal_decoration")));
+        futures.add(save(cache, data("neoforge/biome_modifier/add_starfish.json"),          biomeAddFeature("#waterlogged:starfish_biomes",       "waterlogged:starfish",          "vegetal_decoration")));
+        futures.add(save(cache, data("neoforge/biome_modifier/add_anemone.json"),           biomeAddFeature("#waterlogged:anemone_biomes",        "waterlogged:anemone",           "vegetal_decoration")));
+        futures.add(save(cache, data("neoforge/biome_modifier/add_algae.json"),             biomeAddFeature("#waterlogged:algae_biomes",          "waterlogged:algae",             "vegetal_decoration")));
+        futures.add(save(cache, data("neoforge/biome_modifier/add_algae_swamp.json"),       biomeAddFeature("#waterlogged:algae_swamp_biomes",    "waterlogged:algae_swamp",       "vegetal_decoration")));
+        futures.add(save(cache, data("neoforge/biome_modifier/add_wormy_dirt.json"),        biomeAddFeature("#waterlogged:wormy_dirt_biomes",     "waterlogged:wormy_dirt",        "underground_ores")));
+        futures.add(save(cache, data("neoforge/biome_modifier/add_wormy_mud.json"),         biomeAddFeature("#waterlogged:wormy_mud_biomes",      "waterlogged:wormy_mud",         "underground_ores")));
+        futures.add(save(cache, data("neoforge/biome_modifier/add_urchin.json"),            biomeAddFeature("#waterlogged:urchin_biomes",         "waterlogged:urchin",            "vegetal_decoration")));
+        futures.add(save(cache, data("neoforge/biome_modifier/add_hydrothermal_vent.json"), biomeAddFeatureList(
+                new String[]{"minecraft:deep_ocean", "minecraft:deep_cold_ocean", "minecraft:deep_frozen_ocean"},
+                "waterlogged:hydrothermal_vent", "vegetal_decoration")));
+        futures.add(save(cache, data("neoforge/biome_modifier/add_swamp_log.json"),         biomeAddFeature("#waterlogged:swamp_log_biomes",      "waterlogged:swamp_log",         "vegetal_decoration")));
+        futures.add(save(cache, data("neoforge/biome_modifier/add_pond_cypress.json"),      biomeAddFeature("#waterlogged:pond_cypress_biomes",   "waterlogged:pond_cypress",      "vegetal_decoration")));
+        futures.add(save(cache, data("neoforge/biome_modifier/remove_swamp_trees.json"),    biomeRemoveFeature("#waterlogged:pond_cypress_biomes", "minecraft:trees_swamp",        "vegetal_decoration")));
+
+        // ── NeoForge biome modifiers: entity spawns ────────────────────────────
+        futures.add(save(cache, data("neoforge/biome_modifier/spawn_sunfish.json"),     biomeAddSpawn("#waterlogged:sunfish_spawn_in",      "waterlogged:sunfish",      "water_ambient",              5, 2, 5)));
+        futures.add(save(cache, data("neoforge/biome_modifier/spawn_sea_slug.json"),    biomeAddSpawn("#waterlogged:sea_slug_spawn_in",     "waterlogged:sea_slug",     "water_ambient",             15, 2, 6)));
+        futures.add(save(cache, data("neoforge/biome_modifier/spawn_catfish.json"),     biomeAddSpawn("#waterlogged:catfish_spawn_in",      "waterlogged:catfish",      "water_ambient",              3, 1, 2)));
+        futures.add(save(cache, data("neoforge/biome_modifier/spawn_crab.json"),        biomeAddSpawn("#waterlogged:crab_spawn_in",         "waterlogged:crab",         "creature",                   8, 3, 5)));
+        futures.add(save(cache, data("neoforge/biome_modifier/spawn_seahorse.json"),    biomeAddSpawn("#waterlogged:seahorse_spawn_in",     "waterlogged:seahorse",     "water_ambient",              4, 3, 8)));
+        futures.add(save(cache, data("neoforge/biome_modifier/spawn_bubble_eye.json"),  biomeAddSpawn("#waterlogged:bubble_eye_spawn_in",   "waterlogged:bubble_eye",   "water_ambient",              2, 1, 2)));
+        futures.add(save(cache, data("neoforge/biome_modifier/spawn_anomalocaris.json"),biomeAddSpawn("#waterlogged:anomalocaris_spawn_in", "waterlogged:anomalocaris", "underground_water_creature", 20, 1, 2)));
+        futures.add(save(cache, data("neoforge/biome_modifier/spawn_dongfish.json"),    biomeAddSpawn("#waterlogged:dongfish_spawn_in",     "waterlogged:dongfish",     "underground_water_creature",  4, 1, 2)));
+        futures.add(save(cache, data("neoforge/biome_modifier/spawn_anglerfish.json"),  biomeAddSpawn("#waterlogged:anglerfish_spawn_in",   "waterlogged:anglerfish",   "water_ambient",              6, 1, 2)));
+        futures.add(save(cache, data("neoforge/biome_modifier/spawn_mahi_mahi.json"),   biomeAddSpawn("#waterlogged:mahi_mahi_spawn_in",    "waterlogged:mahi_mahi",    "water_creature",             4, 1, 2)));
+        futures.add(save(cache, data("neoforge/biome_modifier/spawn_orca.json"),        biomeAddSpawn("#waterlogged:orca_spawn_in",         "waterlogged:orca",         "water_creature",             1, 1, 1)));
+        futures.add(save(cache, data("neoforge/biome_modifier/spawn_right_whale.json"),biomeAddSpawn("#waterlogged:right_whale_spawn_in",  "waterlogged:right_whale",  "water_creature",             2, 1, 3)));
+
+        // ── NeoForge data maps ────────────────────────────────────────────────
+        futures.add(save(cache, data("neoforge/data_maps/item/compostables.json"), compostablesDataMap()));
 
         return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new));
     }
@@ -343,8 +383,19 @@ public class WaterloggedRawProvider implements DataProvider {
 
     // ── Block models ──────────────────────────────────────────────────────────
 
+    private JsonObject blockAquariumGlass() {
+        JsonObject root = new JsonObject();
+        root.addProperty("render_type", "minecraft:cutout");
+        root.addProperty("parent", "minecraft:block/cube_all");
+        JsonObject textures = new JsonObject();
+        textures.addProperty("all", "minecraft:block/glass");
+        root.add("textures", textures);
+        return root;
+    }
+
     private JsonObject blockAlgae() {
         JsonObject root = new JsonObject();
+        root.addProperty("render_type", "minecraft:translucent");
         root.addProperty("ambientocclusion", false);
         JsonObject textures = new JsonObject();
         textures.addProperty("particle", "waterlogged:block/algae");
@@ -365,6 +416,7 @@ public class WaterloggedRawProvider implements DataProvider {
 
     private JsonObject blockClam() {
         JsonObject root = new JsonObject();
+        root.addProperty("render_type", "minecraft:cutout");
         JsonObject textures = new JsonObject();
         textures.addProperty("0", "waterlogged:block/clam");
         textures.addProperty("particle", "waterlogged:block/clam");
@@ -401,6 +453,7 @@ public class WaterloggedRawProvider implements DataProvider {
 
     private JsonObject blockDuckweed() {
         JsonObject root = new JsonObject();
+        root.addProperty("render_type", "minecraft:cutout");
         root.addProperty("ambientocclusion", false);
         JsonObject textures = new JsonObject();
         textures.addProperty("particle", "waterlogged:block/duckweed");
@@ -421,6 +474,7 @@ public class WaterloggedRawProvider implements DataProvider {
 
     private JsonObject blockOysters() {
         JsonObject root = new JsonObject();
+        root.addProperty("render_type", "minecraft:cutout");
         root.addProperty("parent", "minecraft:block/block");
         JsonObject textures = new JsonObject();
         textures.addProperty("0", "waterlogged:block/oysters");
@@ -472,6 +526,7 @@ public class WaterloggedRawProvider implements DataProvider {
     private JsonObject blockPapyrusAge0() {
         // Sprout: 4 thin stems + small bud elements at y~8
         JsonObject root = blockBase(false);
+        root.addProperty("render_type", "minecraft:cutout");
         JsonObject tex = new JsonObject();
         tex.addProperty("0", "waterlogged:block/papyrus");
         tex.addProperty("particle", "waterlogged:block/papyrus");
@@ -497,6 +552,7 @@ public class WaterloggedRawProvider implements DataProvider {
     private JsonObject blockPapyrusAge1() {
         // Mature stem: slightly different UV offsets for stem + upper bud cluster
         JsonObject root = blockBase(false);
+        root.addProperty("render_type", "minecraft:cutout");
         JsonObject tex = new JsonObject();
         tex.addProperty("0", "waterlogged:block/papyrus");
         tex.addProperty("particle", "waterlogged:block/papyrus");
@@ -522,6 +578,7 @@ public class WaterloggedRawProvider implements DataProvider {
     private JsonObject blockPapyrusAge2() {
         // Full papyrus with flower head - complex with stem extensions above y=16
         JsonObject root = blockBase(false);
+        root.addProperty("render_type", "minecraft:cutout");
         JsonObject tex = new JsonObject();
         tex.addProperty("0", "waterlogged:block/papyrus");
         tex.addProperty("particle", "waterlogged:block/papyrus");
@@ -561,6 +618,7 @@ public class WaterloggedRawProvider implements DataProvider {
 
     private JsonObject blockRoe() {
         JsonObject root = new JsonObject();
+        root.addProperty("render_type", "minecraft:cutout");
         JsonObject textures = new JsonObject();
         textures.addProperty("0", "waterlogged:block/roe_bottom");
         textures.addProperty("1", "waterlogged:block/roe_top");
@@ -623,6 +681,7 @@ public class WaterloggedRawProvider implements DataProvider {
     private JsonObject blockSargassumBlock() {
         // Full cube with cutout_mipped transparency, inheriting from minecraft:block/leaves
         JsonObject root = new JsonObject();
+        root.addProperty("render_type", "minecraft:cutout");
         root.addProperty("parent", "minecraft:block/leaves");
         JsonObject textures = new JsonObject();
         textures.addProperty("all", "waterlogged:block/sargassum_block");
@@ -632,6 +691,7 @@ public class WaterloggedRawProvider implements DataProvider {
 
     private JsonObject blockSargassum() {
         JsonObject root = new JsonObject();
+        root.addProperty("render_type", "minecraft:cutout");
         root.addProperty("parent", "minecraft:block/block");
         root.addProperty("ambientocclusion", false);
         JsonObject textures = new JsonObject();
@@ -676,6 +736,7 @@ public class WaterloggedRawProvider implements DataProvider {
 
     private JsonObject blockSeaSlugEggs() {
         JsonObject root = new JsonObject();
+        root.addProperty("render_type", "minecraft:cutout");
         root.addProperty("parent", "minecraft:block/block");
         JsonObject textures = new JsonObject();
         textures.addProperty("0", "waterlogged:block/sea_slug_eggs");
@@ -1355,4 +1416,73 @@ public class WaterloggedRawProvider implements DataProvider {
         r.add("origin", o);
         return r;
     }
+
+    // ── NeoForge biome modifier helpers ───────────────────────────────────
+
+    /** Add a single placed feature to biomes matched by a tag (prefixed with #). */
+    private JsonObject biomeAddFeature(String biomes, String feature, String step) {
+        JsonObject json = new JsonObject();
+        json.addProperty("type", "neoforge:add_features");
+        json.addProperty("biomes", biomes);
+        json.addProperty("features", feature);
+        json.addProperty("step", step);
+        return json;
+    }
+
+    /** Add a single placed feature to an explicit list of biomes. */
+    private JsonObject biomeAddFeatureList(String[] biomes, String feature, String step) {
+        JsonObject json = new JsonObject();
+        json.addProperty("type", "neoforge:add_features");
+        JsonArray arr = new JsonArray();
+        for (String b : biomes) arr.add(b);
+        json.add("biomes", arr);
+        json.addProperty("features", feature);
+        json.addProperty("step", step);
+        return json;
+    }
+
+    /** Remove a placed feature from biomes matched by a tag (prefixed with #). */
+    private JsonObject biomeRemoveFeature(String biomes, String feature, String step) {
+        JsonObject json = new JsonObject();
+        json.addProperty("type", "neoforge:remove_features");
+        json.addProperty("biomes", biomes);
+        json.addProperty("features", feature);
+        json.addProperty("step", step);
+        return json;
+    }
+
+    /** Add an entity spawn to biomes matched by a tag. */
+    private JsonObject biomeAddSpawn(String biomes, String entityType, String category, int weight, int minCount, int maxCount) {
+        JsonObject json = new JsonObject();
+        json.addProperty("type", "neoforge:add_spawns");
+        json.addProperty("biomes", biomes);
+        JsonObject spawner = new JsonObject();
+        spawner.addProperty("type", entityType);
+        spawner.addProperty("weight", weight);
+        spawner.addProperty("minCount", minCount);
+        spawner.addProperty("maxCount", maxCount);
+        json.add("spawners", spawner);
+        return json;
+    }
+
+    // ── NeoForge data maps ────────────────────────────────────────────────
+
+    /** Compostable items data map (replaces ComposterBlock.COMPOSTABLES on NeoForge). */
+    private JsonObject compostablesDataMap() {
+        JsonObject json = new JsonObject();
+        JsonObject values = new JsonObject();
+        values.add("waterlogged:duckweed", compostable(0.3f));
+        values.add("waterlogged:sargassum", compostable(0.3f));
+        values.add("waterlogged:algae", compostable(0.2f));
+        values.add("waterlogged:papyrus", compostable(0.2f));
+        json.add("values", values);
+        return json;
+    }
+
+    private JsonObject compostable(float chance) {
+        JsonObject obj = new JsonObject();
+        obj.addProperty("chance", chance);
+        return obj;
+    }
 }
+//?}

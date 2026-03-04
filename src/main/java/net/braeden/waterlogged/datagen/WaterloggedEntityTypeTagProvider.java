@@ -1,4 +1,5 @@
 package net.braeden.waterlogged.datagen;
+//?if fabric {
 
 import net.braeden.waterlogged.tags.WaterloggedEntityTypeTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -97,3 +98,4 @@ public class WaterloggedEntityTypeTagProvider extends FabricTagProvider.EntityTy
         return ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath("waterlogged", id));
     }
 }
+//?}

@@ -3,8 +3,6 @@ package net.braeden.waterlogged.entity.client;
 import net.braeden.waterlogged.entity.SunfishEntity;
 import net.braeden.waterlogged.entity.client.state.SunfishRenderState;
 import net.braeden.waterlogged.entity.util.SunfishVariant;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;
@@ -12,7 +10,6 @@ import net.minecraft.resources.Identifier;
 import java.util.EnumMap;
 import java.util.Map;
 
-@Environment(EnvType.CLIENT)
 public class SunfishRenderer extends MobRenderer<SunfishEntity, SunfishRenderState, SunfishModel> {
 
     private static final Map<SunfishVariant, Identifier> TEXTURES;

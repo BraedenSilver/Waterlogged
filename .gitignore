@@ -1,56 +1,59 @@
-# gradle
-
-.gradle/
+# ─── Build outputs ───────────────────────────────────────────────────────────
 build/
 out/
 classes/
+.gradle/
 
-# eclipse
-
+# ─── IDE ─────────────────────────────────────────────────────────────────────
+# Eclipse
 *.launch
+.settings/
+.classpath
+.project
 
-# idea
-
+# IntelliJ IDEA
 .idea/
 *.iml
 *.ipr
 *.iws
 
-# vscode
-
-.settings/
+# VS Code
 .vscode/
 bin/
-.classpath
-.project
 
-# macos
+# ─── OS ──────────────────────────────────────────────────────────────────────
+.DS_Store
 
-*.DS_Store
-
-# fabric
-
+# ─── Runtime / dev server ────────────────────────────────────────────────────
 run/
-.CLAUDE.md
+eula.txt
 
-# Ignore CLAUDE.md
-CLAUDE.md
+# ─── Stonecutter version subprojects ────────────────────────────────────────
+# Only gradle.properties in each subproject is committed (version pins).
+# Everything else is build output or dev runtime.
+versions/*/build/
+versions/*/bin/
+versions/*/run/
+versions/*/generated/
+versions/*/src/
+versions/*/.eclipse/
 
-# Ignore .claude folder
-.claude/
-
-# Generated
+# ─── Generated datagen output ────────────────────────────────────────────────
 src/main/generated/
 
+# ─── Project docs / scratch ─────────────────────────────────────────────────
+CLAUDE.md
+.claude/
+TODO.md
 ADDING_AN_ANIMAL.txt
 PLANNED_FEATURES.md
+*.bak
 
-# Generated BlockBench files (regenerate with: bash scripts/make_bbmodels.sh)
+# ─── Generated BlockBench files (regenerate with: bash scripts/make_bbmodels.sh)
 /BlockBench/
-/Scripts/
 
-# Tree concept scratch files (reference designs, not committed)
+# ─── Tree concept scratch files (reference designs, not committed) ──────────
 /_tree-concepts/
 
-# Ignore TODO.md
-TODO.md
+# ─── Miscellaneous ──────────────────────────────────────────────────────────
+/scripts/

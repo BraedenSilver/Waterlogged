@@ -1,0 +1,31 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "CC0-1.0"
+
+[[mods]]
+modId = "waterlogged"
+version = "${version}"
+displayName = "Waterlogged Mod"
+logoFile = "assets/waterlogged/icon.png"
+authors = "Braeden Silver, EightSidedSquare, Diansu, Sillvia"
+displayURL = "https://github.com/BraedenSilver/Waterlogged"
+description = '''
+Expands and deepens the aquatic experience with new creatures, plants, and ocean structures.
+'''
+
+[[mixins]]
+config = "waterlogged.mixins.json"
+
+[[dependencies.waterlogged]]
+    modId = "neoforge"
+    type = "required"
+    versionRange = "[21.11,)"
+    ordering = "NONE"
+    side = "BOTH"
+
+[[dependencies.waterlogged]]
+    modId = "minecraft"
+    type = "required"
+    versionRange = "[1.21.11,)"
+    ordering = "NONE"
+    side = "BOTH"

@@ -2,13 +2,10 @@ package net.braeden.waterlogged.entity.client;
 
 import net.braeden.waterlogged.entity.CatfishEntity;
 import net.braeden.waterlogged.entity.client.state.CatfishRenderState;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;
 
-@Environment(EnvType.CLIENT)
 public class CatfishRenderer extends MobRenderer<CatfishEntity, CatfishRenderState, CatfishModel> {
     private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/catfish/catfish.png");
 

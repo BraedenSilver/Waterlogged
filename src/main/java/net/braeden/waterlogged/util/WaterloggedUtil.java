@@ -1,6 +1,10 @@
 package net.braeden.waterlogged.util;
 
+//?if fabric {
 import net.fabricmc.loader.api.FabricLoader;
+//?} else {
+/*import net.neoforged.fml.ModList;*/
+//?}
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.TagKey;
@@ -21,7 +25,11 @@ public class WaterloggedUtil {
     }
 
     public static boolean runningSodium() {
+        //?if fabric {
         return FabricLoader.getInstance().isModLoaded("sodium");
+        //?} else {
+        /*return ModList.get().isLoaded("sodium");*/
+        //?}
     }
 
     public static void stripEntityNbt(CompoundTag nbt) {

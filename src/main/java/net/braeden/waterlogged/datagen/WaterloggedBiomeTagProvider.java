@@ -1,4 +1,5 @@
 package net.braeden.waterlogged.datagen;
+//?if fabric {
 
 import net.braeden.waterlogged.tags.WaterloggedBiomeTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -149,3 +150,4 @@ public class WaterloggedBiomeTagProvider extends FabricTagProvider<Biome> {
         return ResourceKey.create(Registries.BIOME, Identifier.withDefaultNamespace(id));
     }
 }
+//?}

@@ -2,13 +2,10 @@ package net.braeden.waterlogged.entity.client;
 
 import net.braeden.waterlogged.entity.BubbleEyeEntity;
 import net.braeden.waterlogged.entity.client.state.BubbleEyeRenderState;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;
 
-@Environment(EnvType.CLIENT)
 public class BubbleEyeRenderer extends MobRenderer<BubbleEyeEntity, BubbleEyeRenderState, BubbleEyeModel> {
     private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("waterlogged", "textures/entity/bubble_eye/bubble_eye.png");
 

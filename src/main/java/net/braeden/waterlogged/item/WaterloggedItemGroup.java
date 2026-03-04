@@ -1,8 +1,12 @@
 package net.braeden.waterlogged.item;
 
 import net.braeden.waterlogged.block.WaterloggedBlocks;
+//?if fabric {
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+//?}
+//?if fabric {
 import net.minecraft.core.Registry;
+//?}
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -18,7 +22,11 @@ public class WaterloggedItemGroup {
             ResourceKey.create(BuiltInRegistries.CREATIVE_MODE_TAB.key(),
                     Identifier.fromNamespaceAndPath(MOD_ID, "waterlogged"));
 
+    //?if fabric {
     public static final CreativeModeTab ANGLING_TAB = FabricItemGroup.builder()
+    //?} else {
+    /*public static final CreativeModeTab ANGLING_TAB = CreativeModeTab.builder()*/
+    //?}
             .title(Component.translatable("itemGroup.waterlogged"))
             .icon(() -> new ItemStack(WaterloggedItems.SUNFISH_BUCKET))
             .displayItems((params, output) -> {
@@ -93,6 +101,16 @@ public class WaterloggedItemGroup {
             .build();
 
     public static void init() {
+//?if fabric {
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, ANGLING_TAB_KEY, ANGLING_TAB);
+//?}
     }
+
+//?if neoforge {
+/*    public static void registerAll(net.neoforged.neoforge.registries.RegisterEvent event) {
+        event.register(BuiltInRegistries.CREATIVE_MODE_TAB.key(), helper -> {
+            helper.register(Identifier.fromNamespaceAndPath(MOD_ID, "waterlogged"), ANGLING_TAB);
+        });
+    }*/
+//?}
 }

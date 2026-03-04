@@ -1,4 +1,5 @@
 package net.braeden.waterlogged.datagen;
+//?if fabric {
 
 import net.braeden.waterlogged.block.AlgaeBlock;
 import net.braeden.waterlogged.block.WaterloggedBlocks;
@@ -54,11 +55,8 @@ public class WaterloggedModelProvider extends FabricModelProvider {
     @Override
     public void generateBlockStateModels(BlockModelGenerators gen) {
         this.modelOutput = gen.modelOutput;
-        // Aquarium glass: cube_all with vanilla glass texture
-        Identifier aquariumModel = ModelTemplates.CUBE_ALL.create(
-                WaterloggedBlocks.AQUARIUM_GLASS,
-                new TextureMapping().put(TextureSlot.ALL, Identifier.withDefaultNamespace("block/glass")),
-                gen.modelOutput);
+        // Aquarium glass: block model written by WaterloggedRawProvider (includes render_type for NeoForge)
+        Identifier aquariumModel = ModelLocationUtils.getModelLocation(WaterloggedBlocks.AQUARIUM_GLASS);
         gen.blockStateOutput.accept(
                 BlockModelGenerators.createSimpleBlock(WaterloggedBlocks.AQUARIUM_GLASS,
                         BlockModelGenerators.plainVariant(aquariumModel)));
@@ -327,3 +325,4 @@ public class WaterloggedModelProvider extends FabricModelProvider {
         return Identifier.fromNamespaceAndPath("waterlogged", "block/" + name);
     }
 }
+//?}

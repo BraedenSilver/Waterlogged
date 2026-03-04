@@ -1,0 +1,121 @@
+// ─── NeoForge build script ─────────────────────────────────────────────────
+// Evaluated as the build script for the `versions/1.21.11-neoforge` subproject.
+// All file paths use rootProject.file() because projectDir is versions/1.21.11-neoforge/.
+//
+// NOTE: NeoForge 21.11.x is still in beta for MC 1.21.11.
+// Latest at time of setup: 21.11.38-beta. Pin a newer one when stable lands.
+
+plugins {
+    id 'net.neoforged.moddev' version '2.0.140'
+    id 'maven-publish'
+}
+
+// Preprocessor constants — controls //? if fabric { and //? if neoforge { blocks
+stonecutter.constants {
+    put 'fabric', false
+    put 'neoforge', true
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
+repositories {
+    maven {
+        name = 'NeoForge'
+        url = 'https://maven.neoforged.net/releases'
+    }
+}
+
+neoForge {
+    version = project.neoforge_version
+
+    accessTransformers {
+        publish rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
+    }
+
+    runs {
+        client {
+            client()
+        }
+        server {
+            server()
+        }
+        // data gen is not needed on NeoForge — generated files are committed at src/main/generated/
+    }
+
+    mods {
+        waterlogged {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+dependencies {
+    // NeoForge provides Minecraft automatically via the neoForge { version } block above.
+}
+
+sourceSets {
+    main {
+        resources {
+            // Include committed datagen output (produced by the Fabric runDatagen task)
+            srcDir rootProject.file('src/main/generated')
+            exclude '.cache/**'
+        }
+    }
+}
+
+// Stonecutter copies resources (including accesstransformer.cfg) into the generated
+// source set. NeoForge reads AT files from there, but Gradle doesn't know about the
+// implicit dependency — declare it explicitly to fix configuration cache validation.
+afterEvaluate {
+    tasks.named('createMinecraftArtifacts') {
+        dependsOn tasks.named('stonecutterGenerate')
+    }
+}
+
+processResources {
+    inputs.property "version", project.version
+    filesMatching("META-INF/neoforge.mods.toml") {
+        expand "version": inputs.properties.version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 21
+    options.encoding = 'UTF-8'
+}
+
+java {
+    withSourcesJar()
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+tasks.named('sourcesJar') {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+jar {
+    // Suffix the release jar with the loader name: waterlogged-1.0.1-neoforge.jar
+    archiveClassifier = 'neoforge'
+    inputs.property 'archivesName', project.base.archivesName
+    from(rootProject.file('LICENSE')) {
+        rename { "${it}_${inputs.properties.archivesName}" }
+    }
+}
+
+publishing {
+    publications {
+        create('mavenJava', MavenPublication) {
+            artifactId = project.archives_base_name
+            from components.java
+        }
+    }
+    repositories {
+        // Add target Maven repos here if you publish artifacts
+    }
+}
