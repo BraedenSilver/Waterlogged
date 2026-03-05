@@ -2,18 +2,19 @@
 
 ## Added
 
-- [x] **Cypress Trees** — pond cypress replacing vanilla swamp oaks; manual 3×3 sapling growth
+- [x] **Cypress Trees** — Pond Cypress Replacing Vanilla Swamp Oaks; Manual 3×3 Sapling Growth
 
 ## Planned
 
 ### Ocean / General
-- [ ] **Mantis Shrimp** — scares away Drowned Zombies
-- [ ] **Shark**
-- [ ] **Seagull** — beaches and oceans
+- [ ] **Mantis Shrimp** — Scares away Drowned Zombies
+- [ ] **Shark** - Oceans
+- [ ] **Seagull** — Beaches
 
 ### Swamp
 - [ ] **Flamingo**
-- [ ] **Crocodile**
+- [ ] **Crocodile** - Mangrove Swamp
+- [ ] **Alligator** - Regular Swamp
 
 ### Plants & World Gen
 
@@ -23,4 +24,4 @@
 - ~~**Krill**~~
 - ~~**Cattails**~~
 - ~~**Dogfish**~~
-- ~~**Spanish Moss**~~ — texture looked too dull
+- ~~**Spanish Moss**~~ — Texture Looked too Dull, Pale Hanging Moss Fits this Roll.

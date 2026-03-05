@@ -7,7 +7,7 @@ modId = "waterlogged"
 version = "${version}"
 displayName = "Waterlogged Mod"
 logoFile = "assets/waterlogged/icon.png"
-authors = "Braeden Silver, EightSidedSquare, Diansu, Sillvia"
+authors = "Braeden, EightSidedSquare, Diansu, Sillvia"
 displayURL = "https://github.com/BraedenSilver/Waterlogged"
 description = '''
 Expands and deepens the aquatic experience with new creatures, plants, and ocean structures.

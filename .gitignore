@@ -49,8 +49,10 @@ ADDING_AN_ANIMAL.txt
 PLANNED_FEATURES.md
 *.bak
 
-# ─── Generated BlockBench files (regenerate with: bash tools/make_bbmodels.sh)
-/tools/
+# ─── BlockBench tooling and generated outputs ───────────────────────────────
+# Keep only the Python converter script; ignore everything else under tools/.
+/tools/*
+!/tools/java2bbmodel.py
 
 # ─── Tree concept scratch files (reference designs, not committed) ──────────
 /docs/concepts/
