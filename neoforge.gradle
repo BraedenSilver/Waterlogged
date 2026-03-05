@@ -100,7 +100,7 @@ tasks.named('sourcesJar') {
 }
 
 jar {
-    // Suffix the release jar with the loader name: waterlogged-1.0.1-neoforge.jar
+    // Suffix the release jar with the loader name: waterlogged-1.0.2-neoforge.jar
     archiveClassifier = 'neoforge'
     inputs.property 'archivesName', project.base.archivesName
     from(rootProject.file('LICENSE')) {

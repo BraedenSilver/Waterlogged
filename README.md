@@ -5,7 +5,7 @@
 ![Minecraft](https://img.shields.io/badge/Minecraft-1.21.11-62b47a?style=flat&logo=creeper&logoColor=white)
 ![Fabric](https://img.shields.io/badge/Fabric-0.18.4+-dbb68a?style=flat)
 ![NeoForge](https://img.shields.io/badge/NeoForge-21.11.x-f57542?style=flat)
-![Version](https://img.shields.io/badge/Version-1.0.1-6fa8dc?style=flat)
+![Version](https://img.shields.io/badge/Version-1.0.2-6fa8dc?style=flat)
 ![Java](https://img.shields.io/badge/Java-21+-f6a623?style=flat&logo=openjdk&logoColor=white)
 ![License](https://img.shields.io/badge/License-CC0--1.0-lightgrey?style=flat)
 

@@ -88,7 +88,7 @@ tasks.named('sourcesJar') {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
-// Suffix the release jar with the loader name: waterlogged-1.0.1-fabric.jar
+// Suffix the release jar with the loader name: waterlogged-1.0.2-fabric.jar
 tasks.named('remapJar') {
     archiveClassifier = 'fabric'
 }
